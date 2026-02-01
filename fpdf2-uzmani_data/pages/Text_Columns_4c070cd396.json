@@ -1,0 +1,125 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/TextColumns.html",
+  "title": "Text Columns",
+  "content": "The FPDF.text_columns() method allows to create columnar layouts, with one or several columns. Columns will always be of equal width.\n\nText columns support all the standard text region methods, and some extra ones:\n\nA form feed character (\\u000c) in the text will have the same effect as an explicit call to .new_column(),\n\nNote that when used within balanced columns, switching to a new column manually will result in incorrect balancing.\n\nIn this example an inserted paragraph is used in order to format its content with justified alignment, while the rest of the text uses the default left alignment.\n\nfrom fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_font(\"Times\", size=12) with pdf.text_columns() as cols: cols.write(text=LOREM_IPSUM[:400]) with cols.paragraph( text_align=\"J\", top_margin=pdf.font_size, bottom_margin=pdf.font_size ) as paragraph: paragraph.write(text=LOREM_IPSUM[:400]) cols.write(text=LOREM_IPSUM[:400]) pdf.output(\"text_columns.pdf\")\n\nIndentation can be set on the first line of paragraphs by passing a first_line_indent value to .paragraph().\n\nHere we have a layout with three columns. Note that font type and text size can be varied within a text region, while still maintaining the justified (in this case) horizontal alignment.\n\nfrom fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_font(\"Helvetica\", size=16) with pdf.text_columns(text_align=\"J\", ncols=3, gutter=5) as cols: cols.write(text=LOREM_IPSUM[:600]) pdf.set_font(\"Times\", size=18) cols.write(text=LOREM_IPSUM[:500]) pdf.set_font(\"Courier\", size=20) cols.write(text=LOREM_IPSUM[:500]) pdf.output(\"multi_columns.pdf\")\n\nNormally the columns will be filled left to right, and if the text ends before the page is full, the rightmost column will be shorter than the others. If you prefer that all columns on a page end on the same height, you can use the balance=True argument. In that case a simple algorithm will be applied that attempts to approximately balance their bottoms.\n\nfrom fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_font(\"Times\", size=12) cols = pdf.text_columns(text_align=\"J\", ncols=3, gutter=5, balance=True) # fill columns with balanced text with cols: pdf.set_font(\"Times\", size=14) cols.write(text=LOREM_IPSUM[:300]) # add an image below img_info = pdf.image(\".../fpdf2/docs/regular_polygon.png\", x=pdf.l_margin, w=pdf.epw) # continue multi-column text with cols: cols.write(text=LOREM_IPSUM[300:600]) pdf.output(\"balanced_columns.pdf\")\n\nNote that column balancing only works reliably when the font size (specifically the line height) doesn't change, and if there are no images included. If parts of the text use a larger or smaller font than the rest, then the balancing will usually be out of whack. Contributions for a more refined balancing algorithm are welcome.\n\nThose features are currently not supported, but Pull Requests are welcome to implement them:",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Text Columns",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Text Columns¶",
+      "id": "text-columns"
+    },
+    {
+      "level": "h3",
+      "text": "Single-Column Example¶",
+      "id": "single-column-example"
+    },
+    {
+      "level": "h3",
+      "text": "Multi-Column Example¶",
+      "id": "multi-column-example"
+    },
+    {
+      "level": "h3",
+      "text": "Balanced Columns¶",
+      "id": "balanced-columns"
+    },
+    {
+      "level": "h3",
+      "text": "Possible future extensions¶",
+      "id": "possible-future-extensions"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=12)\nwith pdf.text_columns() as cols:\n    cols.write(text=LOREM_IPSUM[:400])\n    with cols.paragraph(\n        text_align=\"J\",\n        top_margin=pdf.font_size,\n        bottom_margin=pdf.font_size\n    ) as paragraph:\n        paragraph.write(text=LOREM_IPSUM[:400])\n    cols.write(text=LOREM_IPSUM[:400])\npdf.output(\"text_columns.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Helvetica\", size=16)\nwith pdf.text_columns(text_align=\"J\", ncols=3, gutter=5) as cols:\n    cols.write(text=LOREM_IPSUM[:600])\n    pdf.set_font(\"Times\", size=18)\n    cols.write(text=LOREM_IPSUM[:500])\n    pdf.set_font(\"Courier\", size=20)\n    cols.write(text=LOREM_IPSUM[:500])\npdf.output(\"multi_columns.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=12)\n\ncols = pdf.text_columns(text_align=\"J\", ncols=3, gutter=5, balance=True)\n# fill columns with balanced text\nwith cols:\n    pdf.set_font(\"Times\", size=14)\n    cols.write(text=LOREM_IPSUM[:300])\n# add an image below\nimg_info = pdf.image(\".../fpdf2/docs/regular_polygon.png\",\n                     x=pdf.l_margin, w=pdf.epw)\n# continue multi-column text\nwith cols:\n    cols.write(text=LOREM_IPSUM[300:600])\npdf.output(\"balanced_columns.pdf\")",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/text_region.html"
+  ]
+}

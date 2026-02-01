@@ -1,0 +1,142 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+  "title": "Rendering spreadsheets as PDF tables¶",
+  "content": "All the details on tables and options to style them are detailed on the dedicated page: Tables.\n\nExample input file: color_srgb.csv #!/usr/bin/env python3 # USAGE: ./csv2table.py color_srgb.csv import csv, sys from fpdf import FPDF, FontFace from fpdf.drawing_primitives import color_from_hex_string pdf = FPDF() pdf.add_page() pdf.set_font(\"Times\", size=22) with pdf.table() as table: with open(sys.argv[1], encoding=\"utf-8\") as csv_file: reader = csv.reader(csv_file, delimiter=\",\") for i, row in enumerate(reader): style = None if i > 0: # We color the row based on the hexadecimal code in the 2nd column: style = FontFace(fill_color=color_from_hex_string(row[1])) table.row(row, style=style) pdf.output(\"from-csv.pdf\")\n\nExample input file: color_srgb.xlsx #!/usr/bin/env python3 # Script Dependencies: # openxlsx # USAGE: ./xlsx2table.py color_srgb.xlsx import sys from fpdf import FPDF, FontFace from fpdf.drawing_primitives import color_from_hex_string from openpyxl import load_workbook pdf = FPDF() pdf.add_page() pdf.set_font(\"Times\", size=22) wb = load_workbook(sys.argv[1]) ws = wb.active with pdf.table() as table: for i, row in enumerate(ws.rows): style = None if i > 0: # We color the row based on the hexadecimal code in the 2nd column: style = FontFace(fill_color=color_from_hex_string(row[1])) table.row([cell.value for cell in row], style=style) pdf.output(\"from-xlsx.pdf\")\n\nExample input file: color_srgb.ods #!/usr/bin/env python3 # Script Dependencies: # odfpy # USAGE: ./ods2table.py color_srgb.ods import sys from fpdf import FPDF, FontFace from fpdf.drawing_primitives import color_from_hex_string from odf.opendocument import load from odf.table import Table, TableCell, TableRow pdf = FPDF() pdf.add_page() pdf.set_font(\"Times\", size=22) ods = load(sys.argv[1]) for sheet in ods.getElementsByType(Table): with pdf.table() as table: for i, row in enumerate(sheet.getElementsByType(TableRow)): row = [str(cell) for cell in row.getElementsByType(TableCell)] style = None if i > 0: # We color the row based on the hexadecimal code in the 2nd column: style = FontFace(fill_color=color_from_hex_string(row[1])) table.row(row, style=style) pdf.output(\"from-ods.pdf\")\n\ncf. Maths documentation page",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Rendering spreadsheets as PDF tables¶",
+      "id": "rendering-spreadsheets-as-pdf-tables"
+    },
+    {
+      "level": "h2",
+      "text": "From a .csv spreadsheet¶",
+      "id": "from-a-csv-spreadsheet"
+    },
+    {
+      "level": "h2",
+      "text": "From a .xlsx spreadsheet¶",
+      "id": "from-a-xlsx-spreadsheet"
+    },
+    {
+      "level": "h2",
+      "text": "From an .ods spreadsheet¶",
+      "id": "from-an-ods-spreadsheet"
+    },
+    {
+      "level": "h2",
+      "text": "From pandas DataFrame¶",
+      "id": "from-pandas-dataframe"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "#!/usr/bin/env python3\n# USAGE: ./csv2table.py color_srgb.csv\nimport csv, sys\nfrom fpdf import FPDF, FontFace\nfrom fpdf.drawing_primitives import color_from_hex_string\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=22)\nwith pdf.table() as table:\n    with open(sys.argv[1], encoding=\"utf-8\") as csv_file:\n        reader = csv.reader(csv_file, delimiter=\",\")\n        for i, row in enumerate(reader):\n            style = None\n            if i > 0:\n                # We color the row based on the hexadecimal code in the 2nd column:\n                style = FontFace(fill_color=color_from_hex_string(row[1]))\n            table.row(row, style=style)\npdf.output(\"from-csv.pdf\")",
+      "language": "typescript"
+    },
+    {
+      "code": "#!/usr/bin/env python3\n# Script Dependencies:\n#    openxlsx\n# USAGE: ./xlsx2table.py color_srgb.xlsx\nimport sys\nfrom fpdf import FPDF, FontFace\nfrom fpdf.drawing_primitives import color_from_hex_string\nfrom openpyxl import load_workbook\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=22)\nwb = load_workbook(sys.argv[1])\nws = wb.active\nwith pdf.table() as table:\n    for i, row in enumerate(ws.rows):\n        style = None\n        if i > 0:\n            # We color the row based on the hexadecimal code in the 2nd column:\n            style = FontFace(fill_color=color_from_hex_string(row[1]))\n        table.row([cell.value for cell in row], style=style)\npdf.output(\"from-xlsx.pdf\")",
+      "language": "typescript"
+    },
+    {
+      "code": "#!/usr/bin/env python3\n# Script Dependencies:\n#    odfpy\n# USAGE: ./ods2table.py color_srgb.ods\nimport sys\nfrom fpdf import FPDF, FontFace\nfrom fpdf.drawing_primitives import color_from_hex_string\nfrom odf.opendocument import load\nfrom odf.table import Table, TableCell, TableRow\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=22)\nods = load(sys.argv[1])\nfor sheet in ods.getElementsByType(Table):\n    with pdf.table() as table:\n        for i, row in enumerate(sheet.getElementsByType(TableRow)):\n            row = [str(cell) for cell in row.getElementsByType(TableCell)]\n            style = None\n            if i > 0:\n                # We color the row based on the hexadecimal code in the 2nd column:\n                style = FontFace(fill_color=color_from_hex_string(row[1]))\n            table.row(row, style=style)\npdf.output(\"from-ods.pdf\")",
+      "language": "typescript"
+    }
+  ],
+  "patterns": [
+    {
+      "description": "Example input file: color_srgb.csv #!/usr/bin/env python3 # USAGE: ./csv2table.py color_srgb.csv import csv, sys from fpdf import FPDF, FontFace from fpdf.drawing_primitives import color_from_hex_string pdf = FPDF() pdf.add_page() pdf.set_font(\"Times\", size=22) with pdf.table() as table: with open(sys.argv[1], encoding=\"utf-8\") as csv_file: reader = csv.reader(csv_file, delimiter=\",\") for i, row in enumerate(reader): style = None if i > 0: # We color the row based on the hexadecimal code in the 2nd column: style = FontFace(fill_color=color_from_hex_string(row[1])) table.row(row, style=style) pdf.output(\"from-csv.pdf\")",
+      "code": "#!/usr/bin/env python3\n# USAGE: ./csv2table.py color_srgb.csv\nimport csv, sys\nfrom fpdf import FPDF, FontFace\nfrom fpdf.drawing_primitives import color_from_hex_string\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=22)\nwith pdf.table() as table:\n    with open(sys.argv[1], encoding=\"utf-8\") as csv_file:\n        reader = csv.reader(csv_file, delimiter=\",\")\n        for i, row in enumerate(reader):\n            style = None\n            if i > 0:\n                # We color the row based on the hexadecimal code in the 2nd column:\n                style = FontFace(fill_color=color_from_hex_string(row[1]))\n            table.row(row, style=style)\npdf.output(\"from-csv.pdf\")"
+    },
+    {
+      "description": "#!/usr/bin/env python3 # USAGE: ./csv2table.py color_srgb.csv import csv, sys from fpdf import FPDF, FontFace from fpdf.drawing_primitives import color_from_hex_string pdf = FPDF() pdf.add_page() pdf.set_font(\"Times\", size=22) with pdf.table() as table: with open(sys.argv[1], encoding=\"utf-8\") as csv_file: reader = csv.reader(csv_file, delimiter=\",\") for i, row in enumerate(reader): style = None if i > 0: # We color the row based on the hexadecimal code in the 2nd column: style = FontFace(fill_color=color_from_hex_string(row[1])) table.row(row, style=style) pdf.output(\"from-csv.pdf\")",
+      "code": "#!/usr/bin/env python3\n# USAGE: ./csv2table.py color_srgb.csv\nimport csv, sys\nfrom fpdf import FPDF, FontFace\nfrom fpdf.drawing_primitives import color_from_hex_string\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=22)\nwith pdf.table() as table:\n    with open(sys.argv[1], encoding=\"utf-8\") as csv_file:\n        reader = csv.reader(csv_file, delimiter=\",\")\n        for i, row in enumerate(reader):\n            style = None\n            if i > 0:\n                # We color the row based on the hexadecimal code in the 2nd column:\n                style = FontFace(fill_color=color_from_hex_string(row[1]))\n            table.row(row, style=style)\npdf.output(\"from-csv.pdf\")"
+    },
+    {
+      "description": "Example input file: color_srgb.xlsx #!/usr/bin/env python3 # Script Dependencies: # openxlsx # USAGE: ./xlsx2table.py color_srgb.xlsx import sys from fpdf import FPDF, FontFace from fpdf.drawing_primitives import color_from_hex_string from openpyxl import load_workbook pdf = FPDF() pdf.add_page() pdf.set_font(\"Times\", size=22) wb = load_workbook(sys.argv[1]) ws = wb.active with pdf.table() as table: for i, row in enumerate(ws.rows): style = None if i > 0: # We color the row based on the hexadecimal code in the 2nd column: style = FontFace(fill_color=color_from_hex_string(row[1])) table.row([cell.value for cell in row], style=style) pdf.output(\"from-xlsx.pdf\")",
+      "code": "#!/usr/bin/env python3\n# Script Dependencies:\n#    openxlsx\n# USAGE: ./xlsx2table.py color_srgb.xlsx\nimport sys\nfrom fpdf import FPDF, FontFace\nfrom fpdf.drawing_primitives import color_from_hex_string\nfrom openpyxl import load_workbook\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=22)\nwb = load_workbook(sys.argv[1])\nws = wb.active\nwith pdf.table() as table:\n    for i, row in enumerate(ws.rows):\n        style = None\n        if i > 0:\n            # We color the row based on the hexadecimal code in the 2nd column:\n            style = FontFace(fill_color=color_from_hex_string(row[1]))\n        table.row([cell.value for cell in row], style=style)\npdf.output(\"from-xlsx.pdf\")"
+    },
+    {
+      "description": "#!/usr/bin/env python3 # Script Dependencies: # openxlsx # USAGE: ./xlsx2table.py color_srgb.xlsx import sys from fpdf import FPDF, FontFace from fpdf.drawing_primitives import color_from_hex_string from openpyxl import load_workbook pdf = FPDF() pdf.add_page() pdf.set_font(\"Times\", size=22) wb = load_workbook(sys.argv[1]) ws = wb.active with pdf.table() as table: for i, row in enumerate(ws.rows): style = None if i > 0: # We color the row based on the hexadecimal code in the 2nd column: style = FontFace(fill_color=color_from_hex_string(row[1])) table.row([cell.value for cell in row], style=style) pdf.output(\"from-xlsx.pdf\")",
+      "code": "#!/usr/bin/env python3\n# Script Dependencies:\n#    openxlsx\n# USAGE: ./xlsx2table.py color_srgb.xlsx\nimport sys\nfrom fpdf import FPDF, FontFace\nfrom fpdf.drawing_primitives import color_from_hex_string\nfrom openpyxl import load_workbook\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=22)\nwb = load_workbook(sys.argv[1])\nws = wb.active\nwith pdf.table() as table:\n    for i, row in enumerate(ws.rows):\n        style = None\n        if i > 0:\n            # We color the row based on the hexadecimal code in the 2nd column:\n            style = FontFace(fill_color=color_from_hex_string(row[1]))\n        table.row([cell.value for cell in row], style=style)\npdf.output(\"from-xlsx.pdf\")"
+    },
+    {
+      "description": "Example input file: color_srgb.ods #!/usr/bin/env python3 # Script Dependencies: # odfpy # USAGE: ./ods2table.py color_srgb.ods import sys from fpdf import FPDF, FontFace from fpdf.drawing_primitives import color_from_hex_string from odf.opendocument import load from odf.table import Table, TableCell, TableRow pdf = FPDF() pdf.add_page() pdf.set_font(\"Times\", size=22) ods = load(sys.argv[1]) for sheet in ods.getElementsByType(Table): with pdf.table() as table: for i, row in enumerate(sheet.getElementsByType(TableRow)): row = [str(cell) for cell in row.getElementsByType(TableCell)] style = None if i > 0: # We color the row based on the hexadecimal code in the 2nd column: style = FontFace(fill_color=color_from_hex_string(row[1])) table.row(row, style=style) pdf.output(\"from-ods.pdf\")",
+      "code": "#!/usr/bin/env python3\n# Script Dependencies:\n#    odfpy\n# USAGE: ./ods2table.py color_srgb.ods\nimport sys\nfrom fpdf import FPDF, FontFace\nfrom fpdf.drawing_primitives import color_from_hex_string\nfrom odf.opendocument import load\nfrom odf.table import Table, TableCell, TableRow\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=22)\nods = load(sys.argv[1])\nfor sheet in ods.getElementsByType(Table):\n    with pdf.table() as table:\n        for i, row in enumerate(sheet.getElementsByType(TableRow)):\n            row = [str(cell) for cell in row.getElementsByType(TableCell)]\n            style = None\n            if i > 0:\n                # We color the row based on the hexadecimal code in the 2nd column:\n                style = FontFace(fill_color=color_from_hex_string(row[1]))\n            table.row(row, style=style)\npdf.output(\"from-ods.pdf\")"
+    }
+  ],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/color_srgb.csv",
+    "https://py-pdf.github.io/fpdf2/color_srgb.xlsx",
+    "https://py-pdf.github.io/fpdf2/color_srgb.ods"
+  ]
+}

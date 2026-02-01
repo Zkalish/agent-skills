@@ -1,0 +1,156 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/structure_tree.html",
+  "title": "Module fpdf.structure_tree",
+  "content": "Quoting the PDF spec:\n\nPDF’s logical structure facilities provide a mechanism for incorporating structural information about a document’s content into a PDF file.\n\nThe logical structure of a document is described by a hierarchy of objects called the structure hierarchy or structure tree. At the root of the hierarchy is a dictionary object called the structure tree root, located by means of the StructTreeRoot entry in the document catalog.\n\nThe contents of this module are internal to fpdf2, and not part of the public API. They may change at any time without prior warning or any deprecation period, in non-backward-compatible ways.\n\nUsage documentation at: https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html\n\nA number tree is similar to a name tree, except that its keys are integers instead of strings and are sorted in ascending numerical order.\n\nA name tree serves a similar purpose to a dictionary—associating keys and values—but by different means.\n\nThe values associated with the keys may be objects of any type. Stream objects are required to be specified by indirect object references. It is recommended, though not required, that dictionary, array, and string objects be specified by indirect object references, and other PDF objects (nulls, numbers, booleans, and names) be specified as direct objects\n\nInherited from: PDFObject.content_stream\n\nSubclasses can override this method to indicate the presence of a content stream\n\nInherited from: PDFObject.serialize\n\nSerialize the PDF object as an obj<</>>endobj text block\n\nInherited from: PDFObject.content_stream\n\nSubclasses can override this method to indicate the presence of a content stream\n\nInherited from: PDFObject.serialize\n\nSerialize the PDF object as an obj<</>>endobj text block\n\nInherited from: PDFObject.content_stream\n\nSubclasses can override this method to indicate the presence of a content stream\n\nInherited from: PDFObject.serialize\n\nSerialize the PDF object as an obj<</>>endobj text block",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.structure_tree",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "class NumberTree(PDFObject):\n    \"\"\"A number tree is similar to a name tree, except that its keys are integers\n    instead of strings and are sorted in ascending numerical order.\n\n    A name tree serves a similar purpose to a dictionary—associating keys and\n    values—but by different means.\n\n    The values associated with the keys may be objects of any type. Stream objects\n    are required to be specified by indirect object references. It is recommended,\n    though not required, that dictionary, array, and string objects be specified by\n    indirect object references, and other PDF objects (nulls, numbers, booleans,\n    and names) be specified as direct objects\n    \"\"\"\n\n    __slots__ = (\"_id\", \"nums\")  # RAM usage optimization\n\n    def __init__(self) -> None:\n        super().__init__()\n        self.nums: DefaultDict[int, list[PDFObject]] = defaultdict(\n            list\n        )  # {struct_parent_id -> struct_elems}\n\n    def serialize(\n        self,\n        obj_dict: Optional[Dict[str, object]] = None,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    ) -> str:\n        newline = \"\\n\"\n        serialized_nums = \"\\n\".join(\n            f\"{struct_parent_id} [{newline.join(struct_elem.ref for struct_elem in struct_elems)}]\"\n            for struct_parent_id, struct_elems in self.nums.items()\n        )\n        return super().serialize({\"/Nums\": f\"[{serialized_nums}]\"})",
+      "language": "python"
+    },
+    {
+      "code": "class NumberTree(PDFObject):\n    \"\"\"A number tree is similar to a name tree, except that its keys are integers\n    instead of strings and are sorted in ascending numerical order.\n\n    A name tree serves a similar purpose to a dictionary—associating keys and\n    values—but by different means.\n\n    The values associated with the keys may be objects of any type. Stream objects\n    are required to be specified by indirect object references. It is recommended,\n    though not required, that dictionary, array, and string objects be specified by\n    indirect object references, and other PDF objects (nulls, numbers, booleans,\n    and names) be specified as direct objects\n    \"\"\"\n\n    __slots__ = (\"_id\", \"nums\")  # RAM usage optimization\n\n    def __init__(self) -> None:\n        super().__init__()\n        self.nums: DefaultDict[int, list[PDFObject]] = defaultdict(\n            list\n        )  # {struct_parent_id -> struct_elems}\n\n    def serialize(\n        self,\n        obj_dict: Optional[Dict[str, object]] = None,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    ) -> str:\n        newline = \"\\n\"\n        serialized_nums = \"\\n\".join(\n            f\"{struct_parent_id} [{newline.join(struct_elem.ref for struct_elem in struct_elems)}]\"\n            for struct_parent_id, struct_elems in self.nums.items()\n        )\n        return super().serialize({\"/Nums\": f\"[{serialized_nums}]\"})",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    obj_dict: Optional[Dict[str, object]] = None,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n) -> str:\n    newline = \"\\n\"\n    serialized_nums = \"\\n\".join(\n        f\"{struct_parent_id} [{newline.join(struct_elem.ref for struct_elem in struct_elems)}]\"\n        for struct_parent_id, struct_elems in self.nums.items()\n    )\n    return super().serialize({\"/Nums\": f\"[{serialized_nums}]\"})",
+      "language": "python"
+    },
+    {
+      "code": "class StructElem(PDFObject):\n    __slots__ = (  # RAM usage optimization\n        \"_id\",\n        \"type\",\n        \"s\",\n        \"p\",\n        \"k\",\n        \"t\",\n        \"alt\",\n        \"pg\",\n        \"_page_number\",\n    )\n\n    def __init__(\n        self,\n        struct_type: str,\n        parent: PDFObject,\n        kids: Union[List[int], List[\"StructElem\"]],\n        page_number: Optional[int] = None,\n        title: Optional[str] = None,\n        alt: Optional[str] = None,\n    ) -> None:\n        super().__init__()\n        self.type = \"/StructElem\"\n        # A name object identifying the nature of the structure element:\n        self.s = struct_type\n        self.p = parent  # The structure element that is the immediate parent of this one in the structure hierarchy\n        self.k = PDFArray(kids)  # The children of this structure element\n        # a text string representing it in human-readable form:\n        self.t = None if title is None else PDFString(title)\n        # An alternate description of the structure element in human-readable form:\n        self.alt = None if alt is None else PDFString(alt)\n        self.pg = None  # A page object on which some or all of the content items designated by the K entry are rendered\n        self._page_number = page_number  # private so that it does not get serialized\n\n    def page_number(self) -> Optional[int]:\n        return self._page_number",
+      "language": "python"
+    },
+    {
+      "code": "class StructElem(PDFObject):\n    __slots__ = (  # RAM usage optimization\n        \"_id\",\n        \"type\",\n        \"s\",\n        \"p\",\n        \"k\",\n        \"t\",\n        \"alt\",\n        \"pg\",\n        \"_page_number\",\n    )\n\n    def __init__(\n        self,\n        struct_type: str,\n        parent: PDFObject,\n        kids: Union[List[int], List[\"StructElem\"]],\n        page_number: Optional[int] = None,\n        title: Optional[str] = None,\n        alt: Optional[str] = None,\n    ) -> None:\n        super().__init__()\n        self.type = \"/StructElem\"\n        # A name object identifying the nature of the structure element:\n        self.s = struct_type\n        self.p = parent  # The structure element that is the immediate parent of this one in the structure hierarchy\n        self.k = PDFArray(kids)  # The children of this structure element\n        # a text string representing it in human-readable form:\n        self.t = None if title is None else PDFString(title)\n        # An alternate description of the structure element in human-readable form:\n        self.alt = None if alt is None else PDFString(alt)\n        self.pg = None  # A page object on which some or all of the content items designated by the K entry are rendered\n        self._page_number = page_number  # private so that it does not get serialized\n\n    def page_number(self) -> Optional[int]:\n        return self._page_number",
+      "language": "python"
+    },
+    {
+      "code": "class StructElem(PDFObject):\n    __slots__ = (  # RAM usage optimization\n        \"_id\",\n        \"type\",\n        \"s\",\n        \"p\",\n        \"k\",\n        \"t\",\n        \"alt\",\n        \"pg\",\n        \"_page_number\",\n    )\n\n    def __init__(\n        self,\n        struct_type: str,\n        parent: PDFObject,\n        kids: Union[List[int], List[\"StructElem\"]],\n        page_number: Optional[int] = None,\n        title: Optional[str] = None,\n        alt: Optional[str] = None,\n    ) -> None:\n        super().__init__()\n        self.type = \"/StructElem\"\n        # A name object identifying the nature of the structure element:\n        self.s = struct_type\n        self.p = parent  # The structure element that is the immediate parent of this one in the structure hierarchy\n        self.k = PDFArray(kids)  # The children of this structure element\n        # a text string representing it in human-readable form:\n        self.t = None if title is None else PDFString(title)\n        # An alternate description of the structure element in human-readable form:\n        self.alt = None if alt is None else PDFString(alt)\n        self.pg = None  # A page object on which some or all of the content items designated by the K entry are rendered\n        self._page_number = page_number  # private so that it does not get serialized\n\n    def page_number(self) -> Optional[int]:\n        return self._page_number",
+      "language": "python"
+    },
+    {
+      "code": "class StructElem(PDFObject):\n    __slots__ = (  # RAM usage optimization\n        \"_id\",\n        \"type\",\n        \"s\",\n        \"p\",\n        \"k\",\n        \"t\",\n        \"alt\",\n        \"pg\",\n        \"_page_number\",\n    )\n\n    def __init__(\n        self,\n        struct_type: str,\n        parent: PDFObject,\n        kids: Union[List[int], List[\"StructElem\"]],\n        page_number: Optional[int] = None,\n        title: Optional[str] = None,\n        alt: Optional[str] = None,\n    ) -> None:\n        super().__init__()\n        self.type = \"/StructElem\"\n        # A name object identifying the nature of the structure element:\n        self.s = struct_type\n        self.p = parent  # The structure element that is the immediate parent of this one in the structure hierarchy\n        self.k = PDFArray(kids)  # The children of this structure element\n        # a text string representing it in human-readable form:\n        self.t = None if title is None else PDFString(title)\n        # An alternate description of the structure element in human-readable form:\n        self.alt = None if alt is None else PDFString(alt)\n        self.pg = None  # A page object on which some or all of the content items designated by the K entry are rendered\n        self._page_number = page_number  # private so that it does not get serialized\n\n    def page_number(self) -> Optional[int]:\n        return self._page_number",
+      "language": "python"
+    },
+    {
+      "code": "class StructElem(PDFObject):\n    __slots__ = (  # RAM usage optimization\n        \"_id\",\n        \"type\",\n        \"s\",\n        \"p\",\n        \"k\",\n        \"t\",\n        \"alt\",\n        \"pg\",\n        \"_page_number\",\n    )\n\n    def __init__(\n        self,\n        struct_type: str,\n        parent: PDFObject,\n        kids: Union[List[int], List[\"StructElem\"]],\n        page_number: Optional[int] = None,\n        title: Optional[str] = None,\n        alt: Optional[str] = None,\n    ) -> None:\n        super().__init__()\n        self.type = \"/StructElem\"\n        # A name object identifying the nature of the structure element:\n        self.s = struct_type\n        self.p = parent  # The structure element that is the immediate parent of this one in the structure hierarchy\n        self.k = PDFArray(kids)  # The children of this structure element\n        # a text string representing it in human-readable form:\n        self.t = None if title is None else PDFString(title)\n        # An alternate description of the structure element in human-readable form:\n        self.alt = None if alt is None else PDFString(alt)\n        self.pg = None  # A page object on which some or all of the content items designated by the K entry are rendered\n        self._page_number = page_number  # private so that it does not get serialized\n\n    def page_number(self) -> Optional[int]:\n        return self._page_number",
+      "language": "python"
+    },
+    {
+      "code": "class StructElem(PDFObject):\n    __slots__ = (  # RAM usage optimization\n        \"_id\",\n        \"type\",\n        \"s\",\n        \"p\",\n        \"k\",\n        \"t\",\n        \"alt\",\n        \"pg\",\n        \"_page_number\",\n    )\n\n    def __init__(\n        self,\n        struct_type: str,\n        parent: PDFObject,\n        kids: Union[List[int], List[\"StructElem\"]],\n        page_number: Optional[int] = None,\n        title: Optional[str] = None,\n        alt: Optional[str] = None,\n    ) -> None:\n        super().__init__()\n        self.type = \"/StructElem\"\n        # A name object identifying the nature of the structure element:\n        self.s = struct_type\n        self.p = parent  # The structure element that is the immediate parent of this one in the structure hierarchy\n        self.k = PDFArray(kids)  # The children of this structure element\n        # a text string representing it in human-readable form:\n        self.t = None if title is None else PDFString(title)\n        # An alternate description of the structure element in human-readable form:\n        self.alt = None if alt is None else PDFString(alt)\n        self.pg = None  # A page object on which some or all of the content items designated by the K entry are rendered\n        self._page_number = page_number  # private so that it does not get serialized\n\n    def page_number(self) -> Optional[int]:\n        return self._page_number",
+      "language": "python"
+    },
+    {
+      "code": "class StructElem(PDFObject):\n    __slots__ = (  # RAM usage optimization\n        \"_id\",\n        \"type\",\n        \"s\",\n        \"p\",\n        \"k\",\n        \"t\",\n        \"alt\",\n        \"pg\",\n        \"_page_number\",\n    )\n\n    def __init__(\n        self,\n        struct_type: str,\n        parent: PDFObject,\n        kids: Union[List[int], List[\"StructElem\"]],\n        page_number: Optional[int] = None,\n        title: Optional[str] = None,\n        alt: Optional[str] = None,\n    ) -> None:\n        super().__init__()\n        self.type = \"/StructElem\"\n        # A name object identifying the nature of the structure element:\n        self.s = struct_type\n        self.p = parent  # The structure element that is the immediate parent of this one in the structure hierarchy\n        self.k = PDFArray(kids)  # The children of this structure element\n        # a text string representing it in human-readable form:\n        self.t = None if title is None else PDFString(title)\n        # An alternate description of the structure element in human-readable form:\n        self.alt = None if alt is None else PDFString(alt)\n        self.pg = None  # A page object on which some or all of the content items designated by the K entry are rendered\n        self._page_number = page_number  # private so that it does not get serialized\n\n    def page_number(self) -> Optional[int]:\n        return self._page_number",
+      "language": "python"
+    },
+    {
+      "code": "class StructElem(PDFObject):\n    __slots__ = (  # RAM usage optimization\n        \"_id\",\n        \"type\",\n        \"s\",\n        \"p\",\n        \"k\",\n        \"t\",\n        \"alt\",\n        \"pg\",\n        \"_page_number\",\n    )\n\n    def __init__(\n        self,\n        struct_type: str,\n        parent: PDFObject,\n        kids: Union[List[int], List[\"StructElem\"]],\n        page_number: Optional[int] = None,\n        title: Optional[str] = None,\n        alt: Optional[str] = None,\n    ) -> None:\n        super().__init__()\n        self.type = \"/StructElem\"\n        # A name object identifying the nature of the structure element:\n        self.s = struct_type\n        self.p = parent  # The structure element that is the immediate parent of this one in the structure hierarchy\n        self.k = PDFArray(kids)  # The children of this structure element\n        # a text string representing it in human-readable form:\n        self.t = None if title is None else PDFString(title)\n        # An alternate description of the structure element in human-readable form:\n        self.alt = None if alt is None else PDFString(alt)\n        self.pg = None  # A page object on which some or all of the content items designated by the K entry are rendered\n        self._page_number = page_number  # private so that it does not get serialized\n\n    def page_number(self) -> Optional[int]:\n        return self._page_number",
+      "language": "python"
+    },
+    {
+      "code": "def page_number(self) -> Optional[int]:\n    return self._page_number",
+      "language": "python"
+    },
+    {
+      "code": "class StructTreeRoot(PDFObject):\n    __slots__ = (\"_id\", \"type\", \"parent_tree\", \"k\")  # RAM usage optimization\n\n    def __init__(self) -> None:\n        super().__init__()\n        self.type = \"/StructTreeRoot\"\n        # A number tree used in finding the structure elements to which content items belong:\n        self.parent_tree = NumberTree()\n        # The immediate child or children of the structure tree root in the structure hierarchy:\n        self.k = PDFArray()",
+      "language": "python"
+    },
+    {
+      "code": "class StructTreeRoot(PDFObject):\n    __slots__ = (\"_id\", \"type\", \"parent_tree\", \"k\")  # RAM usage optimization\n\n    def __init__(self) -> None:\n        super().__init__()\n        self.type = \"/StructTreeRoot\"\n        # A number tree used in finding the structure elements to which content items belong:\n        self.parent_tree = NumberTree()\n        # The immediate child or children of the structure tree root in the structure hierarchy:\n        self.k = PDFArray()",
+      "language": "python"
+    },
+    {
+      "code": "class StructTreeRoot(PDFObject):\n    __slots__ = (\"_id\", \"type\", \"parent_tree\", \"k\")  # RAM usage optimization\n\n    def __init__(self) -> None:\n        super().__init__()\n        self.type = \"/StructTreeRoot\"\n        # A number tree used in finding the structure elements to which content items belong:\n        self.parent_tree = NumberTree()\n        # The immediate child or children of the structure tree root in the structure hierarchy:\n        self.k = PDFArray()",
+      "language": "python"
+    },
+    {
+      "code": "class StructTreeRoot(PDFObject):\n    __slots__ = (\"_id\", \"type\", \"parent_tree\", \"k\")  # RAM usage optimization\n\n    def __init__(self) -> None:\n        super().__init__()\n        self.type = \"/StructTreeRoot\"\n        # A number tree used in finding the structure elements to which content items belong:\n        self.parent_tree = NumberTree()\n        # The immediate child or children of the structure tree root in the structure hierarchy:\n        self.k = PDFArray()",
+      "language": "python"
+    },
+    {
+      "code": "class StructureTreeBuilder:\n    def __init__(self) -> None:\n        self.struct_tree_root = StructTreeRoot()\n        self.doc_struct_elem = StructElem(\n            struct_type=\"/Document\", parent=self.struct_tree_root, kids=[]\n        )\n        self.struct_tree_root.k.append(self.doc_struct_elem)\n        self.spid_per_page_number: Dict[int, int] = {}\n\n    def add_marked_content(\n        self,\n        page_number: int,\n        struct_type: str,\n        mcid: Optional[int] = None,\n        title: Optional[str] = None,\n        alt_text: Optional[str] = None,\n    ) -> tuple[StructElem, int]:\n        struct_parents_id = self.spid_per_page_number.get(page_number)\n        if struct_parents_id is None:\n            struct_parents_id = len(self.spid_per_page_number)\n            self.spid_per_page_number[page_number] = struct_parents_id\n        struct_elem = StructElem(\n            struct_type=struct_type,\n            parent=self.doc_struct_elem,\n            kids=[] if mcid is None else [mcid],\n            page_number=page_number,\n            title=title,\n            alt=alt_text,\n        )\n        self.doc_struct_elem.k.append(struct_elem)\n        self.struct_tree_root.parent_tree.nums[struct_parents_id].append(struct_elem)\n        return struct_elem, struct_parents_id\n\n    def next_mcid_for_page(self, page_number: int) -> int:\n        return sum(\n            1\n            for struct_elem in self.doc_struct_elem.k\n            if struct_elem.page_number() == page_number\n            and struct_elem.k  # ensure it has a mcid set\n        )\n\n    def empty(self) -> bool:\n        return not self.doc_struct_elem.k\n\n    def __iter__(self) -> Iterator[PDFObject]:\n        \"Iterate all PDF objects in the tree, starting with the tree root\"\n        yield self.struct_tree_root\n        yield self.doc_struct_elem\n        yield self.struct_tree_root.parent_tree\n        yield from self.doc_struct_elem.k",
+      "language": "python"
+    },
+    {
+      "code": "def add_marked_content(\n    self,\n    page_number: int,\n    struct_type: str,\n    mcid: Optional[int] = None,\n    title: Optional[str] = None,\n    alt_text: Optional[str] = None,\n) -> tuple[StructElem, int]:\n    struct_parents_id = self.spid_per_page_number.get(page_number)\n    if struct_parents_id is None:\n        struct_parents_id = len(self.spid_per_page_number)\n        self.spid_per_page_number[page_number] = struct_parents_id\n    struct_elem = StructElem(\n        struct_type=struct_type,\n        parent=self.doc_struct_elem,\n        kids=[] if mcid is None else [mcid],\n        page_number=page_number,\n        title=title,\n        alt=alt_text,\n    )\n    self.doc_struct_elem.k.append(struct_elem)\n    self.struct_tree_root.parent_tree.nums[struct_parents_id].append(struct_elem)\n    return struct_elem, struct_parents_id",
+      "language": "python"
+    },
+    {
+      "code": "def empty(self) -> bool:\n    return not self.doc_struct_elem.k",
+      "language": "python"
+    },
+    {
+      "code": "def next_mcid_for_page(self, page_number: int) -> int:\n    return sum(\n        1\n        for struct_elem in self.doc_struct_elem.k\n        if struct_elem.page_number() == page_number\n        and struct_elem.k  # ensure it has a mcid set\n    )",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/syntax.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/structure_tree.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html"
+  ]
+}

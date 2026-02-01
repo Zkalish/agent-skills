@@ -1,0 +1,54 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/recorder.html",
+  "title": "Module fpdf.recorder",
+  "content": "A wrapper class to allow rewinding/replaying changes made to a FPDF instance.\n\nThe contents of this module are internal to fpdf2, and not part of the public API. They may change at any time without prior warning or any deprecation period, in non-backward-compatible ways.\n\nThe class is aimed to be used as wrapper around fpdf.FPDF:\n\nIts aim is dual: * allow to rewind to the state of the FPDF instance passed to its constructor, reverting all changes made to its internal state * allow to replay again all the methods calls performed on the recorder instance between its creation and the last call to rewind()\n\nNote that method can be called on a FPDFRecorder instance using its .pdf attribute so that they are not recorded & replayed later, on a call to .replay().\n\nNote that using this class means to duplicate the FPDF bytearray buffer: when generating large PDFs, doubling memory usage may be troublesome.\n\nThe type of the None singleton.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.recorder",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "class CallRecorder:\n    def __init__(self, func: Callable[..., Any], calls: list[CallRecord]) -> None:\n        self._func: Callable[..., Any] = func\n        self._calls: list[CallRecord] = calls\n\n    def __call__(self, *args: Any, **kwargs: Any) -> Any:\n        self._calls.append((self._func, args, kwargs))\n        return self._func(*args, **kwargs)",
+      "language": "python"
+    },
+    {
+      "code": "class FPDFRecorder:\n    \"\"\"\n    The class is aimed to be used as wrapper around fpdf.FPDF:\n\n        pdf = FPDF()\n        recorder = FPDFRecorder(pdf)\n\n    Its aim is dual:\n      * allow to **rewind** to the state of the FPDF instance passed to its constructor,\n        reverting all changes made to its internal state\n      * allow to **replay** again all the methods calls performed\n        on the recorder instance between its creation and the last call to rewind()\n\n    Note that method can be called on a FPDFRecorder instance using its .pdf attribute\n    so that they are not recorded & replayed later, on a call to .replay().\n\n    Note that using this class means to duplicate the FPDF `bytearray` buffer:\n    when generating large PDFs, doubling memory usage may be troublesome.\n    \"\"\"\n\n    page_break_triggered: bool\n\n    def __init__(self, pdf: \"FPDF\", accept_page_break: bool = True) -> None:\n        self.pdf = pdf\n        self._initial: dict[str, Any] = deepcopy(vars(self.pdf))\n        self._calls: list[CallRecord] = []\n        if not accept_page_break:\n            self.accept_page_break = False\n\n    def __getattr__(self, name: str) -> Any:\n        attr = getattr(self.pdf, name)\n        if callable(attr):\n            return CallRecorder(attr, self._calls)\n        return attr\n\n    def rewind(self) -> None:\n        pdf_dict = vars(self.pdf)\n        pdf_dict.clear()\n        pdf_dict.update(self._initial)\n        self._initial = deepcopy(pdf_dict)\n\n    def replay(self) -> None:\n        for call in self._calls:\n            func, args, kwargs = call\n            try:\n                result = func(*args, **kwargs)\n                if isinstance(result, types.GeneratorType):\n                    warnings.warn(\n                        \"Detected usage of a context manager inside an unbreakable() section, which is not supported\",\n                        stacklevel=get_stack_level(),\n                    )\n                # The results of other methods can also be invalidated: .pages_count, page_no(), get_x() / get_y(), will_page_break()\n            except Exception as error:\n                raise FPDFException(\n                    f\"Failed to replay FPDF call: {func}(*{args}, **{kwargs})\"\n                ) from error\n        self._calls = []",
+      "language": "python"
+    },
+    {
+      "code": "pdf = FPDF()\nrecorder = FPDFRecorder(pdf)",
+      "language": "unknown"
+    },
+    {
+      "code": "def replay(self) -> None:\n    for call in self._calls:\n        func, args, kwargs = call\n        try:\n            result = func(*args, **kwargs)\n            if isinstance(result, types.GeneratorType):\n                warnings.warn(\n                    \"Detected usage of a context manager inside an unbreakable() section, which is not supported\",\n                    stacklevel=get_stack_level(),\n                )\n            # The results of other methods can also be invalidated: .pages_count, page_no(), get_x() / get_y(), will_page_break()\n        except Exception as error:\n            raise FPDFException(\n                f\"Failed to replay FPDF call: {func}(*{args}, **{kwargs})\"\n            ) from error\n    self._calls = []",
+      "language": "python"
+    },
+    {
+      "code": "def rewind(self) -> None:\n    pdf_dict = vars(self.pdf)\n    pdf_dict.clear()\n    pdf_dict.update(self._initial)\n    self._initial = deepcopy(pdf_dict)",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/recorder.html"
+  ]
+}

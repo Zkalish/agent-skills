@@ -1,0 +1,505 @@
+{
+  "name": "fpdf2-uzmani",
+  "total_pages": 124,
+  "base_url": "https://py-pdf.github.io/fpdf2/",
+  "llms_txt_detected": false,
+  "llms_txt_variant": null,
+  "pages": [
+    {
+      "title": "fpdf2¶",
+      "url": "https://py-pdf.github.io/fpdf2/"
+    },
+    {
+      "title": "fpdf2¶",
+      "url": "https://py-pdf.github.io/fpdf2/index.html"
+    },
+    {
+      "title": "Hello World with fpdf2¶",
+      "url": "https://py-pdf.github.io/fpdf2/notebook.html"
+    },
+    {
+      "title": "Tutorial¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial.html"
+    },
+    {
+      "title": "Tutorial¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-bn.html"
+    },
+    {
+      "title": "Kurzanleitung¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-de.html"
+    },
+    {
+      "title": "Tutorial¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-es.html"
+    },
+    {
+      "title": "Tutorial¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-fr.html"
+    },
+    {
+      "title": "Πρόγραμμα Εκμάθησης¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-gr.html"
+    },
+    {
+      "title": "מדריך¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-he.html"
+    },
+    {
+      "title": "Tutorial¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-hi.html"
+    },
+    {
+      "title": "Panduan¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-id.html"
+    },
+    {
+      "title": "Tutorial¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-it.html"
+    },
+    {
+      "title": "チュートリアル¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-ja.html"
+    },
+    {
+      "title": "របៀបប្រើប្រាស¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-km.html"
+    },
+    {
+      "title": "Handleiding¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-nl.html"
+    },
+    {
+      "title": "Tutorial¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-pl.html"
+    },
+    {
+      "title": "Tutorial¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-pt.html"
+    },
+    {
+      "title": "Руководство¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-ru.html"
+    },
+    {
+      "title": "Öğretici¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-tr.html"
+    },
+    {
+      "title": "使用教程¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-zh.html"
+    },
+    {
+      "title": "Vodič¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-sl.html"
+    },
+    {
+      "title": "Page format and orientation¶",
+      "url": "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html"
+    },
+    {
+      "title": "Margins¶",
+      "url": "https://py-pdf.github.io/fpdf2/Margins.html"
+    },
+    {
+      "title": "Templates¶",
+      "url": "https://py-pdf.github.io/fpdf2/Templates.html"
+    },
+    {
+      "title": "Text Flow Regions¶",
+      "url": "https://py-pdf.github.io/fpdf2/TextRegion.html"
+    },
+    {
+      "title": "Text Columns",
+      "url": "https://py-pdf.github.io/fpdf2/TextColumns.html"
+    },
+    {
+      "title": "Tables¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tables.html"
+    },
+    {
+      "title": "Adding Text¶",
+      "url": "https://py-pdf.github.io/fpdf2/Text.html"
+    },
+    {
+      "title": "Line breaks¶",
+      "url": "https://py-pdf.github.io/fpdf2/LineBreaks.html"
+    },
+    {
+      "title": "Page breaks¶",
+      "url": "https://py-pdf.github.io/fpdf2/PageBreaks.html"
+    },
+    {
+      "title": "Text styling¶",
+      "url": "https://py-pdf.github.io/fpdf2/TextStyling.html"
+    },
+    {
+      "title": "Fonts and Unicode¶",
+      "url": "https://py-pdf.github.io/fpdf2/Unicode.html"
+    },
+    {
+      "title": "Text Shaping¶",
+      "url": "https://py-pdf.github.io/fpdf2/TextShaping.html"
+    },
+    {
+      "title": "Emojis, Symbols & Dingbats¶",
+      "url": "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html"
+    },
+    {
+      "title": "HTML¶",
+      "url": "https://py-pdf.github.io/fpdf2/HTML.html"
+    },
+    {
+      "title": "Images¶",
+      "url": "https://py-pdf.github.io/fpdf2/Images.html"
+    },
+    {
+      "title": "Shapes¶",
+      "url": "https://py-pdf.github.io/fpdf2/Shapes.html"
+    },
+    {
+      "title": "Transformations¶",
+      "url": "https://py-pdf.github.io/fpdf2/Transformations.html"
+    },
+    {
+      "title": "Transparency¶",
+      "url": "https://py-pdf.github.io/fpdf2/Transparency.html"
+    },
+    {
+      "title": "Patterns and Gradients¶",
+      "url": "https://py-pdf.github.io/fpdf2/Patterns.html"
+    },
+    {
+      "title": "Barcodes¶",
+      "url": "https://py-pdf.github.io/fpdf2/Barcodes.html"
+    },
+    {
+      "title": "Drawing¶",
+      "url": "https://py-pdf.github.io/fpdf2/Drawing.html"
+    },
+    {
+      "title": "Scalable Vector Graphics (SVG)¶",
+      "url": "https://py-pdf.github.io/fpdf2/SVG.html"
+    },
+    {
+      "title": "Charts & graphs¶",
+      "url": "https://py-pdf.github.io/fpdf2/Maths.html"
+    },
+    {
+      "title": "Links¶",
+      "url": "https://py-pdf.github.io/fpdf2/Links.html"
+    },
+    {
+      "title": "Metadata¶",
+      "url": "https://py-pdf.github.io/fpdf2/Metadata.html"
+    },
+    {
+      "title": "Annotations¶",
+      "url": "https://py-pdf.github.io/fpdf2/Annotations.html"
+    },
+    {
+      "title": "Presentations¶",
+      "url": "https://py-pdf.github.io/fpdf2/Presentations.html"
+    },
+    {
+      "title": "Document Outline & Table of Contents¶",
+      "url": "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html"
+    },
+    {
+      "title": "Page Labels¶",
+      "url": "https://py-pdf.github.io/fpdf2/PageLabels.html"
+    },
+    {
+      "title": "Encryption¶",
+      "url": "https://py-pdf.github.io/fpdf2/Encryption.html"
+    },
+    {
+      "title": "Signing¶",
+      "url": "https://py-pdf.github.io/fpdf2/Signing.html"
+    },
+    {
+      "title": "File attachments¶",
+      "url": "https://py-pdf.github.io/fpdf2/FileAttachments.html"
+    },
+    {
+      "title": "PDF/A with fpdf2¶",
+      "url": "https://py-pdf.github.io/fpdf2/pdfa.html"
+    },
+    {
+      "title": "Combine with pypdf¶",
+      "url": "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html"
+    },
+    {
+      "title": "Combine with Markdown¶",
+      "url": "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html"
+    },
+    {
+      "title": "Combine with livereload¶",
+      "url": "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html"
+    },
+    {
+      "title": "borb¶",
+      "url": "https://py-pdf.github.io/fpdf2/CombineWithBorb.html"
+    },
+    {
+      "title": "Combine with pdfrw¶",
+      "url": "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html"
+    },
+    {
+      "title": "Usage in web APIs¶",
+      "url": "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html"
+    },
+    {
+      "title": "Rendering spreadsheets as PDF tables¶",
+      "url": "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html"
+    },
+    {
+      "title": "Templating with Jinja¶",
+      "url": "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html"
+    },
+    {
+      "title": "Combine with Rough.js¶",
+      "url": "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html"
+    },
+    {
+      "title": "Development¶",
+      "url": "https://py-pdf.github.io/fpdf2/Development.html"
+    },
+    {
+      "title": "Logging¶",
+      "url": "https://py-pdf.github.io/fpdf2/Logging.html"
+    },
+    {
+      "title": "fpdf2 internals¶",
+      "url": "https://py-pdf.github.io/fpdf2/Internals.html"
+    },
+    {
+      "title": "Package fpdf",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/"
+    },
+    {
+      "title": "History¶",
+      "url": "https://py-pdf.github.io/fpdf2/History.html"
+    },
+    {
+      "title": "Підручник¶",
+      "url": "https://py-pdf.github.io/fpdf2/Tutorial-ua.html"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf2-manual.pdf"
+    },
+    {
+      "title": "Module fpdf.fpdf",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html"
+    },
+    {
+      "title": "Module fpdf.enums",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/enums.html"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf2-logo.png"
+    },
+    {
+      "title": "Module fpdf.template",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/template.html"
+    },
+    {
+      "title": "Module fpdf.text_region",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/text_region.html"
+    },
+    {
+      "title": "Module fpdf.drawing",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/drawing.html"
+    },
+    {
+      "title": "Module fpdf.html",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/html.html"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/symbol.pdf"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/symbol.py"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/zapfdingbats.pdf"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/zapfdingbats.py"
+    },
+    {
+      "title": "Module fpdf.fonts",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/fonts.html"
+    },
+    {
+      "title": "Module fpdf.output",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/output.html"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/pattern_linear_demo.pdf"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/pattern_radial_demo.pdf"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/drawing/demo-1.pdf"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/drawing/demo-2.pdf"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/drawing/demo-3.pdf"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/drawing/demo-4.pdf"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/color_srgb.csv"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/color_srgb.xlsx"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/color_srgb.ods"
+    },
+    {
+      "title": "",
+      "url": "https://py-pdf.github.io/fpdf2/graphics_svg.pdf"
+    },
+    {
+      "title": "Contributors of the py-pdf/fpdf2 project",
+      "url": "https://py-pdf.github.io/fpdf2/contributors.html"
+    },
+    {
+      "title": "Module fpdf.graphics_state",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/graphics_state.html"
+    },
+    {
+      "title": "Module fpdf.errors",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/errors.html"
+    },
+    {
+      "title": "Module fpdf.prefs",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/prefs.html"
+    },
+    {
+      "title": "Module fpdf.actions",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/actions.html"
+    },
+    {
+      "title": "Module fpdf.annotations",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/annotations.html"
+    },
+    {
+      "title": "Module fpdf.bidi",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/bidi.html"
+    },
+    {
+      "title": "Module fpdf.data",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/data/index.html"
+    },
+    {
+      "title": "Module fpdf.deprecation",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/deprecation.html"
+    },
+    {
+      "title": "Module fpdf.drawing_primitives",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/drawing_primitives.html"
+    },
+    {
+      "title": "Module fpdf.encryption",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/encryption.html"
+    },
+    {
+      "title": "Module fpdf.font_type_3",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/font_type_3.html"
+    },
+    {
+      "title": "Module fpdf.image_datastructures",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/image_datastructures.html"
+    },
+    {
+      "title": "Module fpdf.image_parsing",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/image_parsing.html"
+    },
+    {
+      "title": "Module fpdf.line_break",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/line_break.html"
+    },
+    {
+      "title": "Module fpdf.linearization",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/linearization.html"
+    },
+    {
+      "title": "Module fpdf.outline",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/outline.html"
+    },
+    {
+      "title": "Module fpdf.pattern",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/pattern.html"
+    },
+    {
+      "title": "Module fpdf.recorder",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/recorder.html"
+    },
+    {
+      "title": "Module fpdf.sign",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/sign.html"
+    },
+    {
+      "title": "Module fpdf.structure_tree",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/structure_tree.html"
+    },
+    {
+      "title": "Module fpdf.svg",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/svg.html"
+    },
+    {
+      "title": "Module fpdf.syntax",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/syntax.html"
+    },
+    {
+      "title": "Module fpdf.table",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/table.html"
+    },
+    {
+      "title": "Module fpdf.transitions",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/transitions.html"
+    },
+    {
+      "title": "Module fpdf.unicode_script",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/unicode_script.html"
+    },
+    {
+      "title": "Module fpdf.util",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/util.html"
+    },
+    {
+      "title": "Package fpdf",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/index.html"
+    },
+    {
+      "title": "Module fpdf.data.color_profiles",
+      "url": "https://py-pdf.github.io/fpdf2/fpdf/data/color_profiles/index.html"
+    }
+  ]
+}

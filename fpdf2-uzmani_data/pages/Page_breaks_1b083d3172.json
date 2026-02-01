@@ -1,0 +1,115 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+  "title": "Page breaks¶",
+  "content": "By default, fpdf2 will automatically perform page breaks whenever a cell or the text from a write() is rendered at the bottom of a page with a height greater than the page bottom margin.\n\nThis behaviour can be controlled using those methods:\n\nSimply call .add_page().\n\nThe special string {nb} will be substituted by the total number of pages on document closure. This special value can changed by calling alias_nb_pages().\n\nThis is currently incompatible with text shaping.cf. GitHub issue #1090\n\nwill_page_break(height) lets you know if adding an element will trigger a page break, based on its height and the current ordinate (y position).\n\nIn order to render content, like tables, with the insurance that no page break will be performed in it, on the can use the FPDF.unbreakable() context-manager:\n\nAn alternative approach is offset_rendering() that allows to test the results of some operations on the global layout before performing them \"for real\":",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Page breaks¶",
+      "id": "page-breaks"
+    },
+    {
+      "level": "h2",
+      "text": "Manually trigger a page break¶",
+      "id": "manually-trigger-a-page-break"
+    },
+    {
+      "level": "h2",
+      "text": "Inserting the final number of pages of the document¶",
+      "id": "inserting-the-final-number-of-pages-of-the-document"
+    },
+    {
+      "level": "h2",
+      "text": "will_page_break¶",
+      "id": "will_page_break"
+    },
+    {
+      "level": "h2",
+      "text": "Unbreakable sections¶",
+      "id": "unbreakable-sections"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "pdf = fpdf.FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=16)\nline_height = pdf.font_size * 2\ncol_width = pdf.epw / 4  # distribute content evenly\nfor i in range(4):  # repeat table 4 times\n    with pdf.unbreakable() as doc:\n        for row in data:  # data comes from snippets on the Tables documentation page\n            for datum in row:\n                doc.cell(col_width, line_height, f\"{datum} ({i})\", border=1)\n            doc.ln(line_height)\n    print('page_break_triggered:', doc.page_break_triggered)\n    pdf.ln(line_height * 2)\npdf.output(\"unbreakable_tables.pdf\")",
+      "language": "sql"
+    },
+    {
+      "code": "with pdf.offset_rendering() as dummy:\n    # Dummy rendering:\n    dummy.multi_cell(...)\nif dummy.page_break_triggered:\n    # We trigger a page break manually beforehand:\n    pdf.add_page()\n    # We duplicate the section header:\n    pdf.cell(text=\"Appendix C\")\n# Now performing our rendering for real:\npdf.multi_cell(...)",
+      "language": "markdown"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html"
+  ]
+}

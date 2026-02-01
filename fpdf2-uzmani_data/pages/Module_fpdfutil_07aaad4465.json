@@ -1,0 +1,135 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/util.html",
+  "title": "Module fpdf.util",
+  "content": "Various utilities that could not be gathered logically in a specific module.\n\nThe contents of this module are internal to fpdf2, and not part of the public API. They may change at any time without prior warning or any deprecation period, in non-backward-compatible ways.\n\nConvert a number or sequence of numbers from one unit to another.\n\nIf either unit is a number it will be treated as the number of points per unit. So 72 would mean 1 inch.\n\nArgs: to_convert (float, int, Iterable): The number / list of numbers, or points, to convert old_unit (str, float, int): A unit accepted by FPDF or a number new_unit (str, float, int): A unit accepted by FPDF or a number\n\n(float, tuple): to_convert converted from old_unit to new_unit or a tuple of the same\n\nAdd a backslash character before , ( and )\n\nParse unicode_range parameter into a set of codepoints.\n\nSupports CSS-style formats:\n\nReturns a set of integer codepoints.\n\nGet how many pts are in a unit. (k)\n\nConvert an integer to Roman numeral\n\nConvert an integer to a letter value (A to Z for the first 26, then AA to ZZ, and so on)\n\nConvert a decimal number to a minimal string representation (no trailing 0 or .).\n\nThe number's string representation.\n\nPadding(top, right, bottom, left)\n\nReturn a 4-tuple of padding values from a single value or a 2, 3 or 4-tuple according to CSS rules\n\nAlias for field number 2\n\nAlias for field number 3\n\nAlias for field number 1\n\nAlias for field number 0",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.util",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Functions",
+      "id": "header-functions"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Raises",
+      "id": "raises"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "def buffer_subst(buffer: bytearray, placeholder: str, value: str) -> bytearray:\n    buffer_size = len(buffer)\n    assert len(placeholder) == len(value), f\"placeholder={placeholder} value={value}\"\n    buffer = buffer.replace(placeholder.encode(), value.encode(), 1)\n    assert len(buffer) == buffer_size\n    return buffer",
+      "language": "python"
+    },
+    {
+      "code": "def builtin_srgb2014_bytes() -> bytes:\n    pkg = \"fpdf.data.color_profiles\"\n    return (resources.files(pkg) / \"sRGB2014.icc\").read_bytes()",
+      "language": "python"
+    },
+    {
+      "code": "def convert_unit(\n    to_convert: Number | Iterable[Any],\n    old_unit: Union[str, Number],\n    new_unit: Union[str, Number],\n) -> Union[float, tuple[Any, ...]]:\n    \"\"\"\n     Convert a number or sequence of numbers from one unit to another.\n\n     If either unit is a number it will be treated as the number of points per unit.  So 72 would mean 1 inch.\n\n     Args:\n        to_convert (float, int, Iterable): The number / list of numbers, or points, to convert\n        old_unit (str, float, int): A unit accepted by `fpdf.fpdf.FPDF` or a number\n        new_unit (str, float, int): A unit accepted by `fpdf.fpdf.FPDF` or a number\n    Returns:\n        (float, tuple): to_convert converted from old_unit to new_unit or a tuple of the same\n    \"\"\"\n    unit_conversion_factor = get_scale_factor(new_unit) / get_scale_factor(old_unit)\n    if isinstance(to_convert, Iterable):\n        return tuple(convert_unit(i, 1, unit_conversion_factor) for i in to_convert)\n    return float(to_convert) / unit_conversion_factor",
+      "language": "python"
+    },
+    {
+      "code": "def escape_parens(s: _StrBytes) -> _StrBytes:\n    \"\"\"Add a backslash character before , ( and )\"\"\"\n    if isinstance(s, str):\n        return (\n            s.replace(\"\\\\\", \"\\\\\\\\\")\n            .replace(\")\", \"\\\\)\")\n            .replace(\"(\", \"\\\\(\")\n            .replace(\"\\r\", \"\\\\r\")\n        )\n    return (\n        s.replace(b\"\\\\\", b\"\\\\\\\\\")\n        .replace(b\")\", b\"\\\\)\")\n        .replace(b\"(\", b\"\\\\(\")\n        .replace(b\"\\r\", b\"\\\\r\")\n    )",
+      "language": "python"
+    },
+    {
+      "code": "def format_number(x: float, digits: int = 8) -> str:\n    # snap tiny values to zero to avoid \"-0\" and scientific notation\n    if abs(x) < 1e-12:\n        x = 0.0\n    s = f\"{x:.{digits}f}\"\n    if \".\" in s:\n        s = s.rstrip(\"0\").rstrip(\".\")\n    if s == \"-0\":\n        s = \"0\"\n    if s.startswith(\".\"):\n        s = \"0\" + s\n    if s.startswith(\"-.\"):\n        s = s.replace(\"-.\", \"-0.\", 1)\n    return s",
+      "language": "python"
+    },
+    {
+      "code": "def get_parsed_unicode_range(\n    unicode_range: str | Sequence[str | int | tuple[int, int]],\n) -> set[int]:\n    \"\"\"\n    Parse unicode_range parameter into a set of codepoints.\n\n    Supports CSS-style formats:\n\n    - String with comma-separated ranges: \"U+1F600-1F64F, U+2600-26FF, U+2615\"\n    - List of strings: [\"U+1F600-1F64F\", \"U+2600\", \"U+26FF\"]\n    - List of tuples: [(0x1F600, 0x1F64F), (0x2600, 0x26FF)]\n    - List of integers: [0x1F600, 0x2600, 128512]\n    - Mixed formats: [(0x1F600, 0x1F64F), \"U+2600\", 128512]\n\n    Returns a set of integer codepoints.\n    \"\"\"\n    if unicode_range is not None and len(unicode_range) == 0:\n        raise ValueError(\"unicode_range cannot be empty\")\n\n    codepoints: set[int] = set()\n\n    if isinstance(unicode_range, str):\n        unicode_range = [item.strip() for item in unicode_range.split(\",\")]\n\n    for item in unicode_range:\n        if isinstance(item, tuple):\n            if len(item) != 2:\n                raise ValueError(f\"Tuple must have exactly 2 elements: {item}\")\n            start, end = item\n\n            if isinstance(start, str):\n                start = int(start.replace(\"U+\", \"\").replace(\"u+\", \"\"), 16)\n            if isinstance(end, str):\n                end = int(end.replace(\"U+\", \"\").replace(\"u+\", \"\"), 16)\n\n            if start > end:\n                raise ValueError(f\"Invalid range: start ({start}) > end ({end})\")\n\n            codepoints.update(range(start, end + 1))\n\n        elif isinstance(item, str):\n            item_stripped = item.strip().replace(\"u+\", \"U+\")\n\n            if \"-\" in item_stripped and not item_stripped.startswith(\"-\"):\n                parts = item_stripped.split(\"-\")\n                if len(parts) != 2:\n                    raise ValueError(f\"Invalid range format: {item_stripped}\")\n\n                start = int(parts[0].replace(\"U+\", \"\"), 16)\n                end = int(parts[1].replace(\"U+\", \"\"), 16)\n\n                if start > end:\n                    raise ValueError(\n                        f\"Invalid range: start ({hex(start)}) > end ({hex(end)})\"\n                    )\n\n                codepoints.update(range(start, end + 1))\n            else:\n                codepoint = int(item_stripped.replace(\"U+\", \"\"), 16)\n                codepoints.add(codepoint)\n\n        elif isinstance(item, int):\n            if item < 0:\n                raise ValueError(f\"Invalid codepoint: {item} (must be non-negative)\")\n            codepoints.add(item)\n\n        else:\n            raise ValueError(\n                f\"Unsupported unicode_range item type: {type(item).__name__}\"\n            )\n\n    return codepoints",
+      "language": "python"
+    },
+    {
+      "code": "def get_scale_factor(unit: Union[str, Number]) -> float:\n    \"\"\"\n    Get how many pts are in a unit. (k)\n\n    Args:\n        unit (str, float, int): Any of \"pt\", \"mm\", \"cm\", \"in\", or a number.\n    Returns:\n        float: The number of points in that unit (assuming 72dpi)\n    Raises:\n        ValueError\n    \"\"\"\n    if isinstance(unit, NumberClass):\n        return float(unit)\n\n    if unit == \"pt\":\n        return 1\n    if unit == \"mm\":\n        return 72 / 25.4\n    if unit == \"cm\":\n        return 72 / 2.54\n    if unit == \"in\":\n        return 72.0\n    raise ValueError(f\"Incorrect unit: {unit}\")",
+      "language": "python"
+    },
+    {
+      "code": "def int2roman(n: int) -> str:\n    \"Convert an integer to Roman numeral\"\n    result = \"\"\n    if n is None:\n        return result\n    for numeral, integer in ROMAN_NUMERAL_MAP:\n        while n >= integer:\n            result += numeral\n            n -= integer\n    return result",
+      "language": "python"
+    },
+    {
+      "code": "def int_to_letters(n: int) -> str:\n    \"Convert an integer to a letter value (A to Z for the first 26, then AA to ZZ, and so on)\"\n    if n > 25:\n        return int_to_letters(int((n / 26) - 1)) + int_to_letters(n % 26)\n    return chr(n + ord(\"A\"))",
+      "language": "python"
+    },
+    {
+      "code": "def number_to_str(number: Number) -> str:\n    \"\"\"\n    Convert a decimal number to a minimal string representation (no trailing 0 or .).\n\n    Args:\n        number (Number): the number to be converted to a string.\n\n    Returns:\n        The number's string representation.\n    \"\"\"\n    # this approach tries to produce minimal representations of floating point numbers\n    # but can also produce \"-0\".\n    return f\"{number:.4f}\".rstrip(\"0\").rstrip(\".\")",
+      "language": "python"
+    },
+    {
+      "code": "class Padding(NamedTuple):\n    top: float = 0\n    right: float = 0\n    bottom: float = 0\n    left: float = 0\n\n    @classmethod\n    def new(cls, padding: Union[Number, Sequence[Number], \"Padding\"]) -> \"Padding\":\n        \"\"\"Return a 4-tuple of padding values from a single value or a 2, 3 or 4-tuple according to CSS rules\"\"\"\n        if isinstance(padding, NumberClass):\n            return Padding(\n                float(padding), float(padding), float(padding), float(padding)\n            )\n        if len(padding) == 2:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[0]),\n                float(padding[1]),\n            )\n        if len(padding) == 3:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[2]),\n                float(padding[1]),\n            )\n        if len(padding) == 4:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[2]),\n                float(padding[3]),\n            )\n\n        raise ValueError(\n            f\"padding shall be a number or a sequence of 2, 3 or 4 numbers, got {str(padding)}\"\n        )",
+      "language": "python"
+    },
+    {
+      "code": "class Padding(NamedTuple):\n    top: float = 0\n    right: float = 0\n    bottom: float = 0\n    left: float = 0\n\n    @classmethod\n    def new(cls, padding: Union[Number, Sequence[Number], \"Padding\"]) -> \"Padding\":\n        \"\"\"Return a 4-tuple of padding values from a single value or a 2, 3 or 4-tuple according to CSS rules\"\"\"\n        if isinstance(padding, NumberClass):\n            return Padding(\n                float(padding), float(padding), float(padding), float(padding)\n            )\n        if len(padding) == 2:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[0]),\n                float(padding[1]),\n            )\n        if len(padding) == 3:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[2]),\n                float(padding[1]),\n            )\n        if len(padding) == 4:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[2]),\n                float(padding[3]),\n            )\n\n        raise ValueError(\n            f\"padding shall be a number or a sequence of 2, 3 or 4 numbers, got {str(padding)}\"\n        )",
+      "language": "python"
+    },
+    {
+      "code": "class Padding(NamedTuple):\n    top: float = 0\n    right: float = 0\n    bottom: float = 0\n    left: float = 0\n\n    @classmethod\n    def new(cls, padding: Union[Number, Sequence[Number], \"Padding\"]) -> \"Padding\":\n        \"\"\"Return a 4-tuple of padding values from a single value or a 2, 3 or 4-tuple according to CSS rules\"\"\"\n        if isinstance(padding, NumberClass):\n            return Padding(\n                float(padding), float(padding), float(padding), float(padding)\n            )\n        if len(padding) == 2:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[0]),\n                float(padding[1]),\n            )\n        if len(padding) == 3:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[2]),\n                float(padding[1]),\n            )\n        if len(padding) == 4:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[2]),\n                float(padding[3]),\n            )\n\n        raise ValueError(\n            f\"padding shall be a number or a sequence of 2, 3 or 4 numbers, got {str(padding)}\"\n        )",
+      "language": "python"
+    },
+    {
+      "code": "class Padding(NamedTuple):\n    top: float = 0\n    right: float = 0\n    bottom: float = 0\n    left: float = 0\n\n    @classmethod\n    def new(cls, padding: Union[Number, Sequence[Number], \"Padding\"]) -> \"Padding\":\n        \"\"\"Return a 4-tuple of padding values from a single value or a 2, 3 or 4-tuple according to CSS rules\"\"\"\n        if isinstance(padding, NumberClass):\n            return Padding(\n                float(padding), float(padding), float(padding), float(padding)\n            )\n        if len(padding) == 2:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[0]),\n                float(padding[1]),\n            )\n        if len(padding) == 3:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[2]),\n                float(padding[1]),\n            )\n        if len(padding) == 4:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[2]),\n                float(padding[3]),\n            )\n\n        raise ValueError(\n            f\"padding shall be a number or a sequence of 2, 3 or 4 numbers, got {str(padding)}\"\n        )",
+      "language": "python"
+    },
+    {
+      "code": "class Padding(NamedTuple):\n    top: float = 0\n    right: float = 0\n    bottom: float = 0\n    left: float = 0\n\n    @classmethod\n    def new(cls, padding: Union[Number, Sequence[Number], \"Padding\"]) -> \"Padding\":\n        \"\"\"Return a 4-tuple of padding values from a single value or a 2, 3 or 4-tuple according to CSS rules\"\"\"\n        if isinstance(padding, NumberClass):\n            return Padding(\n                float(padding), float(padding), float(padding), float(padding)\n            )\n        if len(padding) == 2:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[0]),\n                float(padding[1]),\n            )\n        if len(padding) == 3:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[2]),\n                float(padding[1]),\n            )\n        if len(padding) == 4:\n            return Padding(\n                float(padding[0]),\n                float(padding[1]),\n                float(padding[2]),\n                float(padding[3]),\n            )\n\n        raise ValueError(\n            f\"padding shall be a number or a sequence of 2, 3 or 4 numbers, got {str(padding)}\"\n        )",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/util.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html"
+  ]
+}

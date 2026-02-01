@@ -1,0 +1,337 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/syntax.html",
+  "title": "Module fpdf.syntax",
+  "content": "Classes & functions that represent core elements of the PDF syntax\n\nMost of what happens in a PDF happens in objects, which are formatted like so:\n\nThe first line says that this is the third object in the structure of the document.\n\nThere are 8 kinds of objects (Adobe Reference, 51):\n\nThe << in the second line and the >> in the line preceding endobj denote that it is a dictionary object. Dictionaries map Names to other objects.\n\nNames are the strings preceded by /, valid Names do not have to start with a capital letter, they can be any ascii characters, # and two characters can escape non-printable ascii characters, described on page 57.\n\n3 0 obj means what follows here is the third object, but the name Type (represented here by /Type) is mapped to an indirect object reference: 0 obj vs 0 R.\n\nThe structure of this data, in python/dict form, is thus:\n\nContent streams are of the form:\n\nThe contents of this module are internal to fpdf2, and not part of the public API. They may change at any time without prior warning or any deprecation period, in non-backward-compatible ways.\n\nBuild the PDF Object associative map to serialize, based on a key-values dict. The property names are converted from snake_case to CamelCase, and prefixed with a slash character \"/\".\n\nformat dictionary as PDF dictionary\n\n@param dict_: dictionary of values to render @param open_dict: string to open PDF dictionary @param close_dict: string to close PDF dictionary @param field_join: string to join fields with @param key_value_join: string to join key to value with @param has_empty_fields: whether or not to clear_empty_fields first.\n\nformat list of strings as PDF array\n\nformat an indirect PDF Object reference from its id number\n\nRender a Python value as a PDF primitive type.\n\nContainer types (tuples/lists and dicts) are rendered recursively. This supports values of the type Name, str, bytes, numbers, booleans, list/tuple, and dict.\n\nAny custom type can be passed in as long as it provides a serialize method that takes no arguments and returns a string. The primitive object is returned directly if it is an instance of the Raw class. Otherwise, The existence of the serialize method is checked before any other type checking is performed, so, for example, a dict subclass with a serialize method would be converted using its pdf_repr method rather than the built-in dict conversion process.\n\nRaw-wrapped str of the PDF representation.\n\nWrap a series of draw commands (list of strings) in a local context marker, so that changes to draw style only apply to these commands.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nstr subclass signifying a PDF name, which are emitted differently than normal strings.\n\nThe type of the None singleton.\n\nBuilt-in mutable sequence.\n\nIf no argument is given, the constructor creates a new empty list. The argument must be an iterable if specified.\n\nInherited from: PDFObject.content_stream\n\nSubclasses can override this method to indicate the presence of a content stream\n\nInherited from: PDFObject.serialize\n\nSerialize the PDF object as an obj<</>>endobj text block\n\nSubclasses can override this method to indicate the presence of a content stream\n\nSerialize the PDF object as an obj<</>>endobj text block\n\nstr(object='') -> str str(bytes_or_buffer[, encoding[, errors]]) -> str\n\nCreate a new string object from the given object. If encoding or errors is specified, then the object must expose a data buffer that will be decoded using the given encoding and error handler. Otherwise, returns the result of object.str() (if defined) or repr(object). encoding defaults to 'utf-8'. errors defaults to 'strict'.\n\nThe type of the None singleton.\n\nSetting this to False can reduce the encoded strings size, but then there can be a risk of badly encoding some unicode strings - cf. issue #458\n\nBase class for protocol classes.\n\nProtocol classes are defined as::\n\nSuch classes are primarily used with static type checkers that recognize structural subtyping (static duck-typing).\n\nSee PEP 544 for details. Protocol classes decorated with @typing.runtime_checkable act as simple-minded runtime protocols that check only the presence of given attributes, ignoring their type signatures. Protocol classes can be generic, they are defined as::\n\nstr subclass signifying raw data to be directly emitted to PDF without transformation.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.syntax",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Functions",
+      "id": "header-functions"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Raises",
+      "id": "raises"
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Subclasses",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Subclasses",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Subclasses",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "3 0 obj\n<</Type /Page\n/Parent 1 0 R\n/Resources 2 0 R\n/Contents 4 0 R>>\nendobj",
+      "language": "unknown"
+    },
+    {
+      "code": "third_obj = {\n  '/Type': '/Page'),\n  '/Parent': iobj_ref(1),\n  '/Resources': iobj_ref(2),\n  '/Contents': iobj_ref(4),\n}",
+      "language": "unknown"
+    },
+    {
+      "code": "4 0 obj\n<</Filter /ASCIIHexDecode /Length 22>>\nstream\n68656c6c6f20776f726c64\nendstream\nendobj",
+      "language": "unknown"
+    },
+    {
+      "code": "def build_obj_dict(\n    key_values: Dict[str, object],\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> Dict[str, object]:\n    \"\"\"\n    Build the PDF Object associative map to serialize, based on a key-values dict.\n    The property names are converted from snake_case to CamelCase,\n    and prefixed with a slash character \"/\".\n    \"\"\"\n\n    obj_dict = {}\n    for key, value in key_values.items():\n        if (\n            callable(value)\n            or key.startswith(\"_\")\n            or key in (\"id\", \"ref\")\n            or value is None\n        ):\n            continue\n        # pylint: disable=redefined-loop-name\n        if hasattr(value, \"value\"):  # e.g. Enum subclass\n            value = value.value\n        if isinstance(value, PDFObject):  # indirect object reference\n            value = value.ref\n        elif hasattr(value, \"serialize\"):  # pyright: ignore[reportUnknownArgumentType]\n            # e.g. PDFArray, PDFString, Name, Destination, Action...\n            value = value.serialize(\n                _security_handler=_security_handler, _obj_id=_obj_id\n            )\n        elif isinstance(value, bool):\n            value = str(value).lower()\n        obj_dict[f\"/{camel_case(key)}\"] = value\n    return obj_dict",
+      "language": "python"
+    },
+    {
+      "code": "def camel_case(snake_case: str) -> str:\n    return \"\".join(x for x in snake_case.title() if x != \"_\")",
+      "language": "python"
+    },
+    {
+      "code": "def clear_empty_fields(d: Mapping[str, object]) -> Mapping[str, object]:\n    return {k: v for k, v in d.items() if v}",
+      "language": "python"
+    },
+    {
+      "code": "def create_dictionary_string(\n    dict_: Mapping[str, object],\n    open_dict: str = \"<<\",\n    close_dict: str = \">>\",\n    field_join: str = \"\\n\",\n    key_value_join: str = \" \",\n    has_empty_fields: bool = False,\n) -> str:\n    \"\"\"format dictionary as PDF dictionary\n\n    @param dict_: dictionary of values to render\n    @param open_dict: string to open PDF dictionary\n    @param close_dict: string to close PDF dictionary\n    @param field_join: string to join fields with\n    @param key_value_join: string to join key to value with\n    @param has_empty_fields: whether or not to clear_empty_fields first.\n    \"\"\"\n    if has_empty_fields:\n        dict_ = clear_empty_fields(dict_)\n\n    return \"\".join(\n        [\n            open_dict,\n            field_join.join(key_value_join.join((k, str(v))) for k, v in dict_.items()),\n            close_dict,\n        ]\n    )",
+      "language": "python"
+    },
+    {
+      "code": "def create_list_string(list_: list[str]) -> str:\n    \"\"\"format list of strings as PDF array\"\"\"\n    return f\"[{' '.join(list_)}]\"",
+      "language": "python"
+    },
+    {
+      "code": "def create_stream(\n    stream: bytearray | bytes | str,\n    encryption_handler: Optional[\"StandardSecurityHandler\"] = None,\n    obj_id: Optional[int] = None,\n) -> str:\n    if isinstance(stream, (bytearray, bytes)):\n        stream = str(stream, \"latin-1\")\n    if encryption_handler:\n        assert obj_id is not None\n        encryption_handler.encrypt(stream, obj_id)\n    return \"\\n\".join([\"stream\", stream, \"endstream\"])",
+      "language": "python"
+    },
+    {
+      "code": "def iobj_ref(n: int) -> str:\n    \"\"\"format an indirect PDF Object reference from its id number\"\"\"\n    return f\"{n} 0 R\"",
+      "language": "python"
+    },
+    {
+      "code": "def render_pdf_primitive(primitive: PDFPrimitive) -> Raw:\n    \"\"\"\n    Render a Python value as a PDF primitive type.\n\n    Container types (tuples/lists and dicts) are rendered recursively. This supports\n    values of the type Name, str, bytes, numbers, booleans, list/tuple, and dict.\n\n    Any custom type can be passed in as long as it provides a `serialize` method that\n    takes no arguments and returns a string. The primitive object is returned directly\n    if it is an instance of the `Raw` class. Otherwise, The existence of the `serialize`\n    method is checked before any other type checking is performed, so, for example, a\n    `dict` subclass with a `serialize` method would be converted using its `pdf_repr`\n    method rather than the built-in `dict` conversion process.\n\n    Args:\n        primitive: the primitive value to convert to its PDF representation.\n\n    Returns:\n        Raw-wrapped str of the PDF representation.\n\n    Raises:\n        ValueError: if a dictionary key is not a Name.\n        TypeError: if `primitive` does not have a known conversion to a PDF\n            representation.\n    \"\"\"\n\n    if isinstance(primitive, Raw):\n        return primitive\n\n    if isinstance(primitive, PrimitiveSerializable):\n        output = primitive.serialize()\n    elif primitive is None:\n        output = \"null\"\n    elif isinstance(primitive, str):\n        output = f\"({escape_parens(primitive)})\"\n    elif isinstance(primitive, bytes):\n        output = f\"<{primitive.hex()}>\"\n    elif isinstance(primitive, bool):  # has to come before number check\n        output = [\"false\", \"true\"][primitive]\n    elif isinstance(primitive, NumberClass):\n        output = number_to_str(primitive)\n    elif isinstance(primitive, (list, tuple)):\n        output = \"[\" + \" \".join(render_pdf_primitive(val) for val in primitive) + \"]\"\n    elif isinstance(primitive, dict):\n        item_list: list[str] = []\n        for key, val in primitive.items():\n            if not isinstance(key, Name):\n                raise ValueError(\"dict keys must be Names\")\n\n            item_list.append(\n                render_pdf_primitive(key) + \" \" + render_pdf_primitive(val)\n            )\n\n        output = \"<< \" + \"\\n\".join(item_list) + \" >>\"\n    else:\n        raise TypeError(f\"cannot produce PDF representation for value {primitive!r}\")\n\n    return Raw(output)",
+      "language": "python"
+    },
+    {
+      "code": "def wrap_in_local_context(draw_commands: list[str]) -> list[str]:\n    \"\"\"\n    Wrap a series of draw commands (list of strings) in a local context marker, so that changes to\n    draw style only apply to these commands.\n    \"\"\"\n    return [\"q\"] + draw_commands + [\"Q\"]",
+      "language": "python"
+    },
+    {
+      "code": "class Destination(ABC):\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        raise NotImplementedError",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    raise NotImplementedError",
+      "language": "python"
+    },
+    {
+      "code": "class DestinationXYZ(Destination):\n    def __init__(\n        self,\n        page: int,\n        top: Optional[float],\n        left: float = 0,\n        zoom: str | float = \"null\",\n    ) -> None:\n        self.page_number = page\n        self.top = top\n        self.left = left\n        self.zoom = zoom\n        self.page_ref: Optional[str] = None\n\n    def __eq__(self, dest: object) -> bool:\n        if not isinstance(dest, DestinationXYZ):\n            return False\n        return (\n            self.page_number == dest.page_number\n            and self.top == dest.top\n            and self.left == dest.left\n            and self.zoom == dest.zoom\n        )\n\n    def __hash__(self) -> int:\n        return hash((self.page_number, self.top, self.left, self.zoom))\n\n    def __repr__(self) -> str:\n        return f'DestinationXYZ(page_number={self.page_number}, top={self.top}, left={self.left}, zoom=\"{self.zoom}\", page_ref={self.page_ref})'\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        left = round(self.left, 2) if isinstance(self.left, float) else self.left\n        top = round(self.top, 2) if isinstance(self.top, float) else self.top\n        assert self.page_ref\n        return f\"[{self.page_ref} /XYZ {left} {top} {self.zoom}]\"\n\n    def replace(\n        self,\n        page: Optional[int] = None,\n        top: Optional[float] = None,\n        left: Optional[float] = None,\n        zoom: Optional[str | float] = None,\n    ) -> \"DestinationXYZ\":\n        assert (\n            not self.page_ref\n        ), \"DestinationXYZ should not be copied after serialization\"\n        return DestinationXYZ(\n            page=self.page_number if page is None else page,\n            top=self.top if top is None else top,\n            left=self.left if left is None else left,\n            zoom=self.zoom if zoom is None else zoom,\n        )",
+      "language": "python"
+    },
+    {
+      "code": "def replace(\n    self,\n    page: Optional[int] = None,\n    top: Optional[float] = None,\n    left: Optional[float] = None,\n    zoom: Optional[str | float] = None,\n) -> \"DestinationXYZ\":\n    assert (\n        not self.page_ref\n    ), \"DestinationXYZ should not be copied after serialization\"\n    return DestinationXYZ(\n        page=self.page_number if page is None else page,\n        top=self.top if top is None else top,\n        left=self.left if left is None else left,\n        zoom=self.zoom if zoom is None else zoom,\n    )",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    left = round(self.left, 2) if isinstance(self.left, float) else self.left\n    top = round(self.top, 2) if isinstance(self.top, float) else self.top\n    assert self.page_ref\n    return f\"[{self.page_ref} /XYZ {left} {top} {self.zoom}]\"",
+      "language": "python"
+    },
+    {
+      "code": "class Name(str):\n    \"\"\"str subclass signifying a PDF name, which are emitted differently than normal strings.\"\"\"\n\n    NAME_ESC = re.compile(\n        b\"[^\" + bytes(v for v in range(33, 127) if v not in b\"()<>[]{}/%#\\\\\") + b\"]\"\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        escaped = self.NAME_ESC.sub(\n            lambda m: b\"#%02X\" % m[0][0], self.encode()\n        ).decode()\n        return f\"/{escaped}\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    escaped = self.NAME_ESC.sub(\n        lambda m: b\"#%02X\" % m[0][0], self.encode()\n    ).decode()\n    return f\"/{escaped}\"",
+      "language": "python"
+    },
+    {
+      "code": "class PDFArray(list[Any]):\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        if all(isinstance(elem, str) for elem in self):\n            serialized_elems = \" \".join(self)\n        elif all(isinstance(elem, (int, float)) for elem in self):\n            serialized_elems = \" \".join(str(elem) for elem in self)\n        else:\n            serialized_chunks: list[str] = []\n            for elem in self:\n                if isinstance(elem, PDFObject):\n                    serialized_chunks.append(elem.ref)\n                elif hasattr(elem, \"serialize\"):\n                    serialized_chunks.append(\n                        elem.serialize(\n                            _security_handler=_security_handler, _obj_id=_obj_id\n                        )\n                    )\n                elif isinstance(elem, bool):\n                    serialized_chunks.append(str(elem).lower())\n                elif isinstance(elem, (int, float)):\n                    serialized_chunks.append(str(elem))\n                else:\n                    serialized_chunks.append(str(elem))\n            serialized_elems = \"\\n\".join(serialized_chunks)\n        return f\"[{serialized_elems}]\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    if all(isinstance(elem, str) for elem in self):\n        serialized_elems = \" \".join(self)\n    elif all(isinstance(elem, (int, float)) for elem in self):\n        serialized_elems = \" \".join(str(elem) for elem in self)\n    else:\n        serialized_chunks: list[str] = []\n        for elem in self:\n            if isinstance(elem, PDFObject):\n                serialized_chunks.append(elem.ref)\n            elif hasattr(elem, \"serialize\"):\n                serialized_chunks.append(\n                    elem.serialize(\n                        _security_handler=_security_handler, _obj_id=_obj_id\n                    )\n                )\n            elif isinstance(elem, bool):\n                serialized_chunks.append(str(elem).lower())\n            elif isinstance(elem, (int, float)):\n                serialized_chunks.append(str(elem))\n            else:\n                serialized_chunks.append(str(elem))\n        serialized_elems = \"\\n\".join(serialized_chunks)\n    return f\"[{serialized_elems}]\"",
+      "language": "python"
+    },
+    {
+      "code": "class PDFContentStream(PDFObject):\n    # Passed to zlib.compress() - In range 0-9 - Default is currently equivalent to 6:\n    _COMPRESSION_LEVEL = -1\n\n    def __init__(self, contents: bytes | bytearray, compress: bool = False):\n        super().__init__()\n        self._contents = (\n            zlib.compress(contents, level=self._COMPRESSION_LEVEL)\n            if compress\n            else bytes(contents)\n        )\n        self.filter = Name(\"FlateDecode\") if compress else None\n        self.length = len(self._contents)\n\n    # method override\n    def content_stream(self) -> bytes:\n        return self._contents\n\n    # method override\n    def serialize(\n        self,\n        obj_dict: Optional[Dict[str, object]] = None,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    ) -> str:\n        if _security_handler:\n            assert not obj_dict\n            if not isinstance(self._contents, (bytearray, bytes)):\n                self._contents = self._contents.encode(\"latin-1\")\n            self._contents = _security_handler.encrypt_stream(self._contents, self.id)\n            self.length = len(self._contents)\n        return super().serialize(obj_dict, _security_handler)",
+      "language": "python"
+    },
+    {
+      "code": "def content_stream(self) -> bytes:\n    return self._contents",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    obj_dict: Optional[Dict[str, object]] = None,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n) -> str:\n    if _security_handler:\n        assert not obj_dict\n        if not isinstance(self._contents, (bytearray, bytes)):\n            self._contents = self._contents.encode(\"latin-1\")\n        self._contents = _security_handler.encrypt_stream(self._contents, self.id)\n        self.length = len(self._contents)\n    return super().serialize(obj_dict, _security_handler)",
+      "language": "python"
+    },
+    {
+      "code": "class PDFDate:\n    def __init__(\n        self, date: datetime, with_tz: bool = False, encrypt: bool = False\n    ) -> None:\n        \"\"\"\n        Args:\n            date (datetime): self-explanatory\n            with_tz (bool): should the timezone be encoded in included in the date?\n            encrypt (bool): if document encryption is enabled, should this string be encrypted?\n        \"\"\"\n        self.date = date\n        self.with_tz = with_tz\n        self.encrypt = encrypt\n\n    def __repr__(self) -> str:\n        return f\"PDFDate({self.date}, with_tz={self.with_tz}, encrypt={self.encrypt})\"\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        if self.with_tz:\n            assert self.date.tzinfo\n            if self.date.tzinfo == timezone.utc:\n                out_str = f\"D:{self.date:%Y%m%d%H%M%SZ}\"\n            else:\n                out_str = f\"D:{self.date:%Y%m%d%H%M%S%z}\"\n                out_str = out_str[:-2] + \"'\" + out_str[-2:] + \"'\"\n        else:\n            out_str = f\"D:{self.date:%Y%m%d%H%M%S}\"\n        if _security_handler and self.encrypt:\n            assert _obj_id\n            return _security_handler.encrypt_string(out_str, _obj_id)\n        return f\"({out_str})\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    if self.with_tz:\n        assert self.date.tzinfo\n        if self.date.tzinfo == timezone.utc:\n            out_str = f\"D:{self.date:%Y%m%d%H%M%SZ}\"\n        else:\n            out_str = f\"D:{self.date:%Y%m%d%H%M%S%z}\"\n            out_str = out_str[:-2] + \"'\" + out_str[-2:] + \"'\"\n    else:\n        out_str = f\"D:{self.date:%Y%m%d%H%M%S}\"\n    if _security_handler and self.encrypt:\n        assert _obj_id\n        return _security_handler.encrypt_string(out_str, _obj_id)\n    return f\"({out_str})\"",
+      "language": "python"
+    },
+    {
+      "code": "class PDFObject:\n    # Main features of this class:\n    # * delay ID assignment\n    # * implement serializing\n    # Note: several child classes use __slots__ to save up some memory\n\n    def __init__(self) -> None:\n        self._id: Optional[int] = None\n\n    @property\n    def id(self) -> int:\n        if self._id is None:\n            raise AttributeError(\n                f\"{self.__class__.__name__} has not been assigned an ID yet\"\n            )\n        return self._id\n\n    @id.setter\n    def id(self, n: int) -> None:\n        self._id = n\n\n    @property\n    def ref(self) -> str:\n        return iobj_ref(self.id)\n\n    def serialize(\n        self,\n        obj_dict: Optional[Dict[str, object]] = None,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    ) -> str:\n        \"Serialize the PDF object as an obj<</>>endobj text block\"\n        output: list[str] = []\n        output.append(f\"{self.id} 0 obj\")\n        output.append(\"<<\")\n        if not obj_dict:\n            obj_dict = self._build_obj_dict(_security_handler)\n        output.append(create_dictionary_string(obj_dict, open_dict=\"\", close_dict=\"\"))\n        output.append(\">>\")\n        content_stream = self.content_stream()\n        if content_stream:\n            output.append(create_stream(content_stream))\n        output.append(\"endobj\")\n        return \"\\n\".join(output)\n\n    # pylint: disable=no-self-use\n    def content_stream(self) -> bytes:\n        \"Subclasses can override this method to indicate the presence of a content stream\"\n        return b\"\"\n\n    def _build_obj_dict(\n        self, security_handler: Optional[\"StandardSecurityHandler\"] = None\n    ) -> Dict[str, object]:\n        \"\"\"\n        Build the PDF Object associative map to serialize,\n        based on this class instance properties.\n        The property names are converted from snake_case to CamelCase,\n        and prefixed with a slash character \"/\".\n        \"\"\"\n        return build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=security_handler,\n            _obj_id=self.id,\n        )",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef id(self) -> int:\n    if self._id is None:\n        raise AttributeError(\n            f\"{self.__class__.__name__} has not been assigned an ID yet\"\n        )\n    return self._id",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef ref(self) -> str:\n    return iobj_ref(self.id)",
+      "language": "python"
+    },
+    {
+      "code": "def content_stream(self) -> bytes:\n    \"Subclasses can override this method to indicate the presence of a content stream\"\n    return b\"\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    obj_dict: Optional[Dict[str, object]] = None,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n) -> str:\n    \"Serialize the PDF object as an obj<</>>endobj text block\"\n    output: list[str] = []\n    output.append(f\"{self.id} 0 obj\")\n    output.append(\"<<\")\n    if not obj_dict:\n        obj_dict = self._build_obj_dict(_security_handler)\n    output.append(create_dictionary_string(obj_dict, open_dict=\"\", close_dict=\"\"))\n    output.append(\">>\")\n    content_stream = self.content_stream()\n    if content_stream:\n        output.append(create_stream(content_stream))\n    output.append(\"endobj\")\n    return \"\\n\".join(output)",
+      "language": "python"
+    },
+    {
+      "code": "class PDFString(str):\n    USE_HEX_ENCODING = True\n    encrypt: bool = False\n    \"\"\"\n    Setting this to False can reduce the encoded strings size,\n    but then there can be a risk of badly encoding some unicode strings - cf. issue #458\n    \"\"\"\n\n    def __new__(cls, content: str, encrypt: bool = False) -> \"PDFString\":\n        \"\"\"\n        Args:\n            content (str): text\n            encrypt (bool): if document encryption is enabled, should this string be encrypted?\n        \"\"\"\n        self = super().__new__(cls, content)\n        self.encrypt = encrypt\n        return self\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        if _security_handler and self.encrypt:\n            assert _obj_id is not None\n            return _security_handler.encrypt_string(self, _obj_id)\n        try:\n            self.encode(\"ascii\")\n            # => this string only contains ASCII characters, no need for special encoding:\n            return f\"({self})\"\n        except UnicodeEncodeError:\n            pass\n        if self.USE_HEX_ENCODING:\n            # Using the \"Hexadecimal String\" format defined in the PDF spec:\n            hex_str = hexlify(BOM_UTF16_BE + self.encode(\"utf-16-be\")).decode(\"latin-1\")\n            return f\"<{hex_str}>\"\n        return f'({self.encode(\"UTF-16\").decode(\"latin-1\")})'",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    if _security_handler and self.encrypt:\n        assert _obj_id is not None\n        return _security_handler.encrypt_string(self, _obj_id)\n    try:\n        self.encode(\"ascii\")\n        # => this string only contains ASCII characters, no need for special encoding:\n        return f\"({self})\"\n    except UnicodeEncodeError:\n        pass\n    if self.USE_HEX_ENCODING:\n        # Using the \"Hexadecimal String\" format defined in the PDF spec:\n        hex_str = hexlify(BOM_UTF16_BE + self.encode(\"utf-16-be\")).decode(\"latin-1\")\n        return f\"<{hex_str}>\"\n    return f'({self.encode(\"UTF-16\").decode(\"latin-1\")})'",
+      "language": "python"
+    },
+    {
+      "code": "@runtime_checkable\nclass PrimitiveSerializable(Protocol):\n    def serialize(self) -> str: ...",
+      "language": "python"
+    },
+    {
+      "code": "class Proto(Protocol):\n    def meth(self) -> int:\n        ...",
+      "language": "php"
+    },
+    {
+      "code": "class C:\n    def meth(self) -> int:\n        return 0\n\ndef func(x: Proto) -> int:\n    return x.meth()\n\nfunc(C())  # Passes static type check",
+      "language": "swift"
+    },
+    {
+      "code": "class GenProto[T](Protocol):\n    def meth(self) -> T:\n        ...",
+      "language": "php"
+    },
+    {
+      "code": "def serialize(self) -> str: ...",
+      "language": "python"
+    },
+    {
+      "code": "class Raw(str):\n    \"\"\"str subclass signifying raw data to be directly emitted to PDF without transformation.\"\"\"",
+      "language": "python"
+    }
+  ],
+  "patterns": [
+    {
+      "description": "Base class for protocol classes. Protocol classes are defined as:: class Proto(Protocol): def meth(self) -> int: ... Such classes are primarily used with static type checkers that recognize structural subtyping (static duck-typing). For example:: class C: def meth(self) -> int: return 0 def func(x: Proto) -> int: return x.meth() func(C()) # Passes static type check See PEP 544 for details. Protocol classes decorated with @typing.runtime_checkable act as simple-minded runtime protocols that check only the presence of given attributes, ignoring their type signatures. Protocol classes can be generic, they are defined as:: class GenProto[T](Protocol): def meth(self) -> T: ...",
+      "code": "class Proto(Protocol):\n    def meth(self) -> int:\n        ..."
+    },
+    {
+      "description": "For example::",
+      "code": "class C:\n    def meth(self) -> int:\n        return 0\n\ndef func(x: Proto) -> int:\n    return x.meth()\n\nfunc(C())  # Passes static type check"
+    }
+  ],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/fpdf/syntax.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/annotations.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/linearization.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/output.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/pattern.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/encryption.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fonts.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/outline.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/structure_tree.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html"
+  ]
+}

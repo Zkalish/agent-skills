@@ -1,0 +1,159 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+  "title": "Vodič¶",
+  "content": "Metode – popolna dokumentacija: fpdf.FPDF API doc\n\nZačnimo s klasičnim primerom:\n\nPo vključitvi datoteke knjižnice ustvarimo objekt FPDF. Konstruktor FPDF se tu uporablja z privzetimi vrednostmi: strani so v pokončni postavitvi A4 in merska enota je milimeter. To bi lahko eksplicitno določili z:\n\nMožno je nastaviti PDF v ležeči način (L) ali uporabiti druge formate strani (npr. Letter in Legal) ter merske enote (pt, cm, in).\n\nZaenkrat ni strani, zato jo moramo dodati z add_page. Izvor je v zgornjem levem kotu, trenutni položaj pa je privzeto nastavljen na 1 cm od robov; robove lahko spremenimo z set_margins.\n\nPred tiskanjem besedila je obvezno izbrati pisavo z set_font, sicer dokument ne bi bil veljaven. Izberemo Helvetica krepko 16:\n\nDoločimo lahko tudi ležečo (I), podčrtano (U) ali običajno pisavo (prazno niz ali katerokoli kombinacijo). Velikost pisave je izražena v pikah, ne v milimetrih (ali drugi merski enoti); to je edina izjema. Druge vgrajene pisave so Times, Courier, Symbol in ZapfDingbats.\n\nZdaj lahko natisnemo celico z cell. Celica je pravokotno področje, morda z okvirjem, ki vsebuje nekaj besedila. Izriše se na trenutnem položaju. Določimo njene dimenzije, besedilo (poravnano ali centrirano), ali naj se narišejo obrobe in kam se trenutni položaj premakne po tem (na desno, spodaj ali na začetek naslednje vrstice). Da bi dodali okvir, naredimo to:\n\nZa dodajanje nove celice poleg nje s centriranim besedilom in premik v novo vrstico:\n\nOpomba: prelom vrstice lahko izvedemo tudi z ln. Ta metoda omogoča tudi določitev višine preloma.\n\nNazadnje je dokument zaprt in shranjen pod navedeno potjo datoteke z uporabo output. Brez navedenega parametra output() vrne PDF bytearray medpomnilnik.\n\nTukaj je primer dvostranskega dokumenta z glavo, nogo in logotipom:\n\nTa primer uporablja header in footer za obdelavo glav in nog dokumenta. Kličeta se samodejno. V osnovnem razredu FPDF že obstajata, a vendar ne izvajata ničesar, zato je razred potrebno razširiti in metodi prepisati.\n\nLogotip je natisnjen z image, kjer določimo zgornji levi kot in širino. Višina se izračuna samodejno, da ostanejo razmerja slike nespremenjena.\n\nZa izpis številke strani se kot širino celice poda None. To pomeni, da se celica raztegne do desnega roba strani; to je priročno za centriranje besedila. Trenutno številko strani vrne page_no, medtem ko skupno število strani dobimo z uporabo posebne vrednosti {nb}, ki se nadomesti ob zapiranju dokumenta (to vrednost lahko spremenimo z alias_nb_pages()). Omeniti velja tudi uporabo set_y, ki omogoča nastavitev navpičnega položaja na absolutno lokacijo strani, pričenši na vrhu ali dnu.\n\nZanimiva možnost, uporabljena tukaj, je samodejno prelamljanje strani. Takoj, ko bi celica presegla dno strani (privzeto 2 centimetra od roba), se ustvari nov prelom strani in pisava se povrne na prejšnje stanje. Čeprav glava in noga uporabljata svojo pisavo (helvetica), se v telesu uporabi Times. Ta mehanizem samodejnega obnavljanja velja tudi za barve in širino črte. Mejo, ki sproži prelom strani, lahko nastavimo z set_auto_page_break.\n\nNadaljujmo s primerom, ki natisne poravnane odstavke in ilustrira rabo barv.\n\nget_string_width omogoča določitev dolžine niza v trenutni pisavi, kar nam pomaga izračunati položaj in širino okvira, ki obdaja naslov. Nato se nastavijo barve preko set_draw_color, set_fill_color in set_text_color, pa tudi debelina črte z set_line_width na 1 mm (privzeta je 0,2 mm). Na koncu izpišemo celico (zadnji parameter True nakazuje, da se okno obarva).\n\nMetoda, uporabljena za tiskanje odstavkov, je multi_cell. Besedilo je privzeto poravnano. Vsakič, ko vrstica doseže desni rob celice ali se pojavi znak za prelom vrstice (\\n), se vrstice prelomi in nova celica se ustvari pod trenutnim položajem. Samodejni prelom se izvrši na lokaciji najbližjega presledka ali mehke črtice (\\u00ad) pred desnim robom. Mehka črtica se ob prelomu vrstice spremeni v običajno črtico, sicer pa se ignorira.\n\nDve lastnosti dokumenta sta določeni: naslov set_title in avtor set_author. Do njih se lahko dostopa na dva načina: dokument se odpre neposredno v Acrobat Readerju in v meniju File izbere Document Properties ali pa se z desno tipko miške izbere Document Properties.\n\nTa primer je različica prejšnjega, prikazuje, kako razdeliti besedilo v več stolpcev.\n\nKljučna razlika od prejšnjega vodiča je uporaba metode text_columns. Zbira vse besedilo, po potrebi po delih, in ga razdeli čez zahtevano število stolpcev, pri čemer samodejno vstavi prelome strani, kjer je to potrebno. Upoštevajte, da dokler je TextColumns instanca aktivna kot upravljavec konteksta, lahko spreminjate slog besedila in druge lastnosti pisave, te spremembe pa bodo veljale samo znotraj tega konteksta. Ko je enkrat zaprt, se obnovijo prejšnje nastavitve.\n\nTa vodič bo razložil, kako ustvariti dve različni tabeli, da prikaže, kaj je mogoče doseči z nekaj osnovnimi prilagoditvami.\n\nRezultatni PDF - Countries CSV data\n\nPrvi primer je izveden na najbolj osnovni način, saj se podatki predajo metodi FPDF.table(). Rezultat je precej preprost, vendar hitro dosegljiv.\n\nDruga tabela prinaša nekaj izboljšav: barve, omejeno širino tabele, zmanjšano višino vrstic, centrirane naslove, stolpce s prilagojeno širino, desno poravnane številke ... Poleg tega so odstranjene vodoravne črte. Dosegli smo to z izbiro borders_layout med razpoložljivimi vrednostmi: TableBordersLayout.\n\nTa vodič bo razložil več načinov, kako vstaviti povezave v PDF dokument, pa tudi, kako dodati povezave na zunanje vire.\n\nPoleg tega bo pokazal več načinov uporabe različnih slogov besedila (krepko, ležeče, podčrtano) znotraj istega besedila.\n\nRezultatni PDF - fpdf2-logo\n\nNova metoda, prikazana tukaj za izpis besedila, je write(). Zelo je podobna metodi multi_cell(), vendar sta tu dve ključni razliki:\n\nTa metoda nam tako omogoča napisati kos besedila, spremeniti slog pisave in nadaljevati natanko tam, kjer smo ostali. Njena glavna slabost pa je, da ne omogoča poravnavanja besedila (justify) tako kot multi_cell().\n\nNa prvi strani primera smo za ta namen uporabili write(). Začetek stavka je bil napisan z običajnim slogom pisave, nato smo z set_font() preklopili na podčrtano in dokončali stavek.\n\nZa dodajanje notranje povezave, ki kaže na drugo stran, smo uporabili add_link(), ki ustvari klikabilno območje z imenom \"link\", ki vodi na drugo stran v dokumentu.\n\nZa izdelavo zunanje povezave z uporabo slike smo uporabili image(). Metoda ima parameter link, ki omogoča nastavitev povezave (lahko je interna ali eksterna).\n\nKot alternativa je na voljo še en način za spreminjanje sloga pisave in vstavljanje povezav: metoda write_html(), ki je HTML razčlenjevalnik in omogoča vstavljanje besedila, spreminjanje sloga pisave in povezav preko HTML kode.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Vodič¶",
+      "id": "vodic"
+    },
+    {
+      "level": "h2",
+      "text": "Vodič 1 - Minimalni primer¶",
+      "id": "vodic-1-minimalni-primer"
+    },
+    {
+      "level": "h2",
+      "text": "Vodič 2 - Glava, noga, prelom strani in slika¶",
+      "id": "vodic-2-glava-noga-prelom-strani-in-slika"
+    },
+    {
+      "level": "h2",
+      "text": "Vodič 3 - Prelomi vrstic in barve¶",
+      "id": "vodic-3-prelomi-vrstic-in-barve"
+    },
+    {
+      "level": "h2",
+      "text": "Vodič 4 - Večstolpčno besedilo¶",
+      "id": "vodic-4-vecstolpcno-besedilo"
+    },
+    {
+      "level": "h2",
+      "text": "Vodič 5 - Ustvarjanje tabel¶",
+      "id": "vodic-5-ustvarjanje-tabel"
+    },
+    {
+      "level": "h2",
+      "text": "Vodič 6 - Ustvarjanje povezav in mešanje slogov besedila¶",
+      "id": "vodic-6-ustvarjanje-povezav-in-mesanje-slogov-besedila"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"helvetica\", style=\"B\", size=16)\npdf.cell(40, 10, \"Hello World!\")\npdf.output(\"tuto1.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "pdf = FPDF(orientation=\"P\", unit=\"mm\", format=\"A4\")",
+      "language": "unknown"
+    },
+    {
+      "code": "pdf.set_font('Helvetica', style='B', size=16)",
+      "language": "unknown"
+    },
+    {
+      "code": "pdf.cell(40, 10, 'Hello World!', 1)",
+      "language": "unknown"
+    },
+    {
+      "code": "pdf.cell(60, 10, 'Powered by FPDF.', new_x=\"LMARGIN\", new_y=\"NEXT\", align='C')",
+      "language": "unknown"
+    },
+    {
+      "code": "from fpdf import FPDF\n\n\nclass PDF(FPDF):\n    def header(self):\n        # Rendering logo:\n        self.image(\"../docs/fpdf2-logo.png\", 10, 8, 33)\n        # Setting font: helvetica bold 15\n        self.set_font(\"helvetica\", style=\"B\", size=15)\n        # Moving cursor to the right:\n        self.cell(80)\n        # Printing title:\n        self.cell(30, 10, \"Title\", border=1, align=\"C\")\n        # Performing a line break:\n        self.ln(20)\n\n    def footer(self):\n        # Position cursor at 1.5 cm from bottom:\n        self.set_y(-15)\n        # Setting font: helvetica italic 8\n        self.set_font(\"helvetica\", style=\"I\", size=8)\n        # Printing page number:\n        self.cell(0, 10, f\"Page {self.page_no()}/{{nb}}\", align=\"C\")\n\n\n# Instantiation of inherited class\npdf = PDF()\npdf.add_page()\npdf.set_font(\"Times\", size=12)\nfor i in range(1, 41):\n    pdf.cell(0, 10, f\"Printing line number {i}\", new_x=\"LMARGIN\", new_y=\"NEXT\")\npdf.output(\"new-tuto2.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\n\nclass PDF(FPDF):\n    def header(self):\n        # Setting font: helvetica bold 15\n        self.set_font(\"helvetica\", style=\"B\", size=15)\n        # Calculating width of title and setting cursor position:\n        width = self.get_string_width(self.title) + 6\n        self.set_x((210 - width) / 2)\n        # Setting colors for frame, background and text:\n        self.set_draw_color(0, 80, 180)\n        self.set_fill_color(230, 230, 0)\n        self.set_text_color(220, 50, 50)\n        # Setting thickness of the frame (1 mm)\n        self.set_line_width(1)\n        # Printing title:\n        self.cell(\n            width,\n            9,\n            self.title,\n            border=1,\n            new_x=\"LMARGIN\",\n            new_y=\"NEXT\",\n            align=\"C\",\n            fill=True,\n        )\n        # Performing a line break:\n        self.ln(10)\n\n    def footer(self):\n        # Setting position at 1.5 cm from bottom:\n        self.set_y(-15)\n        # Setting font: helvetica italic 8\n        self.set_font(\"helvetica\", style=\"I\", size=8)\n        # Setting text color to gray:\n        self.set_text_color(128)\n        # Printing page number\n        self.cell(0, 10, f\"Page {self.page_no()}\", align=\"C\")\n\n    def chapter_title(self, num, label):\n        # Setting font: helvetica 12\n        self.set_font(\"helvetica\", size=12)\n        # Setting background color\n        self.set_fill_color(200, 220, 255)\n        # Printing chapter name:\n        self.cell(\n            0,\n            6,\n            f\"Chapter {num} : {label}\",\n            new_x=\"LMARGIN\",\n            new_y=\"NEXT\",\n            align=\"L\",\n            fill=True,\n        )\n        # Performing a line break:\n        self.ln(4)\n\n    def chapter_body(self, filepath):\n        # Reading text file:\n        with open(filepath, \"rb\") as fh:\n            txt = fh.read().decode(\"latin-1\")\n        # Setting font: Times 12\n        self.set_font(\"Times\", size=12)\n        # Printing justified text:\n        self.multi_cell(0, 5, txt)\n        # Performing a line break:\n        self.ln()\n        # Final mention in italics:\n        self.set_font(style=\"I\")\n        self.cell(0, 5, \"(end of excerpt)\")\n\n    def print_chapter(self, num, title, filepath):\n        self.add_page()\n        self.chapter_title(num, title)\n        self.chapter_body(filepath)\n\n\npdf = PDF()\npdf.set_title(\"20000 Leagues Under the Seas\")\npdf.set_author(\"Jules Verne\")\npdf.print_chapter(1, \"A RUNAWAY REEF\", \"20k_c1.txt\")\npdf.print_chapter(2, \"THE PROS AND CONS\", \"20k_c1.txt\")\npdf.output(\"tuto3.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\n\nclass PDF(FPDF):\n    def header(self):\n        self.set_font(\"helvetica\", style=\"B\", size=15)\n        width = self.get_string_width(self.title) + 6\n        self.set_x((210 - width) / 2)\n        self.set_draw_color(0, 80, 180)\n        self.set_fill_color(230, 230, 0)\n        self.set_text_color(220, 50, 50)\n        self.set_line_width(1)\n        self.cell(\n            width,\n            9,\n            self.title,\n            border=1,\n            new_x=\"LMARGIN\",\n            new_y=\"NEXT\",\n            align=\"C\",\n            fill=True,\n        )\n        self.ln(10)\n\n    def footer(self):\n        self.set_y(-15)\n        self.set_font(\"helvetica\", style=\"I\", size=8)\n        self.set_text_color(128)\n        self.cell(0, 10, f\"Page {self.page_no()}\", align=\"C\")\n\n    def chapter_title(self, num, label):\n        self.set_font(\"helvetica\", size=12)\n        self.set_fill_color(200, 220, 255)\n        self.cell(\n            0,\n            6,\n            f\"Chapter {num} : {label}\",\n            new_x=\"LMARGIN\",\n            new_y=\"NEXT\",\n            border=\"L\",\n            fill=True,\n        )\n        self.ln(4)\n\n    def chapter_body(self, fname):\n        # Reading text file:\n        with open(fname, \"rb\") as fh:\n            txt = fh.read().decode(\"latin-1\")\n        with self.text_columns(\n            ncols=3, gutter=5, text_align=\"J\", line_height=1.19\n        ) as cols:\n            # Setting font: Times 12\n            self.set_font(\"Times\", size=12)\n            cols.write(txt)\n            cols.ln()\n            # Final mention in italics:\n            self.set_font(style=\"I\")\n            cols.write(\"(end of excerpt)\")\n\n    def print_chapter(self, num, title, fname):\n        self.add_page()\n        self.chapter_title(num, title)\n        self.chapter_body(fname)\n\n\npdf = PDF()\npdf.set_title(\"20000 Leagues Under the Seas\")\npdf.set_author(\"Jules Verne\")\npdf.print_chapter(1, \"A RUNAWAY REEF\", \"20k_c1.txt\")\npdf.print_chapter(2, \"THE PROS AND CONS\", \"20k_c1.txt\")\npdf.output(\"tuto4.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "import csv\nfrom fpdf import FPDF\nfrom fpdf.fonts import FontFace\nfrom fpdf.enums import TableCellFillMode\n\nwith open(\"countries.txt\", encoding=\"utf8\") as csv_file:\n    data = list(csv.reader(csv_file, delimiter=\",\"))\n\npdf = FPDF()\npdf.set_font(\"helvetica\", size=14)\n\n# Basic table:\npdf.add_page()\nwith pdf.table() as table:\n    for data_row in data:\n        row = table.row()\n        for datum in data_row:\n            row.cell(datum)\n\n# Styled table:\npdf.add_page()\npdf.set_draw_color(255, 0, 0)\npdf.set_line_width(0.3)\nheadings_style = FontFace(emphasis=\"BOLD\", color=255, fill_color=(255, 100, 0))\nwith pdf.table(\n    borders_layout=\"NO_HORIZONTAL_LINES\",\n    cell_fill_color=(224, 235, 255),\n    cell_fill_mode=TableCellFillMode.ROWS,\n    col_widths=(42, 39, 35, 42),\n    headings_style=headings_style,\n    line_height=6,\n    text_align=(\"LEFT\", \"CENTER\", \"RIGHT\", \"RIGHT\"),\n    width=160,\n) as table:\n    for data_row in data:\n        row = table.row()\n        for datum in data_row:\n            row.cell(datum)\n\npdf.output(\"tuto5.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\n\n# First page:\npdf.add_page()\npdf.set_font(\"helvetica\", size=20)\npdf.write(5, \"To find out what's new in self tutorial, click \")\npdf.set_font(style=\"U\")\nlink = pdf.add_link(page=2)\npdf.write(5, \"here\", link)\npdf.set_font()\n\n# Second page:\npdf.add_page()\npdf.image(\n    \"../docs/fpdf2-logo.png\", 10, 10, 50, 0, \"\", \"https://py-pdf.github.io/fpdf2/\"\n)\npdf.set_left_margin(60)\npdf.set_font_size(18)\npdf.write_html(\n    \"\"\"You can print text mixing different styles using HTML tags: <b>bold</b>, <i>italic</i>,\n<u>underlined</u>, or <b><i><u>all at once</u></i></b>!\n<br><br>You can also insert links on text, such as <a href=\"https://py-pdf.github.io/fpdf2/\">https://py-pdf.github.io/fpdf2/</a>,\nor on an image: the logo is clickable!\"\"\"\n)\npdf.output(\"tuto6.pdf\")",
+      "language": "swift"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/enums.html",
+    "https://py-pdf.github.io/fpdf2/fpdf2-logo.png"
+  ]
+}

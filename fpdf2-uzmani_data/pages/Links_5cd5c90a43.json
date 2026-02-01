@@ -1,0 +1,154 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Links.html",
+  "title": "Links¶",
+  "content": "fpdf2 can generate both internal links (to other pages in the document) & hyperlinks (links to external URLs that will be opened in a browser).\n\nThis method makes the whole cell clickable (not only the text):\n\nLinks defined this way in Markdown can be styled by setting FPDF class attributes MARKDOWN_LINK_COLOR (default: None) & MARKDOWN_LINK_UNDERLINE (default: True).\n\nlink=\"https://...your-url\" can also be used to make the whole cell clickable.\n\nThe FPDF.link is a low-level method that defines a rectangular clickable area.\n\nThere is an example showing how to place such rectangular link over some text:\n\nAn alternative method using FPDF.write_html:\n\nThe hyperlinks defined this way will be rendered in blue with underline.\n\nInternal links are links redirecting to other pages in the document.\n\nThere are some situations where a user wants to create an internal link to another page in the PDF document, but the page number is not known at the time of link creation. In this case, the link can be created using pdf.add_link() as before, and then later re-reference to a specific page using pdf.set_link(). In this example our goal is to link to a page that occurs after a section with a variable amount of text, potentially occupying multiple pages:\n\nfrom fpdf import FPDF import random pdf = FPDF() pdf.set_font(\"helvetica\", size=24) pdf.add_page() # create a link to a page that will be created later link_to_summary_page = pdf.add_link() pdf.cell(text=\"Link to summary after elements\", border=1, link=link_to_summary_page) pdf.ln(20) pdf.cell(text=\"List of elements\", align=\"C\", center=True) pdf.ln(20) # this num_elements variable can vary across runs # resulting in a different number of pages num_elements = random.randint(10,30) for i in range(num_elements): pdf.cell(text=f\"Element {i+1}\", align=\"C\", center=True) pdf.ln(20) # `set_link` to change page referenced by the link pdf.add_page() pdf.set_link(link_to_summary_page) pdf.cell(text=f\"Summary: there are {num_elements} elements\", align=\"C\", center=True) pdf.ln(20) # link back to the first page link = pdf.add_link(page=1) pdf.cell(text=\"Internal link to first page\", border=1, link=link) pdf.output(\"internal_link_unknown_pages.pdf\") Other methods can also insert internal links:\n\nThe unit tests test_internal_links() in test_links.py provides examples for all of those methods.\n\nOther methods can also insert internal links:\n\nThe unit test test_link_to_other_document() in test_links.py provides examples for all of those methods.\n\nAn optional textual description of the link can be provided, for accessibility purposes:",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Links¶",
+      "id": "links"
+    },
+    {
+      "level": "h2",
+      "text": "Hyperlink with FPDF.cell¶",
+      "id": "hyperlink-with-fpdfcell"
+    },
+    {
+      "level": "h2",
+      "text": "Hyperlink with FPDF.multi_cell¶",
+      "id": "hyperlink-with-fpdfmulti_cell"
+    },
+    {
+      "level": "h2",
+      "text": "Hyperlink with FPDF.link¶",
+      "id": "hyperlink-with-fpdflink"
+    },
+    {
+      "level": "h2",
+      "text": "Hyperlink with write_html¶",
+      "id": "hyperlink-with-write_html"
+    },
+    {
+      "level": "h2",
+      "text": "Internal links¶",
+      "id": "internal-links"
+    },
+    {
+      "level": "h2",
+      "text": "Links to other documents on the filesystem¶",
+      "id": "links-to-other-documents-on-the-filesystem"
+    },
+    {
+      "level": "h2",
+      "text": "Alternative description¶",
+      "id": "alternative-description"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"helvetica\", size=24)\npdf.cell(text=\"Cell link\", border=1, center=True,\n         link=\"https://github.com/py-pdf/fpdf2\")\npdf.output(\"hyperlink.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.set_font(\"helvetica\", size=24)\npdf.add_page()\npdf.multi_cell(\n    pdf.epw,\n    text=\"**Website:** [fpdf2](https://py-pdf.github.io/fpdf2/) __Go visit it!__\",\n    markdown=True,\n)\npdf.output(\"hyperlink.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"helvetica\", size=36)\nline_height = 10\ntext = \"Text link\"\npdf.text(x=0, y=line_height, text=text)\nwidth = pdf.get_string_width(text)\npdf.link(x=0, y=0, w=width, h=line_height, link=\"https://github.com/py-pdf/fpdf2\")\npdf.output(\"hyperlink.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.set_font_size(16)\npdf.add_page()\npdf.write_html('<a href=\"https://github.com/py-pdf/fpdf2\">Link defined as HTML</a>')\npdf.output(\"hyperlink.pdf\")",
+      "language": "jsx"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.set_font(\"helvetica\", size=24)\npdf.add_page()\npdf.cell(text=\"Welcome on first page!\", align=\"C\", center=True)\npdf.add_page()\nlink = pdf.add_link(page=1)\npdf.cell(text=\"Internal link to first page\", border=1, link=link)\npdf.output(\"internal_link.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\nimport random\n\npdf = FPDF()\npdf.set_font(\"helvetica\", size=24)\npdf.add_page()\n\n# create a link to a page that will be created later\nlink_to_summary_page = pdf.add_link()\npdf.cell(text=\"Link to summary after elements\", border=1, link=link_to_summary_page)\npdf.ln(20)\n\npdf.cell(text=\"List of elements\", align=\"C\", center=True)\npdf.ln(20)\n\n# this num_elements variable can vary across runs\n# resulting in a different number of pages\nnum_elements = random.randint(10,30)\nfor i in range(num_elements):\n    pdf.cell(text=f\"Element {i+1}\", align=\"C\", center=True)\n    pdf.ln(20)\n\n# `set_link` to change page referenced by the link\npdf.add_page()\npdf.set_link(link_to_summary_page)\npdf.cell(text=f\"Summary: there are {num_elements} elements\", align=\"C\", center=True)\npdf.ln(20)\n\n# link back to the first page\nlink = pdf.add_link(page=1)\npdf.cell(text=\"Internal link to first page\", border=1, link=link)\n\npdf.output(\"internal_link_unknown_pages.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.set_font(\"helvetica\", size=24)\npdf.add_page()\npdf.cell(text=\"Link to other_doc.pdf\", border=1, link=\"other_doc.pdf\")\npdf.output(\"link_to_other_doc.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "pdf.link(x=0, y=0, w=width, h=line_height, link=\"https://github.com/py-pdf/fpdf2\",\n         alt_text=\"GitHub page for fpdf2\")",
+      "language": "swift"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html"
+  ]
+}

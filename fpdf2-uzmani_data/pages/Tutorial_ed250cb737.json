@@ -1,0 +1,186 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+  "title": "Tutorial¶",
+  "content": "Documentation complète des méthodes : fpdf.FPDF API doc\n\nCommençons par un exemple classique :\n\nAprès avoir inclus la librairie, on crée un objet FPDF. Le constructeur FPDF est utilisé avec ses valeurs par défaut : les pages sont en format portrait A4 et l'unité de mesure est le millimètre. Cela peut également être spéficié de cette manière :\n\nIl est possible de créer un PDF en format paysage (L) ou encore d'utiliser d'autres formats (par exemple Letter et Legal) et unités de mesure (pt, cm, in).\n\nIl n'y a pas encore de page, il faut donc en créer une avec add_page. Le coin en haut à gauche correspond à l'origine, et le curseur (c'est-à-dire la position actuelle où l'on va afficher un élément) est placé par défaut à 1 cm des bords. Les marges peuvent être modifiées avec set_margins.\n\nAvant de pouvoir afficher du texte, il faut obligatoirement choisir une police de caractères avec set_font. Choisissons Helvetica bold 16 :\n\nOn aurait pu spécifier une police en italique avec I, soulignée avec U ou une police normale avec une chaine de caractères vide. Il est aussi possible de combiner les effets en combinant les caractères. Notez que la taille des caractères est à spécifier en points (pts), pas en millimètres (ou tout autre unité). C'est la seule exception. Les autres polices fournies par défaut sont Times, Courier, Symbol et ZapfDingbats.\n\nOn peut maintenant afficher une cellule avec cell. Une cellule est une zone rectangulaire, avec ou sans cadre, qui contient du texte. Elle est affichée à la position actuelle du curseur. On spécifie ses dimensions, le texte (centré ou aligné), s'il y a une bordure ou non, ainsi que la position du curseur après avoir affiché la cellule (s'il se déplace à droite, vers le bas ou au début de la ligne suivante). Pour ajouter un cadre, on utilise ceci :\n\nPour ajouter une nouvelle cellule avec un texte centré et déplacer le curseur à la ligne suivante, on utilise cela :\n\nRemarque : le saut de ligne peut aussi être fait avec ln. Cette méthode permet de spécifier la hauteur du saut.\n\nEnfin, le document est sauvegardé à l'endroit spécifié en utilisant output. Sans aucun paramètre, output() retourne le buffer bytearray du PDF.\n\nVoici un exemple contenant deux pages avec un en-tête, un bas de page et un logo :\n\nCet exemple utilise les méthodes header et footer pour générer des en-têtes et des bas de page. Elles sont appelées automatiquement. Elles existent déjà dans la classe FPDF mais elles ne font rien, il faut donc les redéfinir dans une classe fille.\n\nLe logo est affiché avec la méthode image en spécifiant la position du coin supérieur gauche et la largeur de l'image. La hauteur est calculée automatiquement pour garder les proportions de l'image.\n\nPour centrer le numéro de page dans le bas de page, il faut passer la valeur nulle à la place de la largeur de la cellule. Cela fait prendre toute la largeur de la page à la cellule, ce qui permet de centrer le texte. Le numéro de page actuel est obtenu avec la méthode page_no. Le nombre total de pages est obtenu avec la variable {nb} qui prend sa valeur quand le document est fermé (la méthode alias_nb_pages permet de définir un autre nom de variable pour cette valeur). La méthode set_y permet de spécifier une position dans la page relative au haut ou bas de page.\n\nUne autre fonctionnalité intéressante est utilisée ici : les sauts de page automatiques. Si une cellule dépasse la limite du contenu de la page (par défaut à 2 centimètres du bas), un saut de page est inséré à la place et la police de caractères est restaurée. C'est-à-dire, bien que l'en-tête et le bas de page utilisent la police helvetica, le corps du texte garde la police Times. Ce mécanisme de restauration automatique s'applique également à la couleur et l'épaisseur des lignes. La limite du contenu qui déclenche le saut de page peut être spécifiée avec set_auto_page_break.\n\nContinuons avec un exemple qui affiche des paragraphes avec du texte justifié. Cet exemple montre également l'utilisation de couleurs.\n\nLa méthode get_string_width permet de déterminer la largeur d'un texte utilisant la police actuelle, ce qui permet de calculer la position et la largeur du cadre autour du titre. Ensuite les couleurs sont spécifiées (avec set_draw_color, set_fill_color et set_text_color) et on spécifie l'épaisseur de la bordure du cadre à 1 mm (contre 0.2 par défaut) avec set_line_width. Enfin, on affiche la cellule (le dernier paramètre \"true\" indique que le fond doit être rempli).\n\nLa méthode multi_cell est utilisée pour afficher les paragraphes. Chaque fois qu'une ligne atteint le bord d'une cellule ou qu'un caractère de retour à la ligne est présent, un saut de ligne est inséré et une nouvelle cellule est créée automatiquement sous la cellule actuelle. Le texte est justifié par défaut.\n\nDeux propriétés sont définies pour le document : le titre (set_title) et l'auteur (set_author). Les propriétés peuvent être trouvées en ouvrant le document PDF avec Acrobat Reader. Elles sont alors visibles dans le menu Fichier -> Propriétés du document.\n\nCet exemple est une variante du précédent qui montre comment répartir le texte sur plusieurs colonnes.\n\nExtrait de Jules Verne\n\n⚠️ This section has changed a lot and requires a new translation: https://github.com/py-pdf/fpdf2/issues/267\n\nCe tutoriel explique comment créer facilement des tableaux. Deux tableaux différents sont générés, pour illustrer ce qui peut être produit avec de très simples changements.\n\nPDF généré - Données CSV des pays\n\nLe premier exemple est généré de la façon la plus simple possible, en fournissant des données à FPDF.table(). Le résultat est rudimentaire, mais très rapide à obtenir.\n\nLe second tableau introduit quelques améliorations : couleurs, largeur réduite de la table, moindre hauteur des lignes de texte, titres centrés, colonnes avec des largeurs propres, nombres alignés à droite... De plus, les lignes horizontales ont été supprimées. Cela grâce à la sélection d'un borders_layout parmi les valeurs disponibles : TableBordersLayout.\n\nCe tutoriel explique plusieurs façons d'insérer des liens à l'intérieur d'un document pdf, ainsi que l'ajout de liens vers des sources externes.\n\nIl montrera également plusieurs façons d'utiliser différents styles de texte (gras, italique, souligné) dans un même texte.\n\nPDF créé dans ce tutoriel - fpdf2-logo\n\nLa nouvelle méthode présentée ici pour imprimer du texte est write(). Elle est très similaire à multi_cell(). Les principales différences sont les suivantes :\n\nCette méthode nous permet donc d'écrire un morceau de texte, de modifier le style de police et de reprendre exactement là où nous nous sommes arrêtés. En revanche, son principal inconvénient est que nous ne pouvons pas justifier le texte comme nous le faisons avec la méthode multi_cell().\n\nDans la première page de l'exemple, nous avons utilisé write() à cette fin. Le début de la phrase est écrit en style normal, puis en utilisant la méthode set_font(), nous sommes passés au soulignement et avons terminé la phrase.\n\nPour ajouter un lien interne pointant vers la deuxième page, nous avons utilisé la méthode add_link(), qui crée une zone cliquable que nous avons nommée link et qui dirige vers une autre page du document.\n\nPour créer le lien externe à l'aide d'une image, nous avons utilisé image(). Cette méthode a la possibilité de transmettre un lien comme l'un de ses arguments. Le lien peut être interne ou externe.\n\nComme alternative, une autre option pour changer le style de police et ajouter des liens est d'utiliser la méthode write_html(). Celle-ci permet de lire du HTML pour produire du texte, changer le style de police ou encore ajouter des liens.\n\nPDF/A-1 est basé sur la spécification PDF 1.4. Toutes les ressources (images, graphiques, polices) doivent être incorporées dans le document. La gestion des couleurs doit être spécifiée de manière indépendante de la plateforme avec des profils ICC, et les métadonnées du document doivent être fournies avec des métadonnées XMP.\n\nPDF/A-2 est basé sur la spécification PDF 1.7. Il permet la compression avec JPEG2000, les éléments transparents, les polices OpenType et les signatures numériques.\n\nLa seule extension pour PDF/A-3 est la possibilité d'incorporer n'importe quel fichier possible.\n\nNiveau A (accessible) englobe toutes les exigences de la norme, y compris la cartographie de la structure du contenu et l'ordre de lecture correct du contenu du document. Le contenu textuel doit être extractible et la structure doit refléter la séquence de lecture naturelle.\n\nNiveau B (basique) garantit une reproductibilité visuelle claire du contenu. Le niveau B est généralement plus facile à générer que le niveau A, mais il ne garantit pas une extraction de texte ou une capacité de recherche à 100 %. La réutilisation sans problème du contenu n'est pas nécessairement garantie.\n\nPour y parvenir, voici un petit exemple : from pathlib import Path from fpdf import FPDF from fpdf import FPDF_VERSION DIR = Path(__file__).parent FONT_DIR = DIR / \"..\" / \"test\" / \"fonts\" pdf = FPDF(enforce_compliance=\"PDF/A-3B\") pdf.set_lang(\"en-US\") pdf.set_title(\"Tutorial7\") pdf.set_author([\"John Dow\", \"Jane Dow\"]) pdf.set_subject(\"Example for PDF/A\") pdf.set_keywords([\"example\", \"tutorial\", \"fpdf\", \"pdf/a\"]) pdf.set_producer(f\"py-pdf/fpdf2 {FPDF_VERSION}\") pdf.add_font(fname=FONT_DIR / \"DejaVuSans.ttf\") pdf.add_font(\"DejaVuSans\", style=\"B\", fname=FONT_DIR / \"DejaVuSans-Bold.ttf\") pdf.add_font(\"DejaVuSans\", style=\"I\", fname=FONT_DIR / \"DejaVuSans-Oblique.ttf\") pdf.add_page() pdf.set_font(\"DejaVuSans\", style=\"B\", size=20) pdf.write(text=\"Header\") pdf.ln(20) pdf.set_font(size=12) pdf.write(text=\"Example text\") pdf.ln(20) pdf.set_font(style=\"I\") pdf.write(text=\"Example text in italics\") pdf.output(\"tuto7.pdf\")\n\nPDF résultant : tuto7.pdf\n\nDes outils comme VeraPDF peuvent vérifier la conformité des documents PDF produits : verapdf --format text -v tutorial/tuto7.pdf\n\nProduit en sortie textuelle : PASS fpdf2/tutorial/tuto7.pdf 3b",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Tutorial¶",
+      "id": "tutorial"
+    },
+    {
+      "level": "h2",
+      "text": "Tuto 1 - Exemple minimal¶",
+      "id": "tuto-1-exemple-minimal"
+    },
+    {
+      "level": "h2",
+      "text": "Tuto 2 - En-tête, bas de page, saut de page et image¶",
+      "id": "tuto-2-en-tete-bas-de-page-saut-de-page-et-image"
+    },
+    {
+      "level": "h2",
+      "text": "Tuto 3 - Saut de ligne et couleur¶",
+      "id": "tuto-3-saut-de-ligne-et-couleur"
+    },
+    {
+      "level": "h2",
+      "text": "Tuto 4 - Colonnes multiples¶",
+      "id": "tuto-4-colonnes-multiples"
+    },
+    {
+      "level": "h2",
+      "text": "Tuto 5 - Créer des tables¶",
+      "id": "tuto-5-creer-des-tables"
+    },
+    {
+      "level": "h2",
+      "text": "Tuto 6 - Créer des liens et mélanger différents styles de textes¶",
+      "id": "tuto-6-creer-des-liens-et-melanger-differents-styles-de-textes"
+    },
+    {
+      "level": "h2",
+      "text": "Tuto 7 - Création de documents PDF/A¶",
+      "id": "tuto-7-creation-de-documents-pdfa"
+    },
+    {
+      "level": "h3",
+      "text": "Normes PDF/A¶",
+      "id": "normes-pdfa"
+    },
+    {
+      "level": "h3",
+      "text": "Classes de conformité¶",
+      "id": "classes-de-conformite"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"helvetica\", style=\"B\", size=16)\npdf.cell(40, 10, \"Hello World!\")\npdf.output(\"tuto1.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "pdf = FPDF(orientation=\"P\", unit=\"mm\", format=\"A4\")",
+      "language": "unknown"
+    },
+    {
+      "code": "pdf.set_font('Helvetica', style='B', size=16)",
+      "language": "unknown"
+    },
+    {
+      "code": "pdf.cell(40, 10, 'Hello World!', 1)",
+      "language": "unknown"
+    },
+    {
+      "code": "pdf.cell(60, 10, 'Powered by FPDF.', new_x=\"LMARGIN\", new_y=\"NEXT\", align='C')",
+      "language": "unknown"
+    },
+    {
+      "code": "from fpdf import FPDF\n\n\nclass PDF(FPDF):\n    def header(self):\n        # Rendering logo:\n        self.image(\"../docs/fpdf2-logo.png\", 10, 8, 33)\n        # Setting font: helvetica bold 15\n        self.set_font(\"helvetica\", style=\"B\", size=15)\n        # Moving cursor to the right:\n        self.cell(80)\n        # Printing title:\n        self.cell(30, 10, \"Title\", border=1, align=\"C\")\n        # Performing a line break:\n        self.ln(20)\n\n    def footer(self):\n        # Position cursor at 1.5 cm from bottom:\n        self.set_y(-15)\n        # Setting font: helvetica italic 8\n        self.set_font(\"helvetica\", style=\"I\", size=8)\n        # Printing page number:\n        self.cell(0, 10, f\"Page {self.page_no()}/{{nb}}\", align=\"C\")\n\n\n# Instantiation of inherited class\npdf = PDF()\npdf.add_page()\npdf.set_font(\"Times\", size=12)\nfor i in range(1, 41):\n    pdf.cell(0, 10, f\"Printing line number {i}\", new_x=\"LMARGIN\", new_y=\"NEXT\")\npdf.output(\"new-tuto2.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\n\nclass PDF(FPDF):\n    def header(self):\n        # Setting font: helvetica bold 15\n        self.set_font(\"helvetica\", style=\"B\", size=15)\n        # Calculating width of title and setting cursor position:\n        width = self.get_string_width(self.title) + 6\n        self.set_x((210 - width) / 2)\n        # Setting colors for frame, background and text:\n        self.set_draw_color(0, 80, 180)\n        self.set_fill_color(230, 230, 0)\n        self.set_text_color(220, 50, 50)\n        # Setting thickness of the frame (1 mm)\n        self.set_line_width(1)\n        # Printing title:\n        self.cell(\n            width,\n            9,\n            self.title,\n            border=1,\n            new_x=\"LMARGIN\",\n            new_y=\"NEXT\",\n            align=\"C\",\n            fill=True,\n        )\n        # Performing a line break:\n        self.ln(10)\n\n    def footer(self):\n        # Setting position at 1.5 cm from bottom:\n        self.set_y(-15)\n        # Setting font: helvetica italic 8\n        self.set_font(\"helvetica\", style=\"I\", size=8)\n        # Setting text color to gray:\n        self.set_text_color(128)\n        # Printing page number\n        self.cell(0, 10, f\"Page {self.page_no()}\", align=\"C\")\n\n    def chapter_title(self, num, label):\n        # Setting font: helvetica 12\n        self.set_font(\"helvetica\", size=12)\n        # Setting background color\n        self.set_fill_color(200, 220, 255)\n        # Printing chapter name:\n        self.cell(\n            0,\n            6,\n            f\"Chapter {num} : {label}\",\n            new_x=\"LMARGIN\",\n            new_y=\"NEXT\",\n            align=\"L\",\n            fill=True,\n        )\n        # Performing a line break:\n        self.ln(4)\n\n    def chapter_body(self, filepath):\n        # Reading text file:\n        with open(filepath, \"rb\") as fh:\n            txt = fh.read().decode(\"latin-1\")\n        # Setting font: Times 12\n        self.set_font(\"Times\", size=12)\n        # Printing justified text:\n        self.multi_cell(0, 5, txt)\n        # Performing a line break:\n        self.ln()\n        # Final mention in italics:\n        self.set_font(style=\"I\")\n        self.cell(0, 5, \"(end of excerpt)\")\n\n    def print_chapter(self, num, title, filepath):\n        self.add_page()\n        self.chapter_title(num, title)\n        self.chapter_body(filepath)\n\n\npdf = PDF()\npdf.set_title(\"20000 Leagues Under the Seas\")\npdf.set_author(\"Jules Verne\")\npdf.print_chapter(1, \"A RUNAWAY REEF\", \"20k_c1.txt\")\npdf.print_chapter(2, \"THE PROS AND CONS\", \"20k_c1.txt\")\npdf.output(\"tuto3.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\n\nclass PDF(FPDF):\n    def header(self):\n        self.set_font(\"helvetica\", style=\"B\", size=15)\n        width = self.get_string_width(self.title) + 6\n        self.set_x((210 - width) / 2)\n        self.set_draw_color(0, 80, 180)\n        self.set_fill_color(230, 230, 0)\n        self.set_text_color(220, 50, 50)\n        self.set_line_width(1)\n        self.cell(\n            width,\n            9,\n            self.title,\n            border=1,\n            new_x=\"LMARGIN\",\n            new_y=\"NEXT\",\n            align=\"C\",\n            fill=True,\n        )\n        self.ln(10)\n\n    def footer(self):\n        self.set_y(-15)\n        self.set_font(\"helvetica\", style=\"I\", size=8)\n        self.set_text_color(128)\n        self.cell(0, 10, f\"Page {self.page_no()}\", align=\"C\")\n\n    def chapter_title(self, num, label):\n        self.set_font(\"helvetica\", size=12)\n        self.set_fill_color(200, 220, 255)\n        self.cell(\n            0,\n            6,\n            f\"Chapter {num} : {label}\",\n            new_x=\"LMARGIN\",\n            new_y=\"NEXT\",\n            border=\"L\",\n            fill=True,\n        )\n        self.ln(4)\n\n    def chapter_body(self, fname):\n        # Reading text file:\n        with open(fname, \"rb\") as fh:\n            txt = fh.read().decode(\"latin-1\")\n        with self.text_columns(\n            ncols=3, gutter=5, text_align=\"J\", line_height=1.19\n        ) as cols:\n            # Setting font: Times 12\n            self.set_font(\"Times\", size=12)\n            cols.write(txt)\n            cols.ln()\n            # Final mention in italics:\n            self.set_font(style=\"I\")\n            cols.write(\"(end of excerpt)\")\n\n    def print_chapter(self, num, title, fname):\n        self.add_page()\n        self.chapter_title(num, title)\n        self.chapter_body(fname)\n\n\npdf = PDF()\npdf.set_title(\"20000 Leagues Under the Seas\")\npdf.set_author(\"Jules Verne\")\npdf.print_chapter(1, \"A RUNAWAY REEF\", \"20k_c1.txt\")\npdf.print_chapter(2, \"THE PROS AND CONS\", \"20k_c1.txt\")\npdf.output(\"tuto4.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "import csv\nfrom fpdf import FPDF\nfrom fpdf.fonts import FontFace\nfrom fpdf.enums import TableCellFillMode\n\nwith open(\"countries.txt\", encoding=\"utf8\") as csv_file:\n    data = list(csv.reader(csv_file, delimiter=\",\"))\n\npdf = FPDF()\npdf.set_font(\"helvetica\", size=14)\n\n# Basic table:\npdf.add_page()\nwith pdf.table() as table:\n    for data_row in data:\n        row = table.row()\n        for datum in data_row:\n            row.cell(datum)\n\n# Styled table:\npdf.add_page()\npdf.set_draw_color(255, 0, 0)\npdf.set_line_width(0.3)\nheadings_style = FontFace(emphasis=\"BOLD\", color=255, fill_color=(255, 100, 0))\nwith pdf.table(\n    borders_layout=\"NO_HORIZONTAL_LINES\",\n    cell_fill_color=(224, 235, 255),\n    cell_fill_mode=TableCellFillMode.ROWS,\n    col_widths=(42, 39, 35, 42),\n    headings_style=headings_style,\n    line_height=6,\n    text_align=(\"LEFT\", \"CENTER\", \"RIGHT\", \"RIGHT\"),\n    width=160,\n) as table:\n    for data_row in data:\n        row = table.row()\n        for datum in data_row:\n            row.cell(datum)\n\npdf.output(\"tuto5.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\n\n# First page:\npdf.add_page()\npdf.set_font(\"helvetica\", size=20)\npdf.write(5, \"To find out what's new in self tutorial, click \")\npdf.set_font(style=\"U\")\nlink = pdf.add_link(page=2)\npdf.write(5, \"here\", link)\npdf.set_font()\n\n# Second page:\npdf.add_page()\npdf.image(\n    \"../docs/fpdf2-logo.png\", 10, 10, 50, 0, \"\", \"https://py-pdf.github.io/fpdf2/\"\n)\npdf.set_left_margin(60)\npdf.set_font_size(18)\npdf.write_html(\n    \"\"\"You can print text mixing different styles using HTML tags: <b>bold</b>, <i>italic</i>,\n<u>underlined</u>, or <b><i><u>all at once</u></i></b>!\n<br><br>You can also insert links on text, such as <a href=\"https://py-pdf.github.io/fpdf2/\">https://py-pdf.github.io/fpdf2/</a>,\nor on an image: the logo is clickable!\"\"\"\n)\npdf.output(\"tuto6.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from pathlib import Path\n\nfrom fpdf import FPDF\nfrom fpdf import FPDF_VERSION\n\nDIR = Path(__file__).parent\nFONT_DIR = DIR / \"..\" / \"test\" / \"fonts\"\n\npdf = FPDF(enforce_compliance=\"PDF/A-3B\")\npdf.set_lang(\"en-US\")\npdf.set_title(\"Tutorial7\")\npdf.set_author([\"John Dow\", \"Jane Dow\"])\npdf.set_subject(\"Example for PDF/A\")\npdf.set_keywords([\"example\", \"tutorial\", \"fpdf\", \"pdf/a\"])\npdf.set_producer(f\"py-pdf/fpdf2 {FPDF_VERSION}\")\npdf.add_font(fname=FONT_DIR / \"DejaVuSans.ttf\")\npdf.add_font(\"DejaVuSans\", style=\"B\", fname=FONT_DIR / \"DejaVuSans-Bold.ttf\")\npdf.add_font(\"DejaVuSans\", style=\"I\", fname=FONT_DIR / \"DejaVuSans-Oblique.ttf\")\npdf.add_page()\npdf.set_font(\"DejaVuSans\", style=\"B\", size=20)\npdf.write(text=\"Header\")\npdf.ln(20)\npdf.set_font(size=12)\npdf.write(text=\"Example text\")\npdf.ln(20)\npdf.set_font(style=\"I\")\npdf.write(text=\"Example text in italics\")\n\npdf.output(\"tuto7.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "verapdf --format text -v tutorial/tuto7.pdf",
+      "language": "unknown"
+    },
+    {
+      "code": "PASS fpdf2/tutorial/tuto7.pdf 3b",
+      "language": "unknown"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/enums.html",
+    "https://py-pdf.github.io/fpdf2/fpdf2-logo.png"
+  ]
+}

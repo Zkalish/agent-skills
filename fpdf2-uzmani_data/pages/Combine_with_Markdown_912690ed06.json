@@ -1,0 +1,153 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+  "title": "Combine with Markdown¶",
+  "content": "Several fpdf2 methods allow Markdown syntax elements:\n\nBut fpdf2 also allows for basic conversion from HTML to PDF (cf. HTML). This can be combined with a Markdown-rendering library in order to generate PDF documents from Markdown:\n\nThe mistletoe library follows the CommonMark specification: pip install mistletoe\n\nThe library can be easily extended: Creating a custom token and renderer.\n\nThe markdown-it-py library also follows the CommonMark specification: pip install markdown-it-py\n\nPlugin extensions: the strikethrough & table plugins are embedded within the core package, and many other plugins are then available via the mdit-py-plugins package, including:\n\nThere is also the mistune library, that may be the fastest, but it does not follow the CommonMark spec: pip install mistune\n\nThere is also the Python-Markdown library, which is the oldest Markdown rendering Python lib still active, but it does not follow the CommonMark spec: pip install markdown\n\nPlease refer to the dedicated HTML page for information on how to style HTML tags (<a>, <blockquote>, <code>, <pre>, <h1>...) when using FPDF.write_html(), how to configure fonts, the known limitations, etc.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Combine with Markdown¶",
+      "id": "combine-with-markdown"
+    },
+    {
+      "level": "h2",
+      "text": "mistletoe¶",
+      "id": "mistletoe"
+    },
+    {
+      "level": "h3",
+      "text": "Rendering unicode characters¶",
+      "id": "rendering-unicode-characters"
+    },
+    {
+      "level": "h2",
+      "text": "markdown-it-py¶",
+      "id": "markdown-it-py"
+    },
+    {
+      "level": "h2",
+      "text": "mistune¶",
+      "id": "mistune"
+    },
+    {
+      "level": "h2",
+      "text": "Python-Markdown¶",
+      "id": "python-markdown"
+    },
+    {
+      "level": "h2",
+      "text": "Text styling, fonts, etc.¶",
+      "id": "text-styling-fonts-etc"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "pip install mistletoe",
+      "language": "unknown"
+    },
+    {
+      "code": "from mistletoe import markdown\n\nhtml = markdown(\"\"\"\n# Top title (ATX)\n\nSubtitle (setext)\n-----------------\n\n### An even lower heading (ATX)\n\n**Text in bold**\n\n_Text in italics_\n\n~~Strikethrough~~\n\n[This is a link](https://github.com/PyFPDF/fpdf2)\n\n<https://py-pdf.github.io/fpdf2/>\n\nThis is an unordered list:\n* an item\n* another item\n\nThis is an ordered list:\n1. first item\n2. second item\n3. third item with an unordered sublist:\n    * an item\n    * another item\n\nInline `code span`\n\nA table:\n\n| Foo | Bar | Baz |\n| ---:|:---:|:--- |\n| Foo | Bar | Baz |\n\nActual HTML:\n\n<dl>\n  <dt>Term1</dt><dd>Definition1</dd>\n  <dt>Term2</dt><dd>Definition2</dd>\n</dl>\n\nSome horizontal thematic breaks:\n\n***\n---\n___\n\n![Alternate description](https://py-pdf.github.io/fpdf2/fpdf2-logo.png)\n\"\"\")\n\nfrom fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.write_html(html)\npdf.output(\"pdf-from-markdown-with-mistletoe.pdf\")",
+      "language": "markdown"
+    },
+    {
+      "code": "from mistletoe import markdown\n\nhtml = markdown(\"\"\"\n# Unicode:\n\n| Emoji | Description |\n| --- | - |\n| 😀 | GRINNING FACE |\n| 😁 | GRINNING FACE WITH SMILING EYES |\n| 😈 | SMILING FACE WITH HORNS |\n\n# A checklist:\n\n* ☐ item 1\n* ☑ item 2\n* ☐ item 3\n\"\"\")\n\nfrom fpdf import FPDF\n\npdf = FPDF()\npdf.add_font(\"DejaVuSans\", fname=\"test/fonts/DejaVuSans.ttf\")\npdf.add_font(\"DejaVuSans\", fname=\"test/fonts/DejaVuSans-Bold.ttf\", style=\"B\")\npdf.set_font(\"DejaVuSans\", size=24)\npdf.add_page()\npdf.write_html(html)\npdf.output(\"pdf-from-markdown-with-mistletoe-unicode.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "pip install markdown-it-py",
+      "language": "unknown"
+    },
+    {
+      "code": "from markdown_it import MarkdownIt\n\nmd = (\n    MarkdownIt(\"commonmark\", {\"breaks\": True, \"html\": True})\n    .enable(\"strikethrough\")\n    .enable(\"table\")\n)\nhtml = md.render(\"\"\"\n# Top title (ATX)\n\nSubtitle (setext)\n-----------------\n\n### An even lower heading (ATX)\n\n**Text in bold**\n\n_Text in italics_\n\n~~Strikethrough~~\n\n[This is a link](https://github.com/PyFPDF/fpdf2)\n\n<https://py-pdf.github.io/fpdf2/>\n\nThis is an unordered list:\n* an item\n* another item\n\nThis is an ordered list:\n1. first item\n2. second item\n3. third item with an unordered sublist:\n    * an item\n    * another item\n\nInline `code span`\n\nA table:\n\n| Foo | Bar | Baz |\n| ---:|:---:|:--- |\n| Foo | Bar | Baz |\n\nActual HTML:\n\n<dl>\n  <dt>Term1</dt><dd>Definition1</dd>\n  <dt>Term2</dt><dd>Definition2</dd>\n</dl>\n\nSome horizontal thematic breaks:\n\n***\n---\n___\n\n![Alternate description](https://py-pdf.github.io/fpdf2/fpdf2-logo.png)\n\"\"\")\n\nfrom fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.write_html(html)\npdf.output(\"pdf-from-markdown-with-markdown-it.pdf\")",
+      "language": "json"
+    },
+    {
+      "code": "pip install mistune",
+      "language": "unknown"
+    },
+    {
+      "code": "from mistune import html\n\nhtml = html(\"\"\"\n# Top title (ATX)\n\nSubtitle (setext)\n-----------------\n\n### An even lower heading (ATX)\n\n**Text in bold**\n\n_Text in italics_\n\n~~Strikethrough~~\n\n[This is a link](https://github.com/PyFPDF/fpdf2)\n\n<https://py-pdf.github.io/fpdf2/>\n\nThis is an unordered list:\n* an item\n* another item\n\nThis is an ordered list:\n1. first item\n2. second item\n3. third item with an unordered sublist:\n    * an item\n    * another item\n\nInline `code span`\n\nA table:\n\n| Foo | Bar | Baz |\n| ---:|:---:|:--- |\n| Foo | Bar | Baz |\n\nActual HTML:\n\n<dl>\n  <dt>Term1</dt><dd>Definition1</dd>\n  <dt>Term2</dt><dd>Definition2</dd>\n</dl>\n\nSome horizontal thematic breaks:\n\n***\n---\n___\n\n![Alternate description](https://py-pdf.github.io/fpdf2/fpdf2-logo.png)\n\"\"\")\n\nfrom fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.write_html(html)\npdf.output(\"pdf-from-markdown-with-mistune.pdf\")",
+      "language": "markdown"
+    },
+    {
+      "code": "pip install markdown",
+      "language": "unknown"
+    },
+    {
+      "code": "from markdown import markdown\n\nhtml = markdown(\n    \"\"\"\n# Top title (ATX)\n\nSubtitle (setext)\n-----------------\n\n### An even lower heading (ATX)\n\n**Text in bold**\n\n_Text in italics_\n\n[This is a link](https://github.com/PyFPDF/fpdf2)\n\n<https://py-pdf.github.io/fpdf2/>\n\nThis is an unordered list:\n\n* an item\n* another item\n\nThis is an ordered list:\n\n1. first item\n2. second item\n3. third item with an unordered sublist:\n    * an item\n    * another item\n\nInline `code span`\n\nA table:\n\nFoo | Bar | Baz\n--- | --- | ---\nFoo | Bar | Baz\n\nDefinition list:\n\nTerm\n: Definition\n\nActual HTML:\n\n<dl>\n  <dt>Term1</dt><dd>Definition1</dd>\n  <dt>Term2</dt><dd>Definition2</dd>\n</dl>\n\nSome horizontal thematic breaks:\n\n***\n\n---\n\n___\n\n![Alternate description](https://py-pdf.github.io/fpdf2/fpdf2-logo.png)\n\"\"\",\n    extensions=[\"def_list\", \"sane_lists\", \"tables\"],\n)\n\nfrom fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.write_html(html)\npdf.output(\"pdf-from-markdown-with-markdown.pdf\")",
+      "language": "markdown"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html"
+  ]
+}

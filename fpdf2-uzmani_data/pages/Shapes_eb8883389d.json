@@ -1,0 +1,199 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Shapes.html",
+  "title": "Shapes¶",
+  "content": "The following code snippets show examples of rendering various shapes.\n\nUsing line() to draw a thin plain orange line: from fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_line_width(0.5) pdf.set_draw_color(r=255, g=128, b=0) pdf.line(x1=50, y1=50, x2=150, y2=100) pdf.output(\"orange_plain_line.pdf\")\n\nDrawing a dashed light blue line: from fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_line_width(0.5) pdf.set_draw_color(r=0, g=128, b=255) pdf.set_dash_pattern(dash=2, gap=3) pdf.line(x1=50, y1=50, x2=150, y2=100) pdf.output(\"blue_dashed_line.pdf\")\n\nUsing circle() to draw a disc filled in pink with a grey outline: from fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_line_width(2) pdf.set_draw_color(240) pdf.set_fill_color(r=230, g=30, b=180) pdf.circle(x=50, y=50, radius=50, style=\"FD\") pdf.output(\"circle.pdf\")\n\nThis method changed parameters in release 2.8.1\n\nUsing ellipse(), filled in grey with a pink outline: from fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_line_width(2) pdf.set_draw_color(r=230, g=30, b=180) pdf.set_fill_color(240) pdf.ellipse(x=50, y=50, w=100, h=50, style=\"FD\") pdf.output(\"ellipse.pdf\")\n\nUsing rect() to draw nested squares: from fpdf import FPDF pdf = FPDF() pdf.add_page() for i in range(15): pdf.set_fill_color(255 - 15*i) pdf.rect(x=5+5*i, y=5+5*i, w=200-10*i, h=200-10*i, style=\"FD\") pdf.output(\"squares.pdf\")\n\nUsing rect() to draw rectangles with round corners: from fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_draw_color(200) y = 10 pdf.rect(60, y, 33, 28, round_corners=True, style=\"D\") pdf.set_fill_color(0, 255, 0) pdf.rect(100, y, 50, 10, round_corners=(\"BOTTOM_RIGHT\"), style=\"DF\") pdf.set_fill_color(255, 255, 0) pdf.rect(160, y, 10, 10, round_corners=(\"TOP_LEFT\", \"BOTTOM_LEFT\"), style=\"F\") pdf.output(\"round_corners_rectangles.pdf\")\n\nfrom fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_line_width(2) pdf.set_fill_color(r=255, g=0, b=0) coords = ((100, 0), (5, 69), (41, 181), (159, 181), (195, 69)) pdf.polygon(coords, style=\"DF\") pdf.output(\"polygon.pdf\")\n\nfrom fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_line_width(2) pdf.set_fill_color(r=255, g=0, b=0) pdf.arc(x=75, y=75, a=25, b=25, start_angle=90, end_angle=260, style=\"FD\") pdf.set_fill_color(r=255, g=0, b=255) pdf.arc(x=105, y=75, a=25, b=50, start_angle=180, end_angle=360, style=\"FD\") pdf.set_fill_color(r=0, g=255, b=0) pdf.arc(x=135, y=75, a=25, b=25, start_angle=0, end_angle=130, style=\"FD\") pdf.output(\"arc.pdf\")\n\nfrom fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_line_width(2) pdf.set_fill_color(r=255, g=0, b=0) pdf.solid_arc(x=75, y=75, a=25, b=25, start_angle=90, end_angle=260, style=\"FD\") pdf.set_fill_color(r=255, g=0, b=255) pdf.solid_arc(x=105, y=75, a=25, b=50, start_angle=180, end_angle=360, style=\"FD\") pdf.set_fill_color(r=0, g=255, b=0) pdf.solid_arc(x=135, y=75, a=25, b=25, start_angle=0, end_angle=130, style=\"FD\") pdf.output(\"solid_arc.pdf\")\n\nUsing bezier() to create a cubic Bézier curve: from fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_fill_color(r=255, g=0, b=255) pdf.bezier([(20, 80), (40, 20), (60, 80)], style=\"DF\") pdf.output(\"bezier.pdf\")\n\nOne of the nice properties of Bézier curves is that they can be chained:\n\nNote that, for smooth joining cubic Bézier curves, neighbor control points around the joining point must mirror each other (cf. Wikipedia).\n\nSource code: test_bezier_chaining() in test_bezier.py\n\nUsing regular_polygon():\n\nfrom fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_line_width(0.5) pdf.set_fill_color(r=30, g=200, b=0) pdf.regular_polygon(x=40, y=80, polyWidth=30, rotateDegrees=270, numSides=3, style=\"FD\") pdf.set_fill_color(r=10, g=30, b=255) pdf.regular_polygon(x=80, y=80, polyWidth=30, rotateDegrees=135, numSides=4, style=\"FD\") pdf.set_fill_color(r=165, g=10, b=255) pdf.regular_polygon(x=120, y=80, polyWidth=30, rotateDegrees=198, numSides=5, style=\"FD\") pdf.set_fill_color(r=255, g=125, b=10) pdf.regular_polygon(x=160, y=80, polyWidth=30, rotateDegrees=270, numSides=6, style=\"FD\") pdf.output(\"regular_polygon.pdf\")\n\nfrom fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_line_width(0.5) pdf.set_fill_color(r=255, g=0, b=0) pdf.star(x=40, y=80, r_in=5, r_out=15, rotate_degrees=0, corners=3, style=\"FD\") pdf.set_fill_color(r=0, g=255, b=255) pdf.star(x=80, y=80, r_in=5, r_out=15, rotate_degrees=90, corners=4, style=\"FD\") pdf.set_fill_color(r=255, g=255, b=0) pdf.star(x=120, y=80, r_in=5, r_out=15, rotate_degrees=180, corners=5, style=\"FD\") pdf.set_fill_color(r=255, g=0, b=255) pdf.star(x=160, y=80, r_in=5, r_out=15, rotate_degrees=270, corners=6, style=\"FD\") pdf.output(\"star.pdf\")\n\nline_width specifies the thickness of the line used to stroke a path\n\nstroke_join_style defines how the corner joining two path components should be rendered:\n\nThere are even more specific path styling settings supported: dash_pattern, stroke_opacity, stroke_miter_limit...\n\nAll of those settings can be set in a local_context().",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Shapes¶",
+      "id": "shapes"
+    },
+    {
+      "level": "h2",
+      "text": "Lines¶",
+      "id": "lines"
+    },
+    {
+      "level": "h2",
+      "text": "Circle¶",
+      "id": "circle"
+    },
+    {
+      "level": "h2",
+      "text": "Ellipse¶",
+      "id": "ellipse"
+    },
+    {
+      "level": "h2",
+      "text": "Rectangle¶",
+      "id": "rectangle"
+    },
+    {
+      "level": "h2",
+      "text": "Polygon¶",
+      "id": "polygon"
+    },
+    {
+      "level": "h2",
+      "text": "Arc¶",
+      "id": "arc"
+    },
+    {
+      "level": "h2",
+      "text": "Solid arc¶",
+      "id": "solid-arc"
+    },
+    {
+      "level": "h2",
+      "text": "Bezier Curve¶",
+      "id": "bezier-curve"
+    },
+    {
+      "level": "h2",
+      "text": "Regular Polygon¶",
+      "id": "regular-polygon"
+    },
+    {
+      "level": "h2",
+      "text": "Regular Star¶",
+      "id": "regular-star"
+    },
+    {
+      "level": "h2",
+      "text": "Path styling¶",
+      "id": "path-styling"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_line_width(0.5)\npdf.set_draw_color(r=255, g=128, b=0)\npdf.line(x1=50, y1=50, x2=150, y2=100)\npdf.output(\"orange_plain_line.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_line_width(0.5)\npdf.set_draw_color(r=0, g=128, b=255)\npdf.set_dash_pattern(dash=2, gap=3)\npdf.line(x1=50, y1=50, x2=150, y2=100)\npdf.output(\"blue_dashed_line.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_line_width(2)\npdf.set_draw_color(240)\npdf.set_fill_color(r=230, g=30, b=180)\npdf.circle(x=50, y=50, radius=50, style=\"FD\")\npdf.output(\"circle.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_line_width(2)\npdf.set_draw_color(r=230, g=30, b=180)\npdf.set_fill_color(240)\npdf.ellipse(x=50, y=50, w=100, h=50, style=\"FD\")\npdf.output(\"ellipse.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\nfor i in range(15):\n    pdf.set_fill_color(255 - 15*i)\n    pdf.rect(x=5+5*i, y=5+5*i, w=200-10*i, h=200-10*i, style=\"FD\")\npdf.output(\"squares.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_draw_color(200)\ny = 10\npdf.rect(60, y, 33, 28, round_corners=True, style=\"D\")\n\npdf.set_fill_color(0, 255, 0)\npdf.rect(100, y, 50, 10, round_corners=(\"BOTTOM_RIGHT\"), style=\"DF\")\n\npdf.set_fill_color(255, 255, 0)\npdf.rect(160, y, 10, 10, round_corners=(\"TOP_LEFT\", \"BOTTOM_LEFT\"), style=\"F\")\npdf.output(\"round_corners_rectangles.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_line_width(2)\npdf.set_fill_color(r=255, g=0, b=0)\ncoords = ((100, 0), (5, 69), (41, 181), (159, 181), (195, 69))\npdf.polygon(coords, style=\"DF\")\npdf.output(\"polygon.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_line_width(2)\npdf.set_fill_color(r=255, g=0, b=0)\npdf.arc(x=75, y=75, a=25, b=25, start_angle=90, end_angle=260, style=\"FD\")\n\npdf.set_fill_color(r=255, g=0, b=255)\npdf.arc(x=105, y=75, a=25, b=50, start_angle=180, end_angle=360, style=\"FD\")\n\npdf.set_fill_color(r=0, g=255, b=0)\npdf.arc(x=135, y=75, a=25, b=25, start_angle=0, end_angle=130, style=\"FD\")\n\npdf.output(\"arc.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_line_width(2)\npdf.set_fill_color(r=255, g=0, b=0)\npdf.solid_arc(x=75, y=75, a=25, b=25, start_angle=90, end_angle=260, style=\"FD\")\n\npdf.set_fill_color(r=255, g=0, b=255)\npdf.solid_arc(x=105, y=75, a=25, b=50, start_angle=180, end_angle=360, style=\"FD\")\n\npdf.set_fill_color(r=0, g=255, b=0)\npdf.solid_arc(x=135, y=75, a=25, b=25, start_angle=0, end_angle=130, style=\"FD\")\n\npdf.output(\"solid_arc.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\npdf = FPDF()\npdf.add_page()\npdf.set_fill_color(r=255, g=0, b=255)\npdf.bezier([(20, 80), (40, 20), (60, 80)], style=\"DF\")\npdf.output(\"bezier.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_line_width(0.5)\n\npdf.set_fill_color(r=30, g=200, b=0)\npdf.regular_polygon(x=40, y=80, polyWidth=30, rotateDegrees=270, numSides=3, style=\"FD\")\n\npdf.set_fill_color(r=10, g=30, b=255)\npdf.regular_polygon(x=80, y=80, polyWidth=30, rotateDegrees=135, numSides=4, style=\"FD\")\n\npdf.set_fill_color(r=165, g=10, b=255)\npdf.regular_polygon(x=120, y=80, polyWidth=30, rotateDegrees=198, numSides=5, style=\"FD\")\n\npdf.set_fill_color(r=255, g=125, b=10)\npdf.regular_polygon(x=160, y=80, polyWidth=30, rotateDegrees=270, numSides=6, style=\"FD\")\npdf.output(\"regular_polygon.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_line_width(0.5)\n\npdf.set_fill_color(r=255, g=0, b=0)\npdf.star(x=40, y=80, r_in=5, r_out=15, rotate_degrees=0, corners=3, style=\"FD\")\n\npdf.set_fill_color(r=0, g=255, b=255)\npdf.star(x=80, y=80, r_in=5, r_out=15, rotate_degrees=90, corners=4, style=\"FD\")\n\npdf.set_fill_color(r=255, g=255, b=0)\npdf.star(x=120, y=80, r_in=5, r_out=15, rotate_degrees=180, corners=5, style=\"FD\")\n\npdf.set_fill_color(r=255, g=0, b=255)\npdf.star(x=160, y=80, r_in=5, r_out=15, rotate_degrees=270, corners=6, style=\"FD\")\npdf.output(\"star.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\nfrom fpdf.enums import StrokeJoinStyle\n\npdf = FPDF()\npdf.add_page()\npdf.set_line_width(5)\npdf.set_fill_color(r=255, g=128, b=0)\nwith pdf.local_context(stroke_join_style=StrokeJoinStyle.ROUND):\n    pdf.regular_polygon(x=50, y=120, polyWidth=100, numSides=8, style=\"FD\")\npdf.output(\"regular_polygon_rounded.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\nfrom fpdf.enums import StrokeCapStyle\n\npdf = FPDF()\npdf.add_page()\npdf.set_line_width(5)\npdf.set_fill_color(r=255, g=128, b=0)\nwith pdf.local_context(stroke_cap_style=StrokeCapStyle.ROUND):\n    pdf.line(x1=50, y1=50, x2=150, y2=100)\npdf.output(\"line_with_round_ends.pdf\")",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/enums.html"
+  ]
+}

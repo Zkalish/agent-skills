@@ -1,0 +1,66 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/index.html",
+  "title": "Package fpdf",
+  "content": "Root module. Gives direct access to some classes defined in submodules:\n\nUsage documentation at: https://py-pdf.github.io/fpdf2/Annotations.html\n\nUtilities to manage deprecation errors & warnings …\n\nVector drawing: managing colors, graphics states, paths, transforms …\n\nCore drawing primitives for fpdf2 …\n\nUtilities to perform encryption following the PDF standards …\n\nThis module provides support for embedding and rendering various color font formats in PDF documents using Type 3 fonts. It defines classes and …\n\nFont-related classes & constants. Includes the definition of the character widths of all PDF standard fonts …\n\nMixin class for managing a stack of graphics state variables …\n\nRoutines for organizing lines and larger blocks of text, with manual and automatic line wrapping …\n\nThis module is in work-in-progress state. Hint tables / hint streams have not been implemented yet, and there are a few \"TODO\" comment remaining. cf …\n\nQuoting section 8.2.2 \"Document Outline\" of the 2006 PDF spec 1.7:\n\nThe document outline consists of a tree-structured hierarchy of outline items …\n\nThis module contains the serialization logic that produces a PDF document from a FPDF instance. Most of the code in this module is used when …\n\nHandles the creation of patterns and gradients …\n\nUsage documentation at: https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html#viewer-preferences\n\nA wrapper class to allow rewinding/replaying changes made to a FPDF instance …\n\nModule dedicated to document signature generation …\n\nQuoting the PDF spec:\n\nPDF’s logical structure facilities provide a mechanism for incorporating structural information about a document’s content …\n\nUtilities to parse SVG graphics into fpdf.drawing objects …\n\nClasses & functions that represent core elements of the PDF syntax …\n\nUsage documentation at: https://py-pdf.github.io/fpdf2/Tables.html\n\nPDF template helpers for fpdf2 …\n\nUsage documentation at: https://py-pdf.github.io/fpdf2/TextRegion.html\n\nUsage documentation at: https://py-pdf.github.io/fpdf2/Presentations.html#transitions\n\nThe hardcoded information on this module was loaded from the Unicode file Scripts-16.0.0.txt https://www.unicode.org/Public/UNIDATA/Scripts.txt …\n\nVarious utilities that could not be gathered logically in a specific module …\n\nExtra filesystem folder where fpdf2 looks for fonts files, after the current directory\n\nCurrent fpdf2 version, also available as __version__",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Package fpdf",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Sub-modules",
+      "id": "header-submodules"
+    },
+    {
+      "level": "h2",
+      "text": "Global variables",
+      "id": "header-variables"
+    }
+  ],
+  "code_samples": [],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/enums.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/errors.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fonts.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/prefs.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/template.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/actions.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/annotations.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/bidi.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/data/index.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/deprecation.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/drawing.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/drawing_primitives.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/encryption.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/font_type_3.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/graphics_state.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/html.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/image_datastructures.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/image_parsing.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/line_break.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/linearization.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/outline.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/output.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/pattern.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/recorder.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/sign.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/structure_tree.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/svg.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/syntax.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/table.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/text_region.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/transitions.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/unicode_script.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/util.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html"
+  ]
+}

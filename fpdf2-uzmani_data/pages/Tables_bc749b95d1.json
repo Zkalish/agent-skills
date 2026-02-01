@@ -1,0 +1,328 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Tables.html",
+  "title": "Tables¶",
+  "content": "Tables can be built using the table() method. Here is a simple example:\n\nThe col_widths optional parameter can be provided to configure this.\n\nIf a single number is provided as col_widths, it is interpreted as a fixed column width in document units.\n\nIf an array of numbers is provided as col_widths, the values are considered to be fractions of the full effective page width, meaning that col_widths=(1, 1, 2) is strictly equivalent to col_widths=(25, 25, 50).\n\nalign can be passed to table() to set the table horizontal position relative to the page, when it's not using the full page width. It's centered by default.\n\nThis can be set globally, or on a per-column basis:\n\nCell padding (the space between the cells content and the edge of the cell) can be set globally or on a per-cell basis.\n\nFollowing the CCS standard the padding can be specified using 1,2 3 or 4 values.\n\n(also an example of coloring individual cells)\n\nNote: the c_margin parameter (default 1.0) also controls the horizontal margins in a cell. If a non-zero padding for left and right is supplied then c_margin is ignored.\n\nCan be set globally, per row or per cell, by passing a string or a VAlign enum value as v_align: ... with pdf.table(v_align=VAlign.M) as table: ... row.cell(f\"custom v-align\", v_align=\"TOP\")\n\nFirst, line_height can be provided to set the height of every individual line of text: ... with pdf.table(line_height=2.5 * pdf.font_size) as table: ...\n\nSecond, a global min_row_height can be set, or configured per row as min_height: ... with pdf.table(min_row_height=30) as table: row = table.row() row.cell(\"A\") row.cell(\"B\") row = table.row(min_height=50) row.cell(\"C\") row.cell(\"D\")\n\nBy default, fpdf2 considers that the first row of tables contains its headings. This can however be disabled:\n\nThe repetition of table headings on every page can also be disabled:\n\n\"ON_TOP_OF_EVERY_PAGE\" is an equivalent valid value for repeat_headings , cf. documentation on TableHeadingsDisplay.\n\nIt's possible to override the style of individual cells in the heading. The overriding style will take precedence for any specified values, while retaining the default style for unspecified values: ... headings_style = FontFace(emphasis=\"ITALICS\", color=blue, fill_color=grey) override_style = FontFace(emphasis=\"BOLD\") with pdf.table(headings_style=headings_style) as table: headings = table.row() headings.cell(\"First name\", style=override_style) headings.cell(\"Last name\", style=override_style) headings.cell(\"Age\") headings.cell(\"City\") ...\n\nThe cell color is set following those settings, ordered by priority:\n\nFinally, it is possible to define your own cell-filling logic:\n\nIt is also possible to create a custom border layout, controlling thickness, color, and dash pattern: from fpdf.table import TableBordersLayout, TableBorderStyle, TableCellStyle gray = (150, 150, 150) red = (255, 0, 0) custom_layout = TableBordersLayout( cell_style_getter=lambda row_num, col_num, num_heading_rows, num_rows, num_cols: TableCellStyle( left=( True if col_num == 0 else TableBorderStyle(color=(150, 150, 150), dash=2) if col_num == 2 else False ), bottom=True if row_num == num_rows - 1 else False, right=True if col_num == num_cols - 1 else False, top=( True if row_num == 0 else TableBorderStyle(thickness=1) if row_num == num_heading_rows else TableBorderStyle(color=red, dash=2) ), ) ) with pdf.table(borders_layout=custom_layout) as table: ...\n\nAll the possible layout values are described there: TableBordersLayout.\n\nAll the possible borders values are described there: CellBordersLayout.\n\nBy default, images height & width are constrained by the row height (based on text content) and the column width. To render bigger images, you can set the line_height to increase the row height, or pass img_fill_width=True to .cell():\n\nTo simplify table() usage, shorter, alternative usage forms are allowed.\n\nCan be shortened to the following code, by passing lists of strings as the cells optional argument of .row():\n\nAnd even shortened further to a single line, by passing lists of lists of strings as the rows optional argument of .table():\n\nSpacing can be introduced between rows and/or columns:\n\nCells spanning multiple columns or rows can be defined by passing a colspan or rowspan argument to .cell(). Only the cells with data in them need to be defined. This means that the number of cells on each row can be different.\n\nAlternatively, the spans can be defined using the placeholder elements TableSpan.COL and TableSpan.ROW. These elements merge the current cell with the previous column or row respectively.\n\nFor example, the previous example table can be defined as follows:\n\nThe number of heading rows is defined by passing the num_heading_rows argument to Table(). The default value is 1. To guarantee backwards compatibility with the first_row_as_headings argument, the following applies: - If num_heading_rows==1: The value of first_row_as_headings defines whether the first row is treated as heading or standard row. - Otherwise, the value of num_heading_rows decides the number of heading rows. with pdf.table(TABLE_DATA, num_heading_rows=2): pass\n\nWe have dedicated pages about those topics:\n\nTables can also be defined in HTML using FPDF.write_html. With the same data as above, and column widths defined as percent of the effective width:\n\nNote that write_html has some limitations, notably regarding multi-lines cells.\n\nThe PDF file format is not designed to embed structured tables. Hence, it can be tricky to extract tables data from PDF documents.\n\nIn our tests suite, we ensure that several PDF-tables parsing Python libraries can successfully extract tables in documents generated with fpdf2. Namely, we test camelot-py & tabula-py: test/table/test_table_extraction.py.\n\nBased on those tests, if you want to ease table extraction from the documents you produce, we recommend the following guidelines:",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Tables¶",
+      "id": "tables"
+    },
+    {
+      "level": "h2",
+      "text": "Features¶",
+      "id": "features"
+    },
+    {
+      "level": "h2",
+      "text": "Setting table & column widths¶",
+      "id": "setting-table-column-widths"
+    },
+    {
+      "level": "h2",
+      "text": "Setting text alignment¶",
+      "id": "setting-text-alignment"
+    },
+    {
+      "level": "h2",
+      "text": "Setting cell padding¶",
+      "id": "setting-cell-padding"
+    },
+    {
+      "level": "h2",
+      "text": "Setting vertical alignment of text in cells¶",
+      "id": "setting-vertical-alignment-of-text-in-cells"
+    },
+    {
+      "level": "h2",
+      "text": "Setting row height¶",
+      "id": "setting-row-height"
+    },
+    {
+      "level": "h2",
+      "text": "Disable table headings¶",
+      "id": "disable-table-headings"
+    },
+    {
+      "level": "h2",
+      "text": "Style table headings¶",
+      "id": "style-table-headings"
+    },
+    {
+      "level": "h2",
+      "text": "Set cells background¶",
+      "id": "set-cells-background"
+    },
+    {
+      "level": "h2",
+      "text": "Set borders layout¶",
+      "id": "set-borders-layout"
+    },
+    {
+      "level": "h2",
+      "text": "Set cell borders¶",
+      "id": "set-cell-borders"
+    },
+    {
+      "level": "h2",
+      "text": "Insert images¶",
+      "id": "insert-images"
+    },
+    {
+      "level": "h2",
+      "text": "Adding links to cells¶",
+      "id": "adding-links-to-cells"
+    },
+    {
+      "level": "h2",
+      "text": "Syntactic sugar¶",
+      "id": "syntactic-sugar"
+    },
+    {
+      "level": "h2",
+      "text": "Gutter¶",
+      "id": "gutter"
+    },
+    {
+      "level": "h2",
+      "text": "Column span and row span¶",
+      "id": "column-span-and-row-span"
+    },
+    {
+      "level": "h2",
+      "text": "Table with multiple heading rows¶",
+      "id": "table-with-multiple-heading-rows"
+    },
+    {
+      "level": "h2",
+      "text": "Table from pandas DataFrame or spreadsheet files¶",
+      "id": "table-from-pandas-dataframe-or-spreadsheet-files"
+    },
+    {
+      "level": "h2",
+      "text": "Using write_html¶",
+      "id": "using-write_html"
+    },
+    {
+      "level": "h2",
+      "text": "\"Parsabilty\" of the tables generated¶",
+      "id": "parsabilty-of-the-tables-generated"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\nTABLE_DATA = (\n    (\"First name\", \"Last name\", \"Age\", \"City\"),\n    (\"Jules\", \"Smith\", \"34\", \"San Juan\"),\n    (\"Mary\", \"Ramos\", \"45\", \"Orlando\"),\n    (\"Carlson\", \"Banks\", \"19\", \"Los Angeles\"),\n    (\"Lucas\", \"Cimon\", \"31\", \"Angers\"),\n)\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=16)\nwith pdf.table() as table:\n    for data_row in TABLE_DATA:\n        row = table.row()\n        for datum in data_row:\n            row.cell(datum)\npdf.output('table.pdf')",
+      "language": "typescript"
+    },
+    {
+      "code": "...\nwith pdf.table(width=150, col_widths=(30, 30, 10, 30)) as table:\n    ...",
+      "language": "typescript"
+    },
+    {
+      "code": "...\nwith pdf.table(text_align=\"CENTER\") as table:\n    ...\npdf.ln()\nwith pdf.table(text_align=(\"CENTER\", \"CENTER\", \"RIGHT\", \"LEFT\")) as table:\n    ...",
+      "language": "typescript"
+    },
+    {
+      "code": "...\nred = (255, 0, 0)\nstyle = FontFace(color=black, fill_color=red)\nwith pdf.table(line_height=pdf.font_size, padding=2) as table:\n    for irow in range(5):\n        row = table.row()\n        for icol in range(5):\n            datum = \"Circus\"\n            if irow == 3 and icol % 2 == 0:\n                row.cell(\"custom padding\", style=style, padding=(2 * icol, 8, 8, 8))\n            else:\n                row.cell(datum)",
+      "language": "typescript"
+    },
+    {
+      "code": "...\nwith pdf.table(v_align=VAlign.M) as table:\n    ...\n    row.cell(f\"custom v-align\", v_align=\"TOP\")",
+      "language": "typescript"
+    },
+    {
+      "code": "...\nwith pdf.table(line_height=2.5 * pdf.font_size) as table:\n    ...",
+      "language": "typescript"
+    },
+    {
+      "code": "...\nwith pdf.table(min_row_height=30) as table:\n    row = table.row()\n    row.cell(\"A\")\n    row.cell(\"B\")\n    row = table.row(min_height=50)\n    row.cell(\"C\")\n    row.cell(\"D\")",
+      "language": "typescript"
+    },
+    {
+      "code": "...\nwith pdf.table(first_row_as_headings=False) as table:\n    ...",
+      "language": "typescript"
+    },
+    {
+      "code": "...\nwith pdf.table(repeat_headings=0) as table:\n    ...",
+      "language": "typescript"
+    },
+    {
+      "code": "from fpdf.fonts import FontFace\n\n...\nblue = (0, 0, 255)\ngrey = (128, 128, 128)\nheadings_style = FontFace(emphasis=\"ITALICS\", color=blue, fill_color=grey)\nwith pdf.table(headings_style=headings_style) as table:\n    ...",
+      "language": "python"
+    },
+    {
+      "code": "...\nheadings_style = FontFace(emphasis=\"ITALICS\", color=blue, fill_color=grey)\noverride_style = FontFace(emphasis=\"BOLD\")\nwith pdf.table(headings_style=headings_style) as table:\n    headings = table.row()\n    headings.cell(\"First name\", style=override_style)\n    headings.cell(\"Last name\", style=override_style)\n    headings.cell(\"Age\")\n    headings.cell(\"City\")\n    ...",
+      "language": "typescript"
+    },
+    {
+      "code": "...\ngreyscale = 200\nwith pdf.table(cell_fill_color=greyscale, cell_fill_mode=\"ROWS\") as table:\n    ...",
+      "language": "typescript"
+    },
+    {
+      "code": "...\nlightblue = (173, 216, 230)\nwith pdf.table(cell_fill_color=lightblue, cell_fill_mode=\"COLUMNS\") as table:\n    ...",
+      "language": "typescript"
+    },
+    {
+      "code": "class EvenOddCellFillMode():\n    @staticmethod\n    def should_fill_cell(i, j):\n        return i % 2 and j % 2\n\n...\nwith pdf.table(cell_fill_color=lightblue, cell_fill_mode=EvenOddCellFillMode()) as table:\n    ...",
+      "language": "python"
+    },
+    {
+      "code": "...\nwith pdf.table(borders_layout=\"INTERNAL\") as table:\n    ...",
+      "language": "typescript"
+    },
+    {
+      "code": "...\nwith pdf.table(borders_layout=\"MINIMAL\") as table:\n    ...",
+      "language": "typescript"
+    },
+    {
+      "code": "...\npdf.set_draw_color(50)  # very dark grey\npdf.set_line_width(.5)\nwith pdf.table(borders_layout=\"SINGLE_TOP_LINE\") as table:\n    ...",
+      "language": "typescript"
+    },
+    {
+      "code": "from fpdf.table import TableBordersLayout, TableBorderStyle, TableCellStyle\n\ngray = (150, 150, 150)\nred = (255, 0, 0)\ncustom_layout = TableBordersLayout(\n    cell_style_getter=lambda row_num, col_num, num_heading_rows, num_rows, num_cols: TableCellStyle(\n        left=(\n            True if col_num == 0\n            else TableBorderStyle(color=(150, 150, 150), dash=2) if col_num == 2\n            else False\n        ),        bottom=True if row_num == num_rows - 1 else False,\n        right=True if col_num == num_cols - 1 else False,\n        top=(\n            True if row_num == 0\n            else TableBorderStyle(thickness=1) if row_num == num_heading_rows\n            else TableBorderStyle(color=red, dash=2)\n        ),\n    )\n)\n\nwith pdf.table(borders_layout=custom_layout) as table:\n    ...",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=16)\nwith pdf.table() as table:\n    for data_row in TABLE_DATA:\n        row = table.row()\n        for datum in data_row:\n            row.cell(datum, border=\"LEFT\")\npdf.output('table.pdf')",
+      "language": "typescript"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=16)\nwith pdf.table() as table:\n    for data_row in TABLE_DATA:\n        row = table.row()\n        for datum in data_row:\n            row.cell(datum, border=\"TOP\")\npdf.output('table.pdf')",
+      "language": "typescript"
+    },
+    {
+      "code": "from fpdf import FPDF\nfrom fpdf.enums import CellBordersLayout\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=16)\nwith pdf.table() as table:\n    for data_row in TABLE_DATA:\n        row = table.row()\n        for datum in data_row:\n            row.cell(datum, border=CellBordersLayout.TOP | CellBordersLayout.LEFT)\npdf.output('table.pdf')",
+      "language": "typescript"
+    },
+    {
+      "code": "TABLE_DATA = (\n    (\"First name\", \"Last name\", \"Image\", \"City\"),\n    (\"Jules\", \"Smith\", \"shirt.png\", \"San Juan\"),\n    (\"Mary\", \"Ramos\", \"joker.png\", \"Orlando\"),\n    (\"Carlson\", \"Banks\", \"socialist.png\", \"Los Angeles\"),\n    (\"Lucas\", \"Cimon\", \"circle.bmp\", \"Angers\"),\n)\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=16)\nwith pdf.table() as table:\n    for i, data_row in enumerate(TABLE_DATA):\n        row = table.row()\n        for j, datum in enumerate(data_row):\n            if j == 2 and i > 0:\n                row.cell(img=datum)\n            else:\n                row.cell(datum)\npdf.output('table_with_images.pdf')",
+      "language": "typescript"
+    },
+    {
+      "code": "row.cell(img=datum, img_fill_width=True)",
+      "language": "unknown"
+    },
+    {
+      "code": "row.cell(..., link=\"https://py-pdf.github.io/fpdf2/\")\nrow.cell(..., link=pdf.add_link(page=1))",
+      "language": "unknown"
+    },
+    {
+      "code": "with pdf.table() as table:\n    for data_row in TABLE_DATA:\n        row = table.row()\n        for datum in data_row:\n            row.cell(datum)",
+      "language": "typescript"
+    },
+    {
+      "code": "with pdf.table() as table:\n    for data_row in TABLE_DATA:\n        table.row(data_row)",
+      "language": "typescript"
+    },
+    {
+      "code": "with pdf.table(TABLE_DATA):\n    pass",
+      "language": "unknown"
+    },
+    {
+      "code": "with pdf.table(TABLE_DATA, gutter_height=3, gutter_width=3):\n    pass",
+      "language": "unknown"
+    },
+    {
+      "code": "...\nwith pdf.table(col_widths=(1, 2, 1, 1)) as table:\n    row = table.row()\n    row.cell(\"0\")\n    row.cell(\"1\")\n    row.cell(\"2\")\n    row.cell(\"3\")\n\n    row = table.row()\n    row.cell(\"A1\")\n    row.cell(\"A2\", colspan=2)\n    row.cell(\"A4\")\n\n    row = table.row()\n    row.cell(\"B1\", colspan=2)\n    row.cell(\"B3\")\n    row.cell(\"B4\")\n...",
+      "language": "typescript"
+    },
+    {
+      "code": "...\nwith pdf.table(text_align=\"CENTER\") as table:\n    row = table.row()\n    row.cell(\"A1\", colspan=2, rowspan=3)\n    row.cell(\"C1\", colspan=2)\n\n    row = table.row()\n    row.cell(\"C2\", colspan=2, rowspan=2)\n\n    row = table.row()\n    # all columns of this row are spanned by previous rows\n\n    row = table.row()\n    row.cell(\"A4\", colspan=4)\n\n    row = table.row()\n    row.cell(\"A5\", colspan=2)\n    row.cell(\"C5\")\n    row.cell(\"D5\")\n\n    row = table.row()\n    row.cell(\"A6\")\n    row.cell(\"B6\", colspan=2, rowspan=2)\n    row.cell(\"D6\", rowspan=2)\n\n    row = table.row()\n    row.cell(\"A7\")\n...",
+      "language": "typescript"
+    },
+    {
+      "code": "...\nTABLE_DATA = [\n    [\"A\",           \"B\",            \"C\",            \"D\"],\n    [\"A1\",          TableSpan.COL,  \"C1\",           TableSpan.COL],\n    [TableSpan.ROW, TableSpan.ROW,  \"C2\",           TableSpan.COL],\n    [TableSpan.ROW, TableSpan.ROW,  TableSpan.ROW,  TableSpan.ROW],\n    [\"A4\",          TableSpan.COL,  TableSpan.COL,  TableSpan.COL],\n    [\"A5\",          TableSpan.COL,  \"C5\",           \"D5\"],\n    [\"A6\",          \"B6\",           TableSpan.COL,  \"D6\"],\n    [\"A7\",          TableSpan.ROW,  TableSpan.ROW,  TableSpan.ROW],\n]\n\nwith pdf.table(TABLE_DATA, text_align=\"CENTER\"):\n    pass\n...",
+      "language": "json"
+    },
+    {
+      "code": "with pdf.table(TABLE_DATA, num_heading_rows=2):\n    pass",
+      "language": "unknown"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.set_font_size(16)\npdf.add_page()\npdf.write_html(\n    f\"\"\"<table border=\"1\"><thead><tr>\n    <th width=\"25%\">{TABLE_DATA[0][0]}</th>\n    <th width=\"25%\">{TABLE_DATA[0][1]}</th>\n    <th width=\"15%\">{TABLE_DATA[0][2]}</th>\n    <th width=\"35%\">{TABLE_DATA[0][3]}</th>\n</tr></thead><tbody><tr>\n    <td>{'</td><td>'.join(TABLE_DATA[1])}</td>\n</tr><tr>\n    <td>{'</td><td>'.join(TABLE_DATA[2])}</td>\n</tr><tr>\n    <td>{'</td><td>'.join(TABLE_DATA[3])}</td>\n</tr><tr>\n    <td>{'</td><td>'.join(TABLE_DATA[4])}</td>\n</tr></tbody></table>\"\"\",\n    table_line_separators=True,\n)\npdf.output('table_html.pdf')",
+      "language": "jsx"
+    }
+  ],
+  "patterns": [
+    {
+      "description": "Tables can be built using the table() method. Here is a simple example:",
+      "code": "table()"
+    },
+    {
+      "description": "It is also possible to create a custom border layout, controlling thickness, color, and dash pattern: from fpdf.table import TableBordersLayout, TableBorderStyle, TableCellStyle gray = (150, 150, 150) red = (255, 0, 0) custom_layout = TableBordersLayout( cell_style_getter=lambda row_num, col_num, num_heading_rows, num_rows, num_cols: TableCellStyle( left=( True if col_num == 0 else TableBorderStyle(color=(150, 150, 150), dash=2) if col_num == 2 else False ), bottom=True if row_num == num_rows - 1 else False, right=True if col_num == num_cols - 1 else False, top=( True if row_num == 0 else TableBorderStyle(thickness=1) if row_num == num_heading_rows else TableBorderStyle(color=red, dash=2) ), ) ) with pdf.table(borders_layout=custom_layout) as table: ...",
+      "code": "from fpdf.table import TableBordersLayout, TableBorderStyle, TableCellStyle\n\ngray = (150, 150, 150)\nred = (255, 0, 0)\ncustom_layout = TableBordersLayout(\n    cell_style_getter=lambda row_num, col_num, num_heading_rows, num_rows, num_cols: TableCellStyle(\n        left=(\n            True if col_num == 0\n            else TableBorderStyle(color=(150, 150, 150), dash=2) if col_num == 2\n            else False\n        ),        bottom=True if row_num == num_rows - 1 else False,\n        right=True if col_num == num_cols - 1 else False,\n        top=(\n            True if row_num == 0\n            else TableBorderStyle(thickness=1) if row_num == num_heading_rows\n            else TableBorderStyle(color=red, dash=2)\n        ),\n    )\n)\n\nwith pdf.table(borders_layout=custom_layout) as table:\n    ..."
+    }
+  ],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/enums.html"
+  ]
+}

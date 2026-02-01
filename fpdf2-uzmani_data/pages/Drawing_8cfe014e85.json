@@ -1,0 +1,149 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Drawing.html",
+  "title": "Drawing¶",
+  "content": "The fpdf.drawing module provides an API for composing paths out of an arbitrary sequence of straight lines and curves. This allows fairly low-level control over the graphics primitives that PDF provides, giving the user the ability to draw pretty much any vector shape on the page.\n\nThe drawing API makes use of features (notably transparency and blending modes) that were introduced in PDF 1.4. Therefore, use of the features of this module will automatically set the output version to 1.4 (fpdf normally defaults to version 1.3. Because the PDF 1.4 specification was originally published in 2001, this version should be compatible with all viewers currently in general use).\n\nThe easiest way to add a drawing to the document is via fpdf.FPDF.new_path. This is a context manager that takes care of serializing the path to the document once the context is exited.\n\nDrawings follow the fpdf convention that the origin (that is, coordinate(0, 0)), is at the top-left corner of the page. The numbers specified to the various path commands are interpreted in the document units.\n\nimport fpdf pdf = fpdf.FPDF(unit='mm', format=(10, 10)) pdf.add_page() with pdf.new_path() as path: path.move_to(2, 2) path.line_to(8, 8) path.horizontal_line_relative(-6) path.line_relative(6, -6) path.close() pdf.output(\"drawing-demo.pdf\") This example draws an hourglass shape centered on the page:\n\nDrawings can be styled, changing how they look and blend with other drawings. Styling can change the color, opacity, stroke shape, and other attributes of a drawing.\n\nLet's add some color to the above example:\n\nIf you make color choices like these, it's probably not a good idea to quit your day job to become a graphic designer. Here's what the output should look like:\n\nTransforms provide the ability to manipulate the placement of points within a path without having to do any pesky math yourself. Transforms are composable using python's matrix multiplication operator (@), so, for example, a transform that both rotates and scales an object can be create by matrix multiplying a rotation transform with a scaling transform.\n\nAn important thing to note about transforms is that the result is order dependent, which is to say that something like performing a rotation followed by scaling will not, in the general case, result in the same output as performing the same scaling followed by the same rotation.\n\nAdditionally, it's not generally possible to deconstruct a composed transformation (representing an ordered sequence of translations, scaling, rotations, shearing) back into the sequence of individual transformation functions that produced it. That's okay, because this isn't important unless you're trying to do something like animate transforms after they've been composed, which you can't do in a PDF anyway.\n\nAll that said, let's take the example we've been working with for a spin (the pun is intended, you see, because we're going to rotate the drawing). Explaining the joke does make it better.\n\nAn easy way to apply a transform to a path is through the path.transform property.\n\nThe transform in the above example rotates the path 45 degrees clockwise and scales it by 1/sqrt(2) around its center point. This transform could be equivalently written as:\n\nBecause all transforms operate on points relative to the origin, if we had rotated the path without first centering it on the origin, we would have rotated it partway off of the page. Similarly, the size-reduction from the scaling would have moved it closer to the origin. By bracketing the transforms with the two translations, the placement of the drawing on the page is preserved.\n\nThe clipping path is used to define the region that the normal path is actually painted. This can be used to create drawings that would otherwise be difficult to produce.\n\nThe drawing API also supports compositing operations, which control how a path blends with another. These are based on the Porter–Duff compositing model and the blend modes defined in PDF 1.4.\n\nYou can set a compositing operation via the PaintComposite class: from fpdf import FPDF from fpdf.drawing import PaintedPath, PaintComposite from fpdf.enums import CompositingOperation from pathlib import Path pdf = FPDF() pdf.add_page() with pdf.drawing_context() as gc: blue_square = PaintedPath() blue_square.rectangle(10, 10, 50, 50) blue_square.style.fill_color = \"#0000ff\" red_square = PaintedPath() red_square.rectangle(35, 35, 50, 50) red_square.style.fill_color = \"#ff0000\" composite = PaintComposite(backdrop=red_square, source=blue_square, operation=CompositingOperation.DESTINATION_ATOP) gc.add_item(composite) pdf.output('compositing-demo.pdf')\n\nThe presented API style is designed to make it simple to produce shapes declaratively in your Python scripts. However, paths can just as easily be created programmatically by creating instances of the fpdf.drawing.PaintedPath for paths and fpdf.drawing.GraphicsContext for groups of paths.\n\nStoring paths in intermediate objects allows reusing them and can open up more advanced use-cases. The fpdf.svg SVG converter, for example, is implemented using the fpdf.drawing interface.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Drawing¶",
+      "id": "drawing"
+    },
+    {
+      "level": "h2",
+      "text": "Getting Started¶",
+      "id": "getting-started"
+    },
+    {
+      "level": "h2",
+      "text": "Adding Some Style¶",
+      "id": "adding-some-style"
+    },
+    {
+      "level": "h2",
+      "text": "Transforms And You¶",
+      "id": "transforms-and-you"
+    },
+    {
+      "level": "h2",
+      "text": "Clipping Paths¶",
+      "id": "clipping-paths"
+    },
+    {
+      "level": "h2",
+      "text": "Compositing operations¶",
+      "id": "compositing-operations"
+    },
+    {
+      "level": "h2",
+      "text": "Next Steps¶",
+      "id": "next-steps"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "import fpdf\n\npdf = fpdf.FPDF(unit='mm', format=(10, 10))\npdf.add_page()\n\nwith pdf.new_path() as path:\n    path.move_to(2, 2)\n    path.line_to(8, 8)\n    path.horizontal_line_relative(-6)\n    path.line_relative(6, -6)\n    path.close()\n\npdf.output(\"drawing-demo.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "import fpdf\n\npdf = fpdf.FPDF(unit='mm', format=(10, 10))\npdf.add_page()\n\nwith pdf.new_path() as path:\n    path.style.fill_color = '#A070D0'\n    path.style.stroke_color = fpdf.drawing.gray8(210)\n    path.style.stroke_width = 1\n    path.style.stroke_opacity = 0.75\n    path.style.stroke_join_style = 'round'\n\n    path.move_to(2, 2)\n    path.line_to(8, 8)\n    path.horizontal_line_relative(-6)\n    path.line_relative(6, -6)\n    path.close()\n\npdf.output(\"drawing-demo.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "import fpdf\n\npdf = fpdf.FPDF(unit=\"mm\", format=(10, 10))\npdf.add_page()\n\nwith pdf.new_path() as path:\n    path.style.fill_color = \"#A070D0\"\n    path.style.stroke_color = fpdf.drawing.gray8(210)\n    path.style.stroke_width = 1\n    path.style.stroke_opacity = 0.75\n    path.style.stroke_join_style = \"round\"\n    path.transform = fpdf.drawing.Transform.rotation_d(45).scale(0.707).about(5, 5)\n\n    path.move_to(2, 2)\n    path.line_to(8, 8)\n    path.horizontal_line_relative(-6)\n    path.line_relative(6, -6)\n\n    path.close()\n\npdf.output(\"drawing-demo.pdf\")",
+      "language": "csharp"
+    },
+    {
+      "code": "import fpdf\nT = fpdf.drawing.Transform\n\nT.translation(-5, -5) @ T.rotation_d(45) @ T.scaling(0.707) @ T.translation(5, 5)",
+      "language": "csharp"
+    },
+    {
+      "code": "import fpdf\n\npdf = fpdf.FPDF(unit=\"mm\", format=(10, 10))\npdf.add_page()\n\nclipping_path = fpdf.drawing.ClippingPath()\nclipping_path.rectangle(x=2.5, y=2.5, w=5, h=5, rx=1, ry=1)\n\nwith pdf.new_path() as path:\n    path.style.fill_color = \"#A070D0\"\n    path.style.stroke_color = fpdf.drawing.gray8(210)\n    path.style.stroke_width = 1\n    path.style.stroke_opacity = 0.75\n    path.style.stroke_join_style = \"round\"\n\n    path.clipping_path = clipping_path\n\n    path.move_to(2, 2)\n    path.line_to(8, 8)\n    path.horizontal_line_relative(-6)\n    path.line_relative(6, -6)\n\n    path.close()\n\npdf.output(\"drawing-demo.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\nfrom fpdf.drawing import PaintedPath, PaintComposite\nfrom fpdf.enums import CompositingOperation\n\nfrom pathlib import Path\n\npdf = FPDF()\npdf.add_page()\n\nwith pdf.drawing_context() as gc:\n    blue_square = PaintedPath()\n    blue_square.rectangle(10, 10, 50, 50)\n    blue_square.style.fill_color = \"#0000ff\"\n\n    red_square = PaintedPath()\n    red_square.rectangle(35, 35, 50, 50)\n    red_square.style.fill_color = \"#ff0000\"\n\n    composite = PaintComposite(backdrop=red_square, source=blue_square, operation=CompositingOperation.DESTINATION_ATOP)\n    gc.add_item(composite)\n\npdf.output('compositing-demo.pdf')",
+      "language": "typescript"
+    }
+  ],
+  "patterns": [
+    {
+      "description": "Let's add some color to the above example:",
+      "code": "import fpdf\n\npdf = fpdf.FPDF(unit='mm', format=(10, 10))\npdf.add_page()\n\nwith pdf.new_path() as path:\n    path.style.fill_color = '#A070D0'\n    path.style.stroke_color = fpdf.drawing.gray8(210)\n    path.style.stroke_width = 1\n    path.style.stroke_opacity = 0.75\n    path.style.stroke_join_style = 'round'\n\n    path.move_to(2, 2)\n    path.line_to(8, 8)\n    path.horizontal_line_relative(-6)\n    path.line_relative(6, -6)\n    path.close()\n\npdf.output(\"drawing-demo.pdf\")"
+    }
+  ],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/drawing/demo-1.pdf",
+    "https://py-pdf.github.io/fpdf2/drawing/demo-2.pdf",
+    "https://py-pdf.github.io/fpdf2/drawing/demo-3.pdf",
+    "https://py-pdf.github.io/fpdf2/drawing/demo-4.pdf"
+  ]
+}

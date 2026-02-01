@@ -1,0 +1,150 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Patterns.html",
+  "title": "Patterns and Gradients¶",
+  "content": "In PDF (Portable Document Format), a pattern is a graphical object that can be used to fill (or stroke) shapes. Patterns can include simple color fills, images, or more advanced textures and gradients.\n\nThe patterns on PDF documents are grouped on 2 types: - Tiling patterns for any repeating patters. - Shading patterns for gradients.\n\nfpdf2 provides a context manager pdf.use_pattern(...). Within this context, all drawn shapes or text will use the specified pattern. Once the context ends, drawing reverts to the previously defined color.\n\nAt this moment, tiling patterns are not yet supported by fpdf2.\n\nA gradient is a progressive blend between two or more colors. In PDF terms, gradients are implemented as shading patterns—they allow a smooth color transition based on geometry.\n\nA linear gradient blends colors along a straight line between two points. For instance, you can define a gradient that goes:\n\nor in any arbitrary orientation by specifying coordinates.\n\nExample: Creating a Linear Gradient\n\nfrom fpdf import FPDF from fpdf.pattern import LinearGradient pdf = FPDF() pdf.add_page() # Define a linear gradient linear_grad = LinearGradient( pdf, from_x=10, # Starting x-coordinate from_y=0, # Starting y-coordinate to_x=100, # Ending x-coordinate to_y=0, # Ending y-coordinate colors=[\"#C33764\", \"#1D2671\"] # Start -> End color ) with pdf.use_pattern(linear_grad): # Draw a rectangle that will be filled with the gradient pdf.rect(x=10, y=10, w=100, h=20, style=\"FD\") pdf.output(\"pattern_linear_demo.pdf\") Result: pattern_linear_demo.pdf\n\nA radial gradient blends colors in a circular or elliptical manner from an inner circle to an outer circle. This is perfect for spotlight-like effects or circular color transitions.\n\nExample: Creating a Radial Gradient\n\nfrom fpdf import FPDF from fpdf.pattern import RadialGradient pdf = FPDF() pdf.add_page() # Define a radial gradient radial_grad = RadialGradient( pdf, start_circle_x=30, # Center X of inner circle start_circle_y=30, # Center Y of inner circle start_circle_radius=0, # Radius of inner circle end_circle_x=50, # Center X of outer circle end_circle_y=50, # Center Y of outer circle end_circle_radius=25, # Radius of outer circle colors=[\"#FFFF00\", \"#FF0000\"], # Inner -> Outer color ) with pdf.use_pattern(radial_grad): # Draw a circle filled with the radial gradient pdf.circle(x=50, y=50, radius=25, style=\"FD\") pdf.output(\"pattern_radial_demo.pdf\") Result: pattern_radial_demo.pdf\n\nBoth linear and radial gradients support multiple colors. If you pass, for example, colors=[\"#C33764\", \"#1D2671\", \"#FFA500\"], the resulting pattern will interpolate color transitions through each color in that order.\n\nFor linear gradients or radial gradients, passing bounds=[0.2, 0.4, 0.7, ...] (values between 0 and 1) fine-tunes where each color transition occurs. For instance, if you have 5 colors, you can specify 3 boundary values that partition the color progression among them.\n\nFor example, taking a gradient with 5 colors and bounds=[0.1, 0.8, 0.9]: - The transition from color 1 to color 2 starts at the beginning (0%) and ends at 10% - The transition from color 2 to color 3 starts at 10% and ends at 80% - The transition from color 3 to color 4 starts at 80% and ends at 90% - The transition from color 4 to color 5 starts at 90% and goes to the end (100%)\n\nIn other words, each boundary value dictates where the color transitions will occur along the total gradient length.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Patterns and Gradients¶",
+      "id": "patterns-and-gradients"
+    },
+    {
+      "level": "h2",
+      "text": "Overview¶",
+      "id": "overview"
+    },
+    {
+      "level": "h2",
+      "text": "2. Gradients¶",
+      "id": "2-gradients"
+    },
+    {
+      "level": "h3",
+      "text": "2.1 What is a Gradient?¶",
+      "id": "21-what-is-a-gradient"
+    },
+    {
+      "level": "h3",
+      "text": "2.2 Linear Gradients (axial shading)¶",
+      "id": "22-linear-gradients-axial-shading"
+    },
+    {
+      "level": "h3",
+      "text": "2.3 Radial Gradients¶",
+      "id": "23-radial-gradients"
+    },
+    {
+      "level": "h2",
+      "text": "4. Advanced Usage¶",
+      "id": "4-advanced-usage"
+    },
+    {
+      "level": "h3",
+      "text": "4.1 Multiple Colors¶",
+      "id": "41-multiple-colors"
+    },
+    {
+      "level": "h3",
+      "text": "4.2 Extending & Background for Linear Gradients¶",
+      "id": "42-extending-background-for-linear-gradients"
+    },
+    {
+      "level": "h3",
+      "text": "4.3 Custom Bounds¶",
+      "id": "43-custom-bounds"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\nfrom fpdf.pattern import LinearGradient\n\npdf = FPDF()\npdf.add_page()\n\n# Define a linear gradient\nlinear_grad = LinearGradient(\n    pdf,\n    from_x=10,                        # Starting x-coordinate\n    from_y=0,                         # Starting y-coordinate\n    to_x=100,                         # Ending x-coordinate\n    to_y=0,                           # Ending y-coordinate\n    colors=[\"#C33764\", \"#1D2671\"]     # Start -> End color\n)\n\nwith pdf.use_pattern(linear_grad):\n    # Draw a rectangle that will be filled with the gradient\n    pdf.rect(x=10, y=10, w=100, h=20, style=\"FD\")\n\npdf.output(\"pattern_linear_demo.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\nfrom fpdf.pattern import RadialGradient\n\npdf = FPDF()\npdf.add_page()\n\n# Define a radial gradient\nradial_grad = RadialGradient(\n    pdf,\n    start_circle_x=30,               # Center X of inner circle\n    start_circle_y=30,               # Center Y of inner circle\n    start_circle_radius=0,           # Radius of inner circle\n    end_circle_x=50,                 # Center X of outer circle\n    end_circle_y=50,                 # Center Y of outer circle\n    end_circle_radius=25,            # Radius of outer circle\n    colors=[\"#FFFF00\", \"#FF0000\"],   # Inner -> Outer color\n)\n\nwith pdf.use_pattern(radial_grad):\n    # Draw a circle filled with the radial gradient\n    pdf.circle(x=50, y=50, radius=25, style=\"FD\")\n\npdf.output(\"pattern_radial_demo.pdf\")",
+      "language": "python"
+    }
+  ],
+  "patterns": [
+    {
+      "description": "Example: Creating a Linear Gradient",
+      "code": "from fpdf import FPDF\nfrom fpdf.pattern import LinearGradient\n\npdf = FPDF()\npdf.add_page()\n\n# Define a linear gradient\nlinear_grad = LinearGradient(\n    pdf,\n    from_x=10,                        # Starting x-coordinate\n    from_y=0,                         # Starting y-coordinate\n    to_x=100,                         # Ending x-coordinate\n    to_y=0,                           # Ending y-coordinate\n    colors=[\"#C33764\", \"#1D2671\"]     # Start -> End color\n)\n\nwith pdf.use_pattern(linear_grad):\n    # Draw a rectangle that will be filled with the gradient\n    pdf.rect(x=10, y=10, w=100, h=20, style=\"FD\")\n\npdf.output(\"pattern_linear_demo.pdf\")"
+    },
+    {
+      "description": "Example: Creating a Radial Gradient",
+      "code": "from fpdf import FPDF\nfrom fpdf.pattern import RadialGradient\n\npdf = FPDF()\npdf.add_page()\n\n# Define a radial gradient\nradial_grad = RadialGradient(\n    pdf,\n    start_circle_x=30,               # Center X of inner circle\n    start_circle_y=30,               # Center Y of inner circle\n    start_circle_radius=0,           # Radius of inner circle\n    end_circle_x=50,                 # Center X of outer circle\n    end_circle_y=50,                 # Center Y of outer circle\n    end_circle_radius=25,            # Radius of outer circle\n    colors=[\"#FFFF00\", \"#FF0000\"],   # Inner -> Outer color\n)\n\nwith pdf.use_pattern(radial_grad):\n    # Draw a circle filled with the radial gradient\n    pdf.circle(x=50, y=50, radius=25, style=\"FD\")\n\npdf.output(\"pattern_radial_demo.pdf\")"
+    }
+  ],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/pattern_linear_demo.pdf",
+    "https://py-pdf.github.io/fpdf2/pattern_radial_demo.pdf"
+  ]
+}

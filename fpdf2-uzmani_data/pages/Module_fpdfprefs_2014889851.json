@@ -1,0 +1,89 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/prefs.html",
+  "title": "Module fpdf.prefs",
+  "content": "Usage documentation at: https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html#viewer-preferences\n\nSpecifies the way the document shall be displayed on the screen\n\n(bool) A flag specifying whether to position the document’s window in the center of the screen\n\n(TextDirection) The predominant reading order for text.\n\n(bool) A flag specifying whether the window’s title bar should display the document title taken from the Title entry of the document information dictionary. If false, the title bar should instead display the name of the PDF file containing the document.\n\n(Duplex) The paper handling option that shall be used when printing the file from the print dialog.\n\n(bool) A flag specifying whether to resize the document’s window to fit the size of the first displayed page\n\n(bool) A flag specifying whether to hide the conforming reader’s menu bar when the document is active\n\n(bool) A flag specifying whether to hide the conforming reader’s tool bars when the document is active\n\n(bool) A flag specifying whether to hide user interface elements in the document’s window (such as scroll bars and navigation controls), leaving only the document’s contents displayed\n\n(PageMode) The document’s page mode, specifying how to display the document on exiting full-screen mode\n\n(int) The number of copies that shall be printed when the print dialog is opened for this file. Values outside this range shall be ignored. Default value: as defined by the conforming reader, but typically 1\n\n(PageBoundaries) The name of the page boundary representing the area of a page that shall be rendered when printing the document. Default value: CropBox.\n\n(PageBoundaries) The name of the page boundary to which the contents of a page shall be clipped when printing the document. Default value: CropBox.\n\n(list[int]) The page numbers used to initialize the print dialog box when the file is printed. The array shall contain an even number of integers to be interpreted in pairs, with each pair specifying the first and last pages in a sub-range of pages to be printed. The first page of the PDF file shall be denoted by 1.\n\nThe page scaling option that shall be selected when a print dialogue is displayed for this document. Valid values are:\n\nIf this entry is not specified or has an unrecognised value, AppDefault shall be used.\n\n(PageBoundaries) The name of the page boundary representing the area of a page that shall be displayed when viewing the document on the screen. Default value: CropBox.\n\n(PageBoundaries) The name of the page boundary to which the contents of a page shall be clipped when viewing the document on the screen. Default value: CropBox.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.prefs",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "class ViewerPreferences:\n    \"Specifies the way the document shall be displayed on the screen\"\n\n    def __init__(\n        self,\n        hide_toolbar: bool = False,\n        hide_menubar: bool = False,\n        hide_window_u_i: bool = False,\n        fit_window: bool = False,\n        center_window: bool = False,\n        display_doc_title: bool = False,\n        non_full_screen_page_mode: PageMode = PageMode.USE_NONE,\n        num_copies: Optional[int] = None,\n        print_page_range: Optional[list[int]] = None,\n        direction: Optional[TextDirection | str] = None,\n        duplex: Optional[Duplex | str] = None,\n        view_area: Optional[PageBoundaries | str] = None,\n        view_clip: Optional[PageBoundaries | str] = None,\n        print_area: Optional[PageBoundaries | str] = None,\n        print_clip: Optional[PageBoundaries | str] = None,\n        print_scaling: Optional[str] = None,\n    ) -> None:\n        self._min_pdf_version = \"1.3\"\n\n        self.hide_toolbar = hide_toolbar\n        \"\"\"\n        (`bool`)\n        A flag specifying whether to hide the conforming reader’s tool bars when the document is active\n        \"\"\"\n        self.hide_menubar = hide_menubar\n        \"\"\"\n        (`bool`)\n        A flag specifying whether to hide the conforming reader’s menu bar when the document is active\n        \"\"\"\n        self.hide_window_u_i = hide_window_u_i\n        \"\"\"\n        (`bool`)\n        A flag specifying whether to hide user interface elements in the document’s window\n        (such as scroll bars and navigation controls), leaving only the document’s contents displayed\n        \"\"\"\n        self.fit_window = fit_window\n        \"\"\"\n        (`bool`)\n        A flag specifying whether to resize the document’s window to fit the size of the first displayed page\n        \"\"\"\n        self.center_window = center_window\n        \"\"\"\n        (`bool`)\n        A flag specifying whether to position the document’s window in the center of the screen\n        \"\"\"\n        self.display_doc_title = display_doc_title\n        \"\"\"\n        (`bool`)\n        A flag specifying whether the window’s title bar should display the document title\n        taken from the Title entry of the document information dictionary.\n        If false, the title bar should instead display the name of the PDF file containing the document.\n        \"\"\"\n        self.non_full_screen_page_mode = non_full_screen_page_mode\n        \"\"\"\n        (`fpdf.enums.PageMode`)\n        The document’s page mode, specifying how to display the document on exiting full-screen mode\n        \"\"\"\n        self.num_copies = num_copies\n        \"\"\"\n        (`int`)\n        The number of copies that shall be printed when the print dialog is opened for this file.\n        Values outside this range shall be ignored. Default value: as defined by the conforming reader, but typically 1\n        \"\"\"\n        self.print_page_range = print_page_range\n        \"\"\"\n        (`list[int]`)\n        The page numbers used to initialize the print dialog box when the file is printed.\n        The array shall contain an even number of integers to be interpreted in pairs,\n        with each pair specifying the first and last pages in a sub-range of pages to be printed.\n        The first page of the PDF file shall be denoted by 1.\n        \"\"\"\n        self.direction = direction\n        \"\"\"\n        (`fpdf.enums.TextDirection`)\n        The predominant reading order for text.\n        \"\"\"\n        self.duplex = duplex\n        \"\"\"\n        (`fpdf.enums.Duplex`)\n        The paper handling option that shall be used when printing the file from the print dialog.\n        \"\"\"\n        self.view_area = view_area\n        \"\"\"\n        (`fpdf.enums.PageBoundaries`)\n        The name of the page boundary representing the area of a page that shall be displayed when viewing the document on the screen.\n        Default value: CropBox.\n        \"\"\"\n        self.view_clip = view_clip\n        \"\"\"\n        (`fpdf.enums.PageBoundaries`)\n        The name of the page boundary to which the contents of a page shall be clipped when viewing the document on the screen.\n        Default value: CropBox.\n        \"\"\"\n        self.print_area = print_area\n        \"\"\"\n        (`fpdf.enums.PageBoundaries`)\n        The name of the page boundary representing the area of a page that shall be rendered when printing the document.\n        Default value: CropBox.\n        \"\"\"\n        self.print_clip = print_clip\n        \"\"\"\n        (`fpdf.enums.PageBoundaries`)\n        The name of the page boundary to which the contents of a page shall be clipped when printing the document.\n        Default value: CropBox.\n        \"\"\"\n        self.print_scaling = print_scaling\n        \"\"\"\n        The page scaling option that shall be selected when a print dialogue is displayed for this document.\n        Valid values are:\n\n        * `\"None\"`, which indicates no page scaling\n        * `\"AppDefault\"`, which indicates the interactive PDF processor’s default print scaling\n\n        If this entry is not specified or has an unrecognised value, `AppDefault` shall be used.\n        \"\"\"\n\n    def _set_min_pdf_version(self, version: str) -> None:\n        self._min_pdf_version = max(self._min_pdf_version, version)\n\n    @property\n    def non_full_screen_page_mode(self) -> Optional[PageMode]:\n        return self._non_full_screen_page_mode\n\n    @non_full_screen_page_mode.setter\n    def non_full_screen_page_mode(self, page_mode: Optional[PageMode | str]) -> None:\n        self._non_full_screen_page_mode = (\n            None if page_mode is None else PageMode.coerce(page_mode)\n        )\n        if self._non_full_screen_page_mode in (\n            PageMode.FULL_SCREEN,\n            PageMode.USE_ATTACHMENTS,\n        ):\n            raise ValueError(\n                f\"{self.non_full_screen_page_mode} is not a supported value for NonFullScreenPageMode\"\n            )\n\n    @property\n    def num_copies(self) -> Optional[int]:\n        return self._num_copies\n\n    @num_copies.setter\n    def num_copies(self, num_copies: Optional[int]) -> None:\n        if num_copies is not None:\n            self._set_min_pdf_version(\"1.7\")\n        self._num_copies = num_copies\n\n    @property\n    def print_page_range(self) -> Optional[list[int]]:\n        return self._print_page_range\n\n    @print_page_range.setter\n    def print_page_range(self, print_page_range: Optional[list[int]]) -> None:\n        if print_page_range is not None:\n            self._set_min_pdf_version(\"1.7\")\n        self._print_page_range = print_page_range\n\n    @property\n    def direction(self) -> Optional[TextDirection]:\n        return self._direction\n\n    @direction.setter\n    def direction(self, direction: Optional[TextDirection | str]) -> None:\n        self._direction = None if direction is None else TextDirection.coerce(direction)\n\n    @property\n    def display_doc_title(self) -> bool:\n        return self._display_doc_title\n\n    @display_doc_title.setter\n    def display_doc_title(self, display_doc_title: bool) -> None:\n        if display_doc_title:\n            self._set_min_pdf_version(\"1.4\")\n        self._display_doc_title = display_doc_title\n\n    @property\n    def duplex(self) -> Optional[Duplex]:\n        return self._duplex\n\n    @duplex.setter\n    def duplex(self, duplex: Optional[Duplex | str]) -> None:\n        if duplex is not None:\n            self._set_min_pdf_version(\"1.7\")\n        self._duplex = None if duplex is None else Duplex.coerce(duplex)\n\n    @property\n    def view_area(self) -> Optional[PageBoundaries]:\n        return self._view_area\n\n    @view_area.setter\n    def view_area(self, view_area: Optional[PageBoundaries | str]) -> None:\n        if view_area is not None:\n            self._set_min_pdf_version(\"1.4\")\n        self._view_area = (\n            None if view_area is None else PageBoundaries.coerce(view_area)\n        )\n\n    @property\n    def view_clip(self) -> Optional[PageBoundaries]:\n        return self._view_clip\n\n    @view_clip.setter\n    def view_clip(self, view_clip: Optional[PageBoundaries | str]) -> None:\n        if view_clip is not None:\n            self._set_min_pdf_version(\"1.4\")\n        self._view_clip = (\n            None if view_clip is None else PageBoundaries.coerce(view_clip)\n        )\n\n    @property\n    def print_area(self) -> Optional[PageBoundaries]:\n        return self._print_area\n\n    @print_area.setter\n    def print_area(self, print_area: Optional[PageBoundaries | str]) -> None:\n        if print_area is not None:\n            self._set_min_pdf_version(\"1.4\")\n        self._print_area = (\n            None if print_area is None else PageBoundaries.coerce(print_area)\n        )\n\n    @property\n    def print_clip(self) -> Optional[PageBoundaries]:\n        return self._print_clip\n\n    @print_clip.setter\n    def print_clip(self, print_clip: Optional[PageBoundaries | str]) -> None:\n        if print_clip is not None:\n            self._set_min_pdf_version(\"1.4\")\n        self._print_clip = (\n            None if print_clip is None else PageBoundaries.coerce(print_clip)\n        )\n\n    @property\n    def print_scaling(self) -> Optional[Name]:\n        return self._print_scaling\n\n    @print_scaling.setter\n    def print_scaling(self, print_scaling: Optional[str]) -> None:\n        if print_scaling is None:\n            self._print_scaling = None\n            return\n        self._set_min_pdf_version(\"1.6\")\n        if print_scaling not in (\"None\", \"AppDefault\"):\n            raise ValueError(f\"Invalid {print_scaling=} value provided\")\n        self._print_scaling = Name(print_scaling)\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return create_dictionary_string(obj_dict)",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef direction(self) -> Optional[TextDirection]:\n    return self._direction",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef display_doc_title(self) -> bool:\n    return self._display_doc_title",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef duplex(self) -> Optional[Duplex]:\n    return self._duplex",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef non_full_screen_page_mode(self) -> Optional[PageMode]:\n    return self._non_full_screen_page_mode",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef num_copies(self) -> Optional[int]:\n    return self._num_copies",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef print_area(self) -> Optional[PageBoundaries]:\n    return self._print_area",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef print_clip(self) -> Optional[PageBoundaries]:\n    return self._print_clip",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef print_page_range(self) -> Optional[list[int]]:\n    return self._print_page_range",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef print_scaling(self) -> Optional[Name]:\n    return self._print_scaling",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef view_area(self) -> Optional[PageBoundaries]:\n    return self._view_area",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef view_clip(self) -> Optional[PageBoundaries]:\n    return self._view_clip",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    obj_dict = build_obj_dict(\n        {key: getattr(self, key) for key in dir(self)},\n        _security_handler=_security_handler,\n        _obj_id=_obj_id,\n    )\n    return create_dictionary_string(obj_dict)",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/enums.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/syntax.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/prefs.html"
+  ]
+}

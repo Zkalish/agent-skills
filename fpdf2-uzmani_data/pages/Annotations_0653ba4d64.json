@@ -1,0 +1,146 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Annotations.html",
+  "title": "Annotations¶",
+  "content": "The PDF format allows to add various annotations to a document.\n\nThey are rendered this way by Sumatra PDF reader:\n\nMethod documentation: FPDF.text_annotation\n\nThey are rendered this way by Adobe Acrobat Reader:\n\nfrom fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.set_font(\"Helvetica\",size=24) pdf.text(x=60, y=140, text=\"Some text.\") pdf.set_draw_color(255,0,0) pdf.set_font_size(12) pdf.free_text_annotation( x=100, y=130, text=\"This is a free text annotation.\", w=150, h=15, ) pdf.output(\"free_text_annotation.pdf\") Method documentation: FPDF.free_text_annotation\n\nRendering by Sumatra PDF reader:\n\nMethod documentation: FPDF.highlight\n\nThe appearance of the \"highlight effect\" can be controlled through the type argument: it can be Highlight (default), Underline, Squiggly or StrikeOut.\n\nThose annotations allow to draw paths around parts of a document to highlight them: from fpdf import FPDF pdf = FPDF() pdf.ink_annotation([(100, 200), (200, 100), (300, 200), (200, 300), (100, 200)], title=\"Lucas\", contents=\"Hello world!\") pdf.output(\"ink_annotation_demo.pdf\")\n\nRendering by Firefox internal PDF viewer:\n\nMethod documentation: FPDF.ink_annotation\n\ncf. the dedicated page: File attachments\n\nThe four standard PDF named actions provide some basic navigation relative to the current page: NextPage, PrevPage, FirstPage and LastPage.\n\nUsed to launch an application or open or print a document:",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Annotations¶",
+      "id": "annotations"
+    },
+    {
+      "level": "h2",
+      "text": "Text annotations¶",
+      "id": "text-annotations"
+    },
+    {
+      "level": "h2",
+      "text": "Free Text Annotations¶",
+      "id": "free-text-annotations"
+    },
+    {
+      "level": "h2",
+      "text": "Highlights¶",
+      "id": "highlights"
+    },
+    {
+      "level": "h2",
+      "text": "Ink annotations¶",
+      "id": "ink-annotations"
+    },
+    {
+      "level": "h2",
+      "text": "File attachments¶",
+      "id": "file-attachments"
+    },
+    {
+      "level": "h2",
+      "text": "Named actions¶",
+      "id": "named-actions"
+    },
+    {
+      "level": "h2",
+      "text": "Launch actions¶",
+      "id": "launch-actions"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Helvetica\", size=24)\npdf.text(x=60, y=140, text=\"Some text.\")\npdf.text_annotation(\n    x=100,\n    y=130,\n    text=\"This is a text annotation.\",\n)\npdf.output(\"text_annotation.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Helvetica\",size=24)\npdf.text(x=60, y=140, text=\"Some text.\")\npdf.set_draw_color(255,0,0)\npdf.set_font_size(12)\npdf.free_text_annotation(\n    x=100,\n    y=130,\n    text=\"This is a free text annotation.\",\n    w=150,\n    h=15,\n)\npdf.output(\"free_text_annotation.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Helvetica\", size=24)\nwith pdf.highlight(\"Highlight comment\"):\n    pdf.text(50, 50, \"Line 1\")\n    pdf.set_y(50)\n    pdf.multi_cell(w=30, text=\"Line 2\")\npdf.cell(w=60, text=\"Not highlighted\", border=1)\npdf.output(\"highlighted.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.ink_annotation([(100, 200), (200, 100), (300, 200), (200, 300), (100, 200)],\n                   title=\"Lucas\", contents=\"Hello world!\")\npdf.output(\"ink_annotation_demo.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\nfrom fpdf.actions import NamedAction\n\npdf = FPDF()\npdf.set_font(\"Helvetica\", size=24)\npdf.add_page()\npdf.text(x=80, y=140, text=\"First page\")\npdf.add_page()\npdf.underline = True\nfor x, y, named_action in ((40, 80, \"NextPage\"), (120, 80, \"PrevPage\"), (40, 200, \"FirstPage\"), (120, 200, \"LastPage\")):\n    pdf.text(x=x, y=y, text=named_action)\n    pdf.add_action(\n        NamedAction(named_action),\n        x=x,\n        y=y - pdf.font_size,\n        w=pdf.get_string_width(named_action),\n        h=pdf.font_size,\n    )\npdf.underline = False\npdf.add_page()\npdf.text(x=80, y=140, text=\"Last page\")\npdf.output(\"named_actions.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from fpdf import FPDF\nfrom fpdf.actions import LaunchAction\n\npdf = FPDF()\npdf.set_font(\"Helvetica\", size=24)\npdf.add_page()\nx, y, text = 80, 140, \"Launch action\"\npdf.text(x=x, y=y, text=text)\npdf.add_action(\n    LaunchAction(\"another_file_in_same_directory.pdf\"),\n    x=x,\n    y=y - pdf.font_size,\n    w=pdf.get_string_width(text),\n    h=pdf.font_size,\n)\npdf.output(\"launch_action.pdf\")",
+      "language": "swift"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html"
+  ]
+}

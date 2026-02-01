@@ -1,0 +1,79 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/errors.html",
+  "title": "Module fpdf.errors",
+  "content": "Base class for standards-compliance violations (PDF/A, PDF/X, etc.).\n\nCommon base class for all non-exit exceptions.\n\nError is thrown when a bad page format is given\n\nError is thrown when a character that cannot be encoded by the chosen encoder is provided\n\nRaised when an operation would produce a PDF that violates the selected PDF/A profile.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.errors",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Subclasses",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Subclasses",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "class ComplianceError(FPDFException):\n    \"\"\"Base class for standards-compliance violations (PDF/A, PDF/X, etc.).\"\"\"",
+      "language": "python"
+    },
+    {
+      "code": "class FPDFException(Exception):\n    pass",
+      "language": "python"
+    },
+    {
+      "code": "class FPDFPageFormatException(FPDFException):\n    \"\"\"Error is thrown when a bad page format is given\"\"\"\n\n    def __init__(self, argument: str, unknown: bool = False, one: bool = False) -> None:\n        super().__init__()\n        if unknown and one:\n            raise TypeError(\n                \"FPDF Page Format Exception cannot be both for \"\n                \"unknown type and for wrong number of arguments\"\n            )\n        self.argument = argument\n        self.unknown = unknown\n        self.one = one\n\n    def __repr__(self) -> str:\n        return (\n            f\"{self.__class__.__name__}\"\n            f\"({self.argument!r}, {self.unknown!r}, {self.one!r})\"\n        )\n\n    def __str__(self) -> str:\n        if self.unknown:\n            res = f\"Unknown page format: {self.argument}\"\n        elif self.one:\n            res = f\"Only one argument given: {self.argument}. Need (height,width)\"\n        else:\n            res = self.argument\n        return f\"{self.__class__.__name__ }: {res}\"",
+      "language": "python"
+    },
+    {
+      "code": "class FPDFUnicodeEncodingException(FPDFException):\n    \"\"\"Error is thrown when a character that cannot be encoded by the chosen encoder is provided\"\"\"\n\n    def __init__(self, text_index: int, character: str, font_name: str) -> None:\n        super().__init__()\n        self.text_index = text_index\n        self.character = character\n        self.font_name = font_name\n\n    def __repr__(self) -> str:\n        return f\"{self.__class__.__name__}({repr(self.text_index), repr(self.character), repr(self.font_name)})\"\n\n    def __str__(self) -> str:\n        return (\n            f'Character \"{self.character}\" at index {self.text_index} in text is outside the range of characters'\n            f' supported by the font used: \"{self.font_name}\".'\n            \" Please consider using a Unicode font.\"\n        )",
+      "language": "python"
+    },
+    {
+      "code": "class PDFAComplianceError(ComplianceError):\n    \"\"\"Raised when an operation would produce a PDF that violates the selected PDF/A profile.\"\"\"",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/fpdf/errors.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html"
+  ]
+}

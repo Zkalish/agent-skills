@@ -1,0 +1,1387 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/enums.html",
+  "title": "Module fpdf.enums",
+  "content": "Permission flags will translate as an integer on the encryption dictionary\n\nAdd or modify text annotations\n\nInsert, rotate or delete pages and create bookmarks or thumbnail images\n\nCopy or extract text and graphics from the document\n\nExtract text and graphics in support of accessibility to users with disabilities\n\nFill in existing interactive form fields\n\nModify the contents of the document\n\nPrint document at the highest resolution\n\nDefines how to render text in a cell\n\nCenter text horizontally\n\nCenter text horizontally around current x position\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nDirection values used for mirror transformations specifying the angle of mirror line\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nInherited from: CoerciveIntEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nAn enumeration that provides a helper to coerce strings and integers into enumeration members.\n\nIf set, do not display or print the annotation or allow it to interact with the user\n\nIf set, do not display the annotation if it does not belong to one of the standard annotation types and no annotation handler is available.\n\nIf set, do not allow the annotation to be deleted or its properties (including position and size) to be modified by the user.\n\nIf set, do not allow the contents of the annotation to be modified by the user.\n\nIf set, do not rotate the annotation’s appearance to match the rotation of the page.\n\nIf set, do not display the annotation on the screen or allow it to interact with the user\n\nIf set, do not scale the annotation’s appearance to match the magnification of the page.\n\nIf set, print the annotation when the page is printed.\n\nIf set, do not allow the annotation to interact with the user. The annotation may be displayed or printed but should not respond to mouse clicks.\n\nIf set, invert the interpretation of the NoView flag for certain events.\n\nInherited from: CoerciveIntEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nThe name of an icon that shall be used in displaying the annotation\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nRepresents the association between an embedded file and the content on the PDF\n\nThe file has an alternative representation of the content\n\nThe file has the information used to produce the associated object. e.g.: the data used to produce a table or a graph\n\nThe file is an encrypted payload document that should be displayed to the user if the PDF processor has the cryptographic filter needed to decrypt the document\n\nThe file has the data associated with the interactive form in this document\n\nThe file is a schema definition for the associated object\n\nThe file is the original source material of the content\n\nThe file has a supplemental representation of the original source or data that may be more easily consumable\n\nShall be used when the relationship is not known or cannot be described using one of the other values\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nAn enumeration of the named standard named blend functions supported by PDF.\n\n\"Creates a color with the hue and saturation of the source color and the luminosity of the backdrop color. This preserves the gray levels of the backdrop and is useful for coloring monochrome images or tinting color images.\"\n\n\"Darkens the backdrop color to reflect the source color. Painting with white produces no change.\"\n\n\"Brightens the backdrop color to reflect the source color. Painting with black produces no changes.\"\n\n\"Selects the darker of the backdrop and source colors.\"\n\n\"Subtracts the darker of the two constituent colors from the lighter color.\"\n\n\"Produces an effect similar to that of the Difference mode but lower in contrast. Painting with white inverts the backdrop color; painting with black produces no change.\"\n\n\"Multiplies or screens the colors, depending on the source color value. The effect is similar to shining a harsh spotlight on the backdrop.\"\n\n\"Creates a color with the hue of the source color and the saturation and luminosity of the backdrop color.\"\n\n\"Selects the lighter of the backdrop and source colors.\"\n\n\"Creates a color with the luminosity of the source color and the hue and saturation of the backdrop color. This produces an inverse effect to that of the Color mode.\"\n\n\"Multiplies the backdrop and source color values.\"\n\n\"Selects the source color, ignoring the backdrop.\"\n\n\"Multiplies or screens the colors, depending on the backdrop color value. Source colors overlay the backdrop while preserving its highlights and shadows. The backdrop color is not replaced but is mixed with the source color to reflect the lightness or darkness of the backdrop.\"\n\n\"Creates a color with the saturation of the source color and the hue and luminosity of the backdrop color. Painting with this mode in an area of the backdrop that is a pure gray (no saturation) produces no change.\"\n\n\"Multiplies the complements of the backdrop and source color values, then complements the result.\"\n\n\"Darkens or lightens the colors, depending on the source color value. The effect is similar to shining a diffused spotlight on the backdrop.\"\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nDefines how to render cell borders in table\n\nThe integer value of border determines which borders are applied. Below are some common examples:\n\nUsing border=3 will combine LEFT and RIGHT borders, as it represents the bitwise OR of LEFT (1) and RIGHT (2).\n\nDraw border on all side of the cell\n\nDraw border on the bottom side of the cell\n\nInherits the border layout from the table borders layout\n\nDraw border on the left side of the cell\n\nDraw no border on any side of cell\n\nDraw border on the right side of the cell\n\nDraw border on the top side of the cell\n\nInherited from: CoerciveIntFlag.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nProtocol for custom table cell fill mode classes\n\nDefines the vertical position of text relative to the line.\n\nDenominator of a fraction\n\nDefault line position\n\nNominator of a fraction\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nAn enumeration of the PDF drawing directives that define a path as a clipping path.\n\n\"An alternative to the nonzero winding number rule is the even-odd rule. This rule determines whether a point is inside a path by drawing a ray from that point in any direction and simply counting the number of path segments that cross the ray, regardless of direction. If this number is odd, the point is inside; if even, the point is outside. This yields the same results as the nonzero winding number rule for paths with simple shapes, but produces different results for more complex shapes.\n\n\"The nonzero winding number rule determines whether a given point is inside a path by conceptually drawing a ray from that point to infinity in any direction and then examining the places where a segment of the path crosses the ray. Starting with a count of 0, the rule adds 1 each time a path segment crosses the ray from left to right and subtracts 1 each time a segment crosses from right to left. After counting all the crossings, if the result is 0, the point is outside the path; otherwise, it is inside.\"\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nAn enumeration that provides a helper to coerce strings into enumeration members.\n\nAttempt to coerce value into a member of this enumeration.\n\nIf value is already a member of this enumeration it is returned unchanged. Otherwise, if it is a string, attempt to convert it as an enumeration value. If that fails, attempt to convert it (case insensitively, by upcasing) as an enumeration name.\n\nIf all different conversion attempts fail, an exception is raised.\n\nAn enumeration that provides a helper to coerce strings and integers into enumeration members.\n\nAttempt to coerce value into a member of this enumeration.\n\nIf value is already a member of this enumeration it is returned unchanged. Otherwise, if it is a string, attempt to convert it (case insensitively, by upcasing) as an enumeration name. Otherwise, if it is an int, attempt to convert it as an enumeration value.\n\nOtherwise, an exception is raised.\n\nEnumerated constants that can be combined using the bitwise operators, with a helper to coerce strings and integers into enumeration members.\n\nAttempt to coerce value into a member of this enumeration.\n\nIf value is already a member of this enumeration it is returned unchanged. Otherwise, if it is a string, attempt to convert it (case insensitively, by upcasing) as an enumeration name. Otherwise, if it is an int, attempt to convert it as an enumeration value. Otherwise, an exception is raised.\n\nAn enumeration of Porter-Duff compositing operations.\n\nDraw the destination only\n\nThe part of the destination that overlaps the source is drawn over the source. The rest of the destination is discarded.\n\nOnly the part of the destination that overlaps with the source is drawn. The rest is discarded.\n\nOnly the part of the destination that does not overlap the source is drawn.\n\nThe destination (backdrop) is drawn over the source.\n\nThe part of the source that overlaps the destination is drawn over the destination. The rest of the source is discarded.\n\nOnly the part of the source that overlaps with the destination is drawn. The rest is discarded.\n\nOnly the part of the source that does not overlap the destination is drawn.\n\nThe source is drawn over the destination (backdrop).\n\nOnly the parts of the source and destination that do not overlap are drawn.\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nAn enumeration that provides a helper to coerce strings into enumeration members.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nType of compliance enforcement that can be applied to a document. Limited to PDF/A at the moment, but extendable to other standards like: - PDF/E (Engineering PDFs) - PDF/UA (PDF Universal Accessibility) - PDF/X (Graphics Exchange PDFs)\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe paper handling option that shall be used when printing the file from the print dialog.\n\nDuplex and flip on the long edge of the sheet\n\nDuplex and flip on the short edge of the sheet\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nAlgorithm to be used to encrypt the document\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe name of an icon that shall be used in displaying the annotation\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nAn enumeration of the flags for the unsigned 32-bit integer entry in the font descriptor specifying various characteristics of the font. Bit positions are numbered from 1 (low-order) to 32 (high-order).\n\n\"All glyphs have the same width (as opposed to proportional or variable-pitch fonts, which have different widths.\"\n\n\"The flag shall determine whether bold glyphs shall be painted with extra pixels even at very small text sizes by a conforming reader. If set, features of bold glyphs may be thickened at small text sizes.\"\n\n\"Glyphs have dominant vertical strokes that are slanted.\"\n\n\"Font contains glyphs outside the Adobe standard Latin character set. This flag and the Nonsymbolic flag shall not both be set or both be clear.\"\n\nSpecifies how to fill the area outside the gradient's start and end points.\n\nThe color at the start or end of the gradient is extended to fill the area before or after the gradient.\n\nThe gradient pattern is repeated in reverse order (mirrored) to fill the area before or after the gradient.\n\nThe gradient pattern is repeated in the same order to fill the area before or after the gradient.\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nSpecifies the coordinate system for gradients.\n\nCoordinates are expressed as fractions of the painted object's bounding box (0..1 in each axis).\n\nCoordinates are in the current page space.\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nAn enumeration representing the two possible PDF intersection rules.\n\nThe intersection rule is used by the renderer to determine which points are considered to be inside the path and which points are outside the path. This primarily affects fill rendering and clipping paths.\n\n\"An alternative to the nonzero winding number rule is the even-odd rule. This rule determines whether a point is inside a path by drawing a ray from that point in any direction and simply counting the number of path segments that cross the ray, regardless of direction. If this number is odd, the point is inside; if even, the point is outside. This yields the same results as the nonzero winding number rule for paths with simple shapes, but produces different results for more complex shapes.\"\n\n\"The nonzero winding number rule determines whether a given point is inside a path by conceptually drawing a ray from that point to infinity in any direction and then examining the places where a segment of the path crosses the ray. Starting with a count of 0, the rule adds 1 each time a path segment crosses the ray from left to right and subtracts 1 each time a segment crosses from right to left. After counting all the crossings, if the result is 0, the point is outside the path; otherwise, it is inside.\"\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nDefines the return value(s) of a FPDF content-rendering method.\n\nThis enum values can be combined with & and | operators: PAGE_BREAK | LINES\n\nThe method will return how much vertical space was used\n\nThe method will return a multi-lines array of strings, after performing word-wrapping\n\nThe method will return a boolean indicating if a page break occurred\n\nInherited from: CoerciveIntFlag.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nDefinition for Output Intent Subtypes\n\nISO_PDFE1 PDF/E standards (ISO 24517, all parts)\n\nPDF/A (ISO 19005) standard to produce RGB output\n\nPDF/X-1a which is based upon CMYK processing\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nCreate a collection of name/value pairs.\n\nEnumerations can be iterated over, and know how many members they have:\n\nMethods can be added to enumerations, and members can have their own attributes – see the documentation for details.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nAn enumeration of the graphics state parameter dictionary keys.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nAn enumeration that provides a helper to coerce strings into enumeration members.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nStyle of the page label\n\nuppercase letters a to z, aa to zz, aaa to zzz and so on\n\nlowercase roman numerals\n\ndecimal arabic numerals\n\nuppercase letters A to Z, AA to ZZ, AAA to ZZZ and so on\n\nuppercase roman numerals\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nSpecify the page layout shall be used when the document is opened\n\nDisplay the pages in one column\n\nDisplay one page at a time\n\nDisplay the pages in two columns, with odd-numbered pages on the left\n\nDisplay the pages in two columns, with odd-numbered pages on the right\n\nDisplay the pages two at a time, with odd-numbered pages on the left\n\nDisplay the pages two at a time, with odd-numbered pages on the right\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nSpecifying how to display the document on exiting full-screen mode\n\nFull-screen mode, with no menu bar, window controls, or any other window visible\n\nAttachments panel visible\n\nNeither document outline nor thumbnail images visible\n\nOptional content group panel visible\n\nDocument outline visible\n\nThumbnail images visible\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nAn enumeration that provides a helper to coerce strings into enumeration members.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nAn enumeration of the PDF drawing directives that determine how the renderer should paint a given path.\n\nAutomatically determine which PathPaintRule should be used.\n\nPaintedPath will select one of the above PathPaintRules based on the resolved set/inherited values of its style property.\n\n\"End the path object without filling or stroking it. This operator is a path-painting no-op, used primarily for the side effect of changing the current clipping path.\"\n\n\"Fill the path, using the even-odd rule to determine the region to fill. Any subpaths that are open are implicitly closed before being filled.\"\n\n\"Fill the path, using the nonzero winding number rule to determine the region to fill. Any subpaths that are open are implicitly closed before being filled.\"\n\n\"Fill and then stroke the path, using the even-odd rule to determine the region to fill. This operator produces the same result as STROKE_FILL_NONZERO, except that the path is filled as if with FILL_EVENODD instead of FILL_NONZERO.\"\n\n\"Fill and then stroke the path, using the nonzero winding number rule to determine the region to fill. This operator produces the same result as constructing two identical path objects, painting the first with FILL_NONZERO and the second with STROKE.\"\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nDefines how to render shapes\n\nDraw lines. Line color can be controlled with FPDF.set_draw_color(). Line thickness can be controlled with FPDF.set_line_width().\n\nDraw lines and fill areas\n\nFill areas. Filling color can be controlled with FPDF.set_fill_color().\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nEnum where members are also (and must be) ints\n\nIf set, the document contains signatures that may be invalidated if the file is saved (written) in a way that alters its previous contents, as opposed to an incremental update.\n\nIf set, the document contains at least one signature field.\n\nAn enumeration of values defining how the end of a stroke should be rendered.\n\nThis affects the ends of the segments of dashed strokes, as well.\n\n\"The stroke is squared off at the endpoint of the path. There is no projection beyond the end of the path.\"\n\n\"A semicircular arc with a diameter equal to the line width is drawn around the endpoint and filled in.\"\n\n\"The stroke continues beyond the endpoint of the path for a distance equal to half the line width and is squared off.\"\n\nInherited from: CoerciveIntEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nAn enumeration of values defining how the corner joining two path components should be rendered.\n\n\"The two segments are finished with butt caps and the resulting notch beyond the ends of the segments is filled with a triangle.\"\n\n\"The outer edges of the strokes for the two segments are extended until they meet at an angle, as in a picture frame. If the segments meet at too sharp an angle (as defined by the miter limit parameter), a bevel join is used instead.\"\n\n\"An arc of a circle with a diameter equal to the line width is drawn around the point where the two segments meet, connecting the outer edges of the strokes for the two segments. This pieslice-shaped figure is filled in, pro- ducing a rounded corner.\"\n\nInherited from: CoerciveIntEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nA helper class for drawing one border of a table\n\nFrom boolean or TableBorderStyle input, convert to definite TableBorderStyle class object\n\nReturn list with string for the command to draw a line at the specified endpoints\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nReturn dict object specifying dash in the same format as the pdf object\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nReturn True if this style changes the any aspect of the draw command, False otherwise\n\nReturn list of strings for the draw command to change stroke (empty if no change)\n\nGet draw commands for this section of a cell border. x and y are presumed to be already shifted and scaled.\n\nReturn True if this style produces a visible stroke, False otherwise\n\nCustomizable class for setting the drawing style of cell borders for the whole table. cell_style_getter is an abstract method that derived classes must implement. All current classes do not use self, but it is available in case a very complicated derived class needs to refer to stored internal data.\n\nStandard TableBordersLayouts are available as static members of this class\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nAttempt to coerce value into a member of this class.\n\nIf value is already a member of this enumeration it is returned unchanged. Otherwise, if it is a string, attempt to convert it as an enumeration value. If that fails, attempt to convert it (case insensitively, by upcasing) as an enumeration name.\n\nIf all different conversion attempts fail, an exception is raised.\n\nSpecify the desired TableCellStyle for the given position in the table\n\nTableCellStyle for the given position in the table\n\nClass for drawing all cell borders\n\nInherited from: TableBordersLayout.ALL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.HORIZONTAL_LINES\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.INTERNAL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.MINIMAL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.NONE\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.NO_HORIZONTAL_LINES\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.SINGLE_TOP_LINE\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.coerce\n\nAttempt to coerce value into a member of this class …\n\nInherited from: TableBordersLayout.cell_style_getter\n\nSpecify the desired TableCellStyle for the given position in the table …\n\nClass to draw only horizontal lines\n\nInherited from: TableBordersLayout.ALL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.HORIZONTAL_LINES\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.INTERNAL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.MINIMAL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.NONE\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.NO_HORIZONTAL_LINES\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.SINGLE_TOP_LINE\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.coerce\n\nAttempt to coerce value into a member of this class …\n\nInherited from: TableBordersLayout.cell_style_getter\n\nSpecify the desired TableCellStyle for the given position in the table …\n\nClass to draw only internal horizontal & vertical borders\n\nInherited from: TableBordersLayout.ALL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.HORIZONTAL_LINES\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.INTERNAL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.MINIMAL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.NONE\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.NO_HORIZONTAL_LINES\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.SINGLE_TOP_LINE\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.coerce\n\nAttempt to coerce value into a member of this class …\n\nInherited from: TableBordersLayout.cell_style_getter\n\nSpecify the desired TableCellStyle for the given position in the table …\n\nClass to draw only the top horizontal border, below the headings, and internal vertical borders\n\nInherited from: TableBordersLayout.ALL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.HORIZONTAL_LINES\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.INTERNAL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.MINIMAL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.NONE\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.NO_HORIZONTAL_LINES\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.SINGLE_TOP_LINE\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.coerce\n\nAttempt to coerce value into a member of this class …\n\nInherited from: TableBordersLayout.cell_style_getter\n\nSpecify the desired TableCellStyle for the given position in the table …\n\nClass to draw all cells border except interior horizontal lines after the headings\n\nInherited from: TableBordersLayout.ALL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.HORIZONTAL_LINES\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.INTERNAL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.MINIMAL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.NONE\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.NO_HORIZONTAL_LINES\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.SINGLE_TOP_LINE\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.coerce\n\nAttempt to coerce value into a member of this class …\n\nInherited from: TableBordersLayout.cell_style_getter\n\nSpecify the desired TableCellStyle for the given position in the table …\n\nClass for drawing zero cell borders\n\nInherited from: TableBordersLayout.ALL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.HORIZONTAL_LINES\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.INTERNAL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.MINIMAL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.NONE\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.NO_HORIZONTAL_LINES\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.SINGLE_TOP_LINE\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.coerce\n\nAttempt to coerce value into a member of this class …\n\nInherited from: TableBordersLayout.cell_style_getter\n\nSpecify the desired TableCellStyle for the given position in the table …\n\nClass to draw a single top line\n\nInherited from: TableBordersLayout.ALL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.HORIZONTAL_LINES\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.INTERNAL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.MINIMAL\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.NONE\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.NO_HORIZONTAL_LINES\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.SINGLE_TOP_LINE\n\nThe type of the None singleton.\n\nInherited from: TableBordersLayout.coerce\n\nAttempt to coerce value into a member of this class …\n\nInherited from: TableBordersLayout.cell_style_getter\n\nSpecify the desired TableCellStyle for the given position in the table …\n\nDefines which table cells to fill\n\nFill only table cells in odd columns\n\nFill only table cells in even columns\n\nFill only table cells in even rows\n\nFill only table cells in odd rows\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nA helper class for drawing all the borders of one cell in a table\n\nReturn list with string for command to change device color (empty list if no color)\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nDraw the cell border for this cell, and fill it with the given fill color.\n\nGet list of primitive commands to draw the cell border for this cell, and fill it with the given fill color.\n\nAllow override by CellBordersLayout mechanism\n\nDefines how the table headings should be displayed\n\n0: Only render the table headings at the beginning of the table\n\n1: When a page break occurs, repeat the table headings at the top of every table fragment\n\nInherited from: CoerciveIntEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nAn enumeration that provides a helper to coerce strings into enumeration members.\n\nMark this cell as a continuation of the previous column\n\nMark this cell as a continuation of the previous row\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nText rendering direction for text shaping\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nIndicates use of bold / italics / underline.\n\nThis enum values can be combined with & and | operators: style = B | I\n\nInherited from: CoerciveIntFlag.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nSubtype of a text markup annotation\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nValues described in PDF spec section 'Text Rendering Mode'\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nInherited from: CoerciveIntEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nDefines how to vertically render text in a cell. Default value is MIDDLE\n\nPlace text at the bottom of the cell, but obey the cells padding\n\nCenter text vertically\n\nPlace text at the top of the cell, but obey the cells padding\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nDefines how to break and wrap lines in multi-line text.\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nPositional values in horizontal direction for use after printing text.\n\ncenter of actual text\n\nright end of actual text\n\nleft page margin (start of printable area)\n\nright end of the cell (default)\n\nright page margin (end of printable area)\n\nleft start of actual text\n\nfor write() to continue next (slightly left of END)\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …\n\nPositional values in vertical direction for use after printing text\n\nbottom page margin (end of printable area)\n\ntop of the last line (same as TOP for single-line text)\n\ntop of next line (bottom of current text)\n\ntop page margin (start of printable area)\n\ntop of the first line (default)\n\nInherited from: CoerciveEnum.coerce\n\nAttempt to coerce value into a member of this enumeration …",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.enums",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Subclasses",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Raises",
+      "id": "raises"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Subclasses",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Raises",
+      "id": "raises"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Subclasses",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Raises",
+      "id": "raises"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Attributes",
+      "id": "attributes"
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Attributes",
+      "id": "attributes"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Subclasses",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Raises",
+      "id": "raises"
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Attributes",
+      "id": "attributes"
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Class variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "class AccessPermission(IntFlag):\n    \"Permission flags will translate as an integer on the encryption dictionary\"\n\n    PRINT_LOW_RES = 0b000000000100\n    \"Print the document\"\n\n    MODIFY = 0b000000001000\n    \"Modify the contents of the document\"\n\n    COPY = 0b000000010000\n    \"Copy or extract text and graphics from the document\"\n\n    ANNOTATION = 0b000000100000\n    \"Add or modify text annotations\"\n\n    FILL_FORMS = 0b000100000000\n    \"Fill in existing interactive form fields\"\n\n    COPY_FOR_ACCESSIBILITY = 0b001000000000\n    \"Extract text and graphics in support of accessibility to users with disabilities\"\n\n    ASSEMBLE = 0b010000000000\n    \"Insert, rotate or delete pages and create bookmarks or thumbnail images\"\n\n    PRINT_HIGH_RES = 0b100000000000\n    \"Print document at the highest resolution\"\n\n    @classmethod\n    def all(cls) -> int:\n        \"All flags enabled\"\n        result = 0\n        for permission in list(AccessPermission):\n            access_permission = permission\n            result = result | access_permission.value\n        return result\n\n    @classmethod\n    def none(cls) -> int:\n        \"All flags disabled\"\n        return 0",
+      "language": "python"
+    },
+    {
+      "code": "class Align(CoerciveEnum):\n    \"Defines how to render text in a cell\"\n\n    C = intern(\"CENTER\")\n    \"Center text horizontally\"\n\n    X = intern(\"X_CENTER\")\n    \"Center text horizontally around current x position\"\n\n    L = intern(\"LEFT\")\n    \"Left-align text\"\n\n    R = intern(\"RIGHT\")\n    \"Right-align text\"\n\n    J = intern(\"JUSTIFY\")\n    \"Justify text\"\n\n    @classmethod\n    def coerce(  # pyright: ignore[reportIncompatibleMethodOverride]\n        cls, value: Union[\"Align\", str], case_sensitive: bool = False\n    ) -> \"Align\":\n        if value == \"\":\n            return cls.L\n        if isinstance(value, str):\n            value = value.upper()\n        return super(cls, cls).coerce(\n            value, case_sensitive  # pyright: ignore[reportArgumentType]\n        )",
+      "language": "python"
+    },
+    {
+      "code": "class Angle(CoerciveIntEnum):\n    \"Direction values used for mirror transformations specifying the angle of mirror line\"\n\n    NORTH = 90\n    EAST = 0\n    SOUTH = 270\n    WEST = 180\n    NORTHEAST = 45\n    SOUTHEAST = 315\n    SOUTHWEST = 225\n    NORTHWEST = 135",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationFlag(CoerciveIntEnum):\n    INVISIBLE = 1\n    \"\"\"\n    If set, do not display the annotation if it does not belong to one of the\n    standard annotation types and no annotation handler is available.\n    \"\"\"\n    HIDDEN = 2\n    \"If set, do not display or print the annotation or allow it to interact with the user\"\n    PRINT = 4\n    \"If set, print the annotation when the page is printed.\"\n    NO_ZOOM = 8\n    \"If set, do not scale the annotation’s appearance to match the magnification of the page.\"\n    NO_ROTATE = 16\n    \"If set, do not rotate the annotation’s appearance to match the rotation of the page.\"\n    NO_VIEW = 32\n    \"If set, do not display the annotation on the screen or allow it to interact with the user\"\n    READ_ONLY = 64\n    \"\"\"\n    If set, do not allow the annotation to interact with the user.\n    The annotation may be displayed or printed but should not respond to mouse clicks.\n    \"\"\"\n    LOCKED = 128\n    \"\"\"\n    If set, do not allow the annotation to be deleted or its properties\n    (including position and size) to be modified by the user.\n    \"\"\"\n    TOGGLE_NO_VIEW = 256\n    \"If set, invert the interpretation of the NoView flag for certain events.\"\n    LOCKED_CONTENTS = 512\n    \"If set, do not allow the contents of the annotation to be modified by the user.\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationName(CoerciveEnum):\n    \"The name of an icon that shall be used in displaying the annotation\"\n\n    NOTE = Name(\"Note\")\n    COMMENT = Name(\"Comment\")\n    HELP = Name(\"Help\")\n    PARAGRAPH = Name(\"Paragraph\")\n    NEW_PARAGRAPH = Name(\"NewParagraph\")\n    INSERT = Name(\"Insert\")",
+      "language": "python"
+    },
+    {
+      "code": "class AssociatedFileRelationship(CoerciveEnum):\n    \"\"\"Represents the association between an embedded file and the content on the PDF\"\"\"\n\n    SOURCE = intern(\"Source\")\n    \"The file is the original source material of the content\"\n\n    DATA = intern(\"Data\")\n    \"\"\"\n    The file has the information used to produce the associated object.\n    e.g.: the data used to produce a table or a graph\n    \"\"\"\n\n    ALTERNATIVE = intern(\"Alternative\")\n    \"The file has an alternative representation of the content\"\n\n    SUPPLEMENT = intern(\"Supplement\")\n    \"\"\"\n    The file has a supplemental representation of the original source\n    or data that may be more easily consumable\n    \"\"\"\n\n    ENCRYPTED_PAYLOAD = intern(\"EncryptedPayload\")\n    \"\"\"\n    The file is an encrypted payload document that should be displayed\n    to the user if the PDF processor has the cryptographic filter\n    needed to decrypt the document\n    \"\"\"\n\n    FORM_DATA = intern(\"FormData\")\n    \"The file has the data associated with the interactive form in this document\"\n\n    SCHEMA = intern(\"Schema\")\n    \"The file is a schema definition for the associated object\"\n\n    UNSPECIFIED = intern(\"Unspecified\")\n    \"\"\"\n    Shall be used when the relationship is not known\n    or cannot be described using one of the other values\n    \"\"\"",
+      "language": "python"
+    },
+    {
+      "code": "class BlendMode(CoerciveEnum):\n    \"An enumeration of the named standard named blend functions supported by PDF.\"\n\n    NORMAL = Name(\"Normal\")\n    '''\"Selects the source color, ignoring the backdrop.\"'''\n    MULTIPLY = Name(\"Multiply\")\n    '''\"Multiplies the backdrop and source color values.\"'''\n    SCREEN = Name(\"Screen\")\n    \"\"\"\n    \"Multiplies the complements of the backdrop and source color values, then\n    complements the result.\"\n    \"\"\"\n    OVERLAY = Name(\"Overlay\")\n    \"\"\"\n    \"Multiplies or screens the colors, depending on the backdrop color value. Source\n    colors overlay the backdrop while preserving its highlights and shadows. The\n    backdrop color is not replaced but is mixed with the source color to reflect the\n    lightness or darkness of the backdrop.\"\n    \"\"\"\n    DARKEN = Name(\"Darken\")\n    '''\"Selects the darker of the backdrop and source colors.\"'''\n    LIGHTEN = Name(\"Lighten\")\n    '''\"Selects the lighter of the backdrop and source colors.\"'''\n    COLOR_DODGE = Name(\"ColorDodge\")\n    \"\"\"\n    \"Brightens the backdrop color to reflect the source color. Painting with black\n     produces no changes.\"\n    \"\"\"\n    COLOR_BURN = Name(\"ColorBurn\")\n    \"\"\"\n    \"Darkens the backdrop color to reflect the source color. Painting with white\n     produces no change.\"\n    \"\"\"\n    HARD_LIGHT = Name(\"HardLight\")\n    \"\"\"\n    \"Multiplies or screens the colors, depending on the source color value. The effect\n    is similar to shining a harsh spotlight on the backdrop.\"\n    \"\"\"\n    SOFT_LIGHT = Name(\"SoftLight\")\n    \"\"\"\n    \"Darkens or lightens the colors, depending on the source color value. The effect is\n    similar to shining a diffused spotlight on the backdrop.\"\n    \"\"\"\n    DIFFERENCE = Name(\"Difference\")\n    '''\"Subtracts the darker of the two constituent colors from the lighter color.\"'''\n    EXCLUSION = Name(\"Exclusion\")\n    \"\"\"\n    \"Produces an effect similar to that of the Difference mode but lower in contrast.\n    Painting with white inverts the backdrop color; painting with black produces no\n    change.\"\n    \"\"\"\n    HUE = Name(\"Hue\")\n    \"\"\"\n    \"Creates a color with the hue of the source color and the saturation and luminosity\n    of the backdrop color.\"\n    \"\"\"\n    SATURATION = Name(\"Saturation\")\n    \"\"\"\n    \"Creates a color with the saturation of the source color and the hue and luminosity\n    of the backdrop color. Painting with this mode in an area of the backdrop that is\n    a pure gray (no saturation) produces no change.\"\n    \"\"\"\n    COLOR = Name(\"Color\")\n    \"\"\"\n    \"Creates a color with the hue and saturation of the source color and the luminosity\n    of the backdrop color. This preserves the gray levels of the backdrop and is\n    useful for coloring monochrome images or tinting color images.\"\n    \"\"\"\n    LUMINOSITY = Name(\"Luminosity\")\n    \"\"\"\n    \"Creates a color with the luminosity of the source color and the hue and saturation\n    of the backdrop color. This produces an inverse effect to that of the Color mode.\"\n    \"\"\"",
+      "language": "python"
+    },
+    {
+      "code": "class CellBordersLayout(CoerciveIntFlag):\n    \"\"\"Defines how to render cell borders in table\n\n    The integer value of `border` determines which borders are applied. Below are some common examples:\n\n    - border=1 (LEFT): Only the left border is enabled.\n    - border=3 (LEFT | RIGHT): Both the left and right borders are enabled.\n    - border=5 (LEFT | TOP): The left and top borders are enabled.\n    - border=12 (TOP | BOTTOM): The top and bottom borders are enabled.\n    - border=15 (ALL): All borders (left, right, top, bottom) are enabled.\n    - border=16 (INHERIT): Inherit the border settings from the parent element.\n\n    Using `border=3` will combine LEFT and RIGHT borders, as it represents the\n    bitwise OR of `LEFT (1)` and `RIGHT (2)`.\n    \"\"\"\n\n    NONE = 0\n    \"Draw no border on any side of cell\"\n\n    LEFT = 1\n    \"Draw border on the left side of the cell\"\n\n    RIGHT = 2\n    \"Draw border on the right side of the cell\"\n\n    TOP = 4\n    \"Draw border on the top side of the cell\"\n\n    BOTTOM = 8\n    \"Draw border on the bottom side of the cell\"\n\n    ALL = LEFT | RIGHT | TOP | BOTTOM\n    \"Draw border on all side of the cell\"\n\n    INHERIT = 16\n    \"Inherits the border layout from the table borders layout\"\n\n    @classmethod\n    def coerce(cls, value: Union[\"CellBordersLayout\", str, int]) -> \"CellBordersLayout\":\n        if isinstance(value, int) and value > 16:\n            raise ValueError(\"INHERIT cannot be combined with other values\")\n        return super().coerce(value)\n\n    def __and__(self, value: int) -> \"CellBordersLayout\":\n        value = super().__and__(value)\n        if value > 16:\n            raise ValueError(\"INHERIT cannot be combined with other values\")\n        return value\n\n    def __or__(self, value: int) -> \"CellBordersLayout\":\n        value = super().__or__(value)\n        if value > 16:\n            raise ValueError(\"INHERIT cannot be combined with other values\")\n        return value\n\n    def __str__(self) -> str:\n        border_str: list[str] = []\n        if self & CellBordersLayout.LEFT:\n            border_str.append(\"L\")\n        if self & CellBordersLayout.RIGHT:\n            border_str.append(\"R\")\n        if self & CellBordersLayout.TOP:\n            border_str.append(\"T\")\n        if self & CellBordersLayout.BOTTOM:\n            border_str.append(\"B\")\n        return \"\".join(border_str) if border_str else \"NONE\"",
+      "language": "python"
+    },
+    {
+      "code": "class CellFillProtocol(Protocol):\n    \"\"\"Protocol for custom table cell fill mode classes\"\"\"\n\n    def should_fill_cell(self, i: int, j: int) -> bool: ...",
+      "language": "python"
+    },
+    {
+      "code": "def should_fill_cell(self, i: int, j: int) -> bool: ...",
+      "language": "python"
+    },
+    {
+      "code": "class CharVPos(CoerciveEnum):\n    \"Defines the vertical position of text relative to the line.\"\n\n    SUP = intern(\"SUP\")\n    \"Superscript\"\n\n    SUB = intern(\"SUB\")\n    \"Subscript\"\n\n    NOM = intern(\"NOM\")\n    \"Nominator of a fraction\"\n\n    DENOM = intern(\"DENOM\")\n    \"Denominator of a fraction\"\n\n    LINE = intern(\"LINE\")\n    \"Default line position\"",
+      "language": "python"
+    },
+    {
+      "code": "class ClippingPathIntersectionRule(CoerciveEnum):\n    \"An enumeration of the PDF drawing directives that define a path as a clipping path.\"\n\n    NONZERO = \"W\"\n    \"\"\"\n    \"The nonzero winding number rule determines whether a given point is inside a path\n    by conceptually drawing a ray from that point to infinity in any direction and\n    then examining the places where a segment of the path crosses the ray. Starting\n    with a count of 0, the rule adds 1 each time a path segment crosses the ray from\n    left to right and subtracts 1 each time a segment crosses from right to left.\n    After counting all the crossings, if the result is 0, the point is outside the\n    path; otherwise, it is inside.\"\n    \"\"\"\n    EVENODD = \"W*\"\n    \"\"\"\n    \"An alternative to the nonzero winding number rule is the even-odd rule. This rule\n    determines whether a point is inside a path by drawing a ray from that point in\n    any direction and simply counting the number of path segments that cross the ray,\n    regardless of direction. If this number is odd, the point is inside; if even, the\n    point is outside. This yields the same results as the nonzero winding number rule\n    for paths with simple shapes, but produces different results for more complex\n    shapes.\"\"\"",
+      "language": "python"
+    },
+    {
+      "code": "class CoerciveEnum(Enum):\n    \"An enumeration that provides a helper to coerce strings into enumeration members.\"\n\n    @classmethod\n    def coerce(cls: Type[E], value: E | str, case_sensitive: bool = False) -> E:\n        \"\"\"\n        Attempt to coerce `value` into a member of this enumeration.\n\n        If value is already a member of this enumeration it is returned unchanged.\n        Otherwise, if it is a string, attempt to convert it as an enumeration value. If\n        that fails, attempt to convert it (case insensitively, by upcasing) as an\n        enumeration name.\n\n        If all different conversion attempts fail, an exception is raised.\n\n        Args:\n            value (Enum, str): the value to be coerced.\n\n        Raises:\n            ValueError: if `value` is a string but neither a member by name nor value.\n            TypeError: if `value`'s type is neither a member of the enumeration nor a\n                string.\n        \"\"\"\n\n        if isinstance(value, cls):\n            return value\n\n        if isinstance(value, str):\n            try:\n                return cls(value)\n            except ValueError:\n                pass\n            try:\n                return cls[value] if case_sensitive else cls[value.upper()]\n            except KeyError:\n                pass\n\n            raise ValueError(f\"{value} is not a valid {cls.__name__}\")\n\n        raise TypeError(f\"{value} cannot be converted to a {cls.__name__}\")",
+      "language": "python"
+    },
+    {
+      "code": "class CoerciveIntEnum(IntEnum):\n    \"\"\"\n    An enumeration that provides a helper to coerce strings and integers into\n    enumeration members.\n    \"\"\"\n\n    @classmethod\n    def coerce(cls: Type[IE], value: IE | str | int) -> IE:\n        \"\"\"\n        Attempt to coerce `value` into a member of this enumeration.\n\n        If value is already a member of this enumeration it is returned unchanged.\n        Otherwise, if it is a string, attempt to convert it (case insensitively, by\n        upcasing) as an enumeration name. Otherwise, if it is an int, attempt to\n        convert it as an enumeration value.\n\n        Otherwise, an exception is raised.\n\n        Args:\n            value (IntEnum, str, int): the value to be coerced.\n\n        Raises:\n            ValueError: if `value` is an int but not a member of this enumeration.\n            ValueError: if `value` is a string but not a member by name.\n            TypeError: if `value`'s type is neither a member of the enumeration nor an\n                int or a string.\n        \"\"\"\n        if isinstance(value, cls):\n            return value\n\n        if isinstance(value, str):\n            try:\n                return cls[value.upper()]\n            except KeyError:\n                raise ValueError(f\"{value} is not a valid {cls.__name__}\") from None\n\n        if isinstance(value, int):\n            return cls(value)\n\n        raise TypeError(f\"{value} cannot convert to a {cls.__name__}\")",
+      "language": "python"
+    },
+    {
+      "code": "class CoerciveIntFlag(IntFlag):\n    \"\"\"\n    Enumerated constants that can be combined using the bitwise operators,\n    with a helper to coerce strings and integers into enumeration members.\n    \"\"\"\n\n    @classmethod\n    def coerce(cls: Type[IF], value: IF | str | int) -> IF:\n        \"\"\"\n        Attempt to coerce `value` into a member of this enumeration.\n\n        If value is already a member of this enumeration it is returned unchanged.\n        Otherwise, if it is a string, attempt to convert it (case insensitively, by\n        upcasing) as an enumeration name. Otherwise, if it is an int, attempt to\n        convert it as an enumeration value.\n        Otherwise, an exception is raised.\n\n        Args:\n            value (IntEnum, str, int): the value to be coerced.\n\n        Raises:\n            ValueError: if `value` is an int but not a member of this enumeration.\n            ValueError: if `value` is a string but not a member by name.\n            TypeError: if `value`'s type is neither a member of the enumeration nor an\n                int or a string.\n        \"\"\"\n        if isinstance(value, cls):\n            return value\n\n        if isinstance(value, str):\n            try:\n                return cls[value.upper()]\n            except KeyError:\n                pass\n            try:\n                flags = cls[value[0].upper()]\n                for char in value[1:]:\n                    flags = flags | cls[char.upper()]\n                return flags\n            except KeyError:\n                raise ValueError(f\"{value} is not a valid {cls.__name__}\") from None\n\n        if isinstance(value, int):\n            return cls(value)\n\n        raise TypeError(f\"{value} cannot convert to a {cls.__name__}\")",
+      "language": "python"
+    },
+    {
+      "code": "class CompositingOperation(CoerciveEnum):\n    \"An enumeration of Porter-Duff compositing operations.\"\n\n    CLEAR = Name(\"Clear\")\n    \"\"\" Draw nothing \"\"\"\n\n    SOURCE = Name(\"Source\")\n    \"\"\" Draw the source only \"\"\"\n\n    DESTINATION = Name(\"Destination\")\n    \"\"\" Draw the destination only \"\"\"\n\n    SOURCE_OVER = Name(\"SourceOver\")\n    \"\"\"The source is drawn over the destination (backdrop).\"\"\"\n\n    DESTINATION_OVER = Name(\"DestinationOver\")\n    \"\"\"The destination (backdrop) is drawn over the source.\"\"\"\n\n    SOURCE_IN = Name(\"SourceIn\")\n    \"\"\"Only the part of the source that overlaps with the destination is drawn. The rest is discarded.\"\"\"\n\n    DESTINATION_IN = Name(\"DestinationIn\")\n    \"\"\"Only the part of the destination that overlaps with the source is drawn. The rest is discarded.\"\"\"\n\n    SOURCE_OUT = Name(\"SourceOut\")\n    \"\"\"Only the part of the source that does not overlap the destination is drawn.\"\"\"\n\n    DESTINATION_OUT = Name(\"DestinationOut\")\n    \"\"\"Only the part of the destination that does not overlap the source is drawn.\"\"\"\n\n    SOURCE_ATOP = Name(\"SourceAtop\")\n    \"\"\"The part of the source that overlaps the destination is drawn over the destination. The rest of the source is discarded.\"\"\"\n\n    DESTINATION_ATOP = Name(\"DestinationAtop\")\n    \"\"\"The part of the destination that overlaps the source is drawn over the source. The rest of the destination is discarded.\"\"\"\n\n    XOR = Name(\"XOR\")\n    \"\"\"Only the parts of the source and destination that do not overlap are drawn.\"\"\"",
+      "language": "python"
+    },
+    {
+      "code": "class Corner(CoerciveEnum):\n    TOP_RIGHT = \"TOP_RIGHT\"\n    TOP_LEFT = \"TOP_LEFT\"\n    BOTTOM_RIGHT = \"BOTTOM_RIGHT\"\n    BOTTOM_LEFT = \"BOTTOM_LEFT\"",
+      "language": "python"
+    },
+    {
+      "code": "class DocumentCompliance(Enum):\n    \"\"\"\n    Type of compliance enforcement that can be applied to a document.\n    Limited to PDF/A at the moment, but extendable to other standards like:\n        - PDF/E (Engineering PDFs)\n        - PDF/UA (PDF Universal Accessibility)\n        - PDF/X (Graphics Exchange PDFs)\n    \"\"\"\n\n    PDFA_1B = (\"PDFA\", 1, \"B\")\n    PDFA_2B = (\"PDFA\", 2, \"B\")\n    PDFA_2U = (\"PDFA\", 2, \"U\")\n    PDFA_3B = (\"PDFA\", 3, \"B\")\n    PDFA_3U = (\"PDFA\", 3, \"U\")\n    PDFA_4 = (\"PDFA\", 4, None)\n    PDFA_4E = (\"PDFA\", 4, \"E\")\n    PDFA_4F = (\"PDFA\", 4, \"F\")\n\n    @property\n    def profile(self) -> str:\n        return str(self.value[0])\n\n    @property\n    def part(self) -> int:\n        return int(self.value[1])\n\n    @property\n    def conformance(self) -> Optional[str]:\n        return str(self.value[2]) if self.value[2] is not None else None\n\n    @property\n    def label(self) -> str:\n        profile = \"PDF/A\" if self.profile == \"PDFA\" else self.profile\n        return f\"{profile}-{self.part}{self.conformance if self.conformance else ''}\"\n\n    def __str__(self) -> str:\n        return (\n            f\"{self.profile}_{self.part}{self.conformance if self.conformance else ''}\"\n        )\n\n    @classmethod\n    def coerce(cls, value: Union[\"DocumentCompliance\", str]) -> \"DocumentCompliance\":\n        if isinstance(value, cls):\n            return value\n        if isinstance(value, str):\n            key = value.upper()\n            for m in cls:\n                if m.name.upper() == key:  # PDFA_2U\n                    return m\n                if m.label.upper() == key:  # PDF/A-2U\n                    return m\n        raise ValueError(f\"Cannot coerce {value!r} to {cls.__name__}\")",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef conformance(self) -> Optional[str]:\n    return str(self.value[2]) if self.value[2] is not None else None",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef label(self) -> str:\n    profile = \"PDF/A\" if self.profile == \"PDFA\" else self.profile\n    return f\"{profile}-{self.part}{self.conformance if self.conformance else ''}\"",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef part(self) -> int:\n    return int(self.value[1])",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef profile(self) -> str:\n    return str(self.value[0])",
+      "language": "python"
+    },
+    {
+      "code": "class Duplex(CoerciveEnum):\n    \"The paper handling option that shall be used when printing the file from the print dialog.\"\n\n    SIMPLEX = Name(\"Simplex\")\n    \"Print single-sided\"\n\n    DUPLEX_FLIP_SHORT_EDGE = Name(\"DuplexFlipShortEdge\")\n    \"Duplex and flip on the short edge of the sheet\"\n\n    DUPLEX_FLIP_LONG_EDGE = Name(\"DuplexFlipLongEdge\")\n    \"Duplex and flip on the long edge of the sheet\"",
+      "language": "python"
+    },
+    {
+      "code": "class EncryptionMethod(Enum):\n    \"Algorithm to be used to encrypt the document\"\n\n    NO_ENCRYPTION = 0\n    RC4 = 1\n    AES_128 = 2\n    AES_256 = 3",
+      "language": "python"
+    },
+    {
+      "code": "class FileAttachmentAnnotationName(CoerciveEnum):\n    \"The name of an icon that shall be used in displaying the annotation\"\n\n    PUSH_PIN = Name(\"PushPin\")\n    GRAPH_PUSH_PIN = Name(\"GraphPushPin\")\n    PAPERCLIP_TAG = Name(\"PaperclipTag\")",
+      "language": "python"
+    },
+    {
+      "code": "class FontDescriptorFlags(Flag):\n    \"\"\"An enumeration of the flags for the unsigned 32-bit integer entry in the font descriptor specifying various\n    characteristics of the font. Bit positions are numbered from 1 (low-order) to 32 (high-order).\n    \"\"\"\n\n    FIXED_PITCH = 0x0000001\n    \"\"\"\n    \"All glyphs have the same width (as opposed to proportional or\n    variable-pitch fonts, which have different widths.\"\n    \"\"\"\n\n    SYMBOLIC = 0x0000004\n    \"\"\"\n    \"Font contains glyphs outside the Adobe standard Latin character set.\n    This flag and the Nonsymbolic flag shall not both be set or both be clear.\"\n    \"\"\"\n\n    ITALIC = 0x0000040\n    \"\"\"\n    \"Glyphs have dominant vertical strokes that are slanted.\"\n    \"\"\"\n\n    FORCE_BOLD = 0x0040000\n    \"\"\"\n    \"The flag shall determine whether bold glyphs shall be painted with extra pixels even at very\n    small text sizes by a conforming reader. If set, features of bold glyphs may be thickened at\n    small text sizes.\"\n    \"\"\"",
+      "language": "python"
+    },
+    {
+      "code": "class GradientSpreadMethod(CoerciveEnum):\n    \"Specifies how to fill the area outside the gradient's start and end points.\"\n\n    PAD = \"pad\"\n    \" The color at the start or end of the gradient is extended to fill the area before or after the gradient.\"\n\n    REFLECT = \"reflect\"\n    \" The gradient pattern is repeated in reverse order (mirrored) to fill the area before or after the gradient.\"\n\n    REPEAT = \"repeat\"\n    \" The gradient pattern is repeated in the same order to fill the area before or after the gradient.\"",
+      "language": "python"
+    },
+    {
+      "code": "class GradientUnits(CoerciveEnum):\n    \"Specifies the coordinate system for gradients.\"\n\n    OBJECT_BOUNDING_BOX = \"objectBoundingBox\"\n    \" Coordinates are expressed as fractions of the painted object's bounding box (0..1 in each axis).\"\n\n    USER_SPACE_ON_USE = \"userSpaceOnUse\"\n    \" Coordinates are in the current page space.\"",
+      "language": "python"
+    },
+    {
+      "code": "class IntersectionRule(CoerciveEnum):\n    \"\"\"\n    An enumeration representing the two possible PDF intersection rules.\n\n    The intersection rule is used by the renderer to determine which points are\n    considered to be inside the path and which points are outside the path. This\n    primarily affects fill rendering and clipping paths.\n    \"\"\"\n\n    NONZERO = \"nonzero\"\n    \"\"\"\n    \"The nonzero winding number rule determines whether a given point is inside a path\n    by conceptually drawing a ray from that point to infinity in any direction and\n    then examining the places where a segment of the path crosses the ray. Starting\n    with a count of 0, the rule adds 1 each time a path segment crosses the ray from\n    left to right and subtracts 1 each time a segment crosses from right to left.\n    After counting all the crossings, if the result is 0, the point is outside the\n    path; otherwise, it is inside.\"\n    \"\"\"\n    EVENODD = \"evenodd\"\n    \"\"\"\n    \"An alternative to the nonzero winding number rule is the even-odd rule. This rule\n    determines whether a point is inside a path by drawing a ray from that point in\n    any direction and simply counting the number of path segments that cross the ray,\n    regardless of direction. If this number is odd, the point is inside; if even, the\n    point is outside. This yields the same results as the nonzero winding number rule\n    for paths with simple shapes, but produces different results for more complex\n    shapes.\"\n    \"\"\"",
+      "language": "python"
+    },
+    {
+      "code": "class MethodReturnValue(CoerciveIntFlag):\n    \"\"\"\n    Defines the return value(s) of a FPDF content-rendering method.\n\n    This enum values can be combined with & and | operators:\n        PAGE_BREAK | LINES\n    \"\"\"\n\n    PAGE_BREAK = 1\n    \"The method will return a boolean indicating if a page break occurred\"\n\n    LINES = 2\n    \"The method will return a multi-lines array of strings, after performing word-wrapping\"\n\n    HEIGHT = 4\n    \"The method will return how much vertical space was used\"",
+      "language": "python"
+    },
+    {
+      "code": "class OutputIntentSubType(CoerciveEnum):\n    \"Definition for Output Intent Subtypes\"\n\n    PDFX = Name(\"GTS_PDFX\")\n    \"PDF/X-1a which is based upon CMYK processing\"\n\n    PDFA = Name(\"GTS_PDFA1\")\n    \"PDF/A (ISO 19005) standard to produce RGB output\"\n\n    ISOPDF = Name(\"ISO_PDFE1\")\n    \"ISO_PDFE1 PDF/E standards (ISO 24517, all parts)\"",
+      "language": "python"
+    },
+    {
+      "code": "class PDFResourceType(Enum):\n    EXT_G_STATE = intern(\"ExtGState\")\n    COLOR_SPACE = intern(\"ColorSpace\")\n    PATTERN = intern(\"Pattern\")\n    SHADING = intern(\"Shading\")\n    X_OBJECT = intern(\"XObject\")\n    FONT = intern(\"Font\")\n    PROC_SET = intern(\"ProcSet\")\n    PROPERTIES = intern(\"Properties\")",
+      "language": "python"
+    },
+    {
+      "code": ">>> class Color(Enum):\n...     RED = 1\n...     BLUE = 2\n...     GREEN = 3",
+      "language": "php"
+    },
+    {
+      "code": ">>> len(Color)\n3",
+      "language": "unknown"
+    },
+    {
+      "code": ">>> list(Color)\n[<Color.RED: 1>, <Color.BLUE: 2>, <Color.GREEN: 3>]",
+      "language": "json"
+    },
+    {
+      "code": "class PDFStyleKeys(Enum):\n    \"An enumeration of the graphics state parameter dictionary keys.\"\n\n    FILL_ALPHA = Name(\"ca\")\n    BLEND_MODE = Name(\"BM\")  # shared between stroke and fill\n    STROKE_ALPHA = Name(\"CA\")\n    STROKE_ADJUSTMENT = Name(\"SA\")\n    STROKE_WIDTH = Name(\"LW\")\n    STROKE_CAP_STYLE = Name(\"LC\")\n    STROKE_JOIN_STYLE = Name(\"LJ\")\n    STROKE_MITER_LIMIT = Name(\"ML\")\n    STROKE_DASH_PATTERN = Name(\"D\")  # array of array, number, e.g. [[1 1] 0]\n    SOFT_MASK = Name(\"SMask\")",
+      "language": "python"
+    },
+    {
+      "code": "class PageBoundaries(CoerciveEnum):\n    ART_BOX = Name(\"ArtBox\")\n    BLEED_BOX = Name(\"BleedBox\")\n    CROP_BOX = Name(\"CropBox\")\n    MEDIA_BOX = Name(\"MediaBox\")\n    TRIM_BOX = Name(\"TrimBox\")",
+      "language": "python"
+    },
+    {
+      "code": "class PageLabelStyle(CoerciveEnum):\n    \"Style of the page label\"\n\n    NUMBER = intern(\"D\")\n    \"decimal arabic numerals\"\n\n    UPPER_ROMAN = intern(\"R\")\n    \"uppercase roman numerals\"\n\n    LOWER_ROMAN = intern(\"r\")\n    \"lowercase roman numerals\"\n\n    UPPER_LETTER = intern(\"A\")\n    \"uppercase letters A to Z, AA to ZZ, AAA to ZZZ and so on\"\n\n    LOWER_LETTER = intern(\"a\")\n    \"uppercase letters a to z, aa to zz, aaa to zzz and so on\"\n\n    NONE = None\n    \"no label\"",
+      "language": "python"
+    },
+    {
+      "code": "class PageLayout(CoerciveEnum):\n    \"Specify the page layout shall be used when the document is opened\"\n\n    SINGLE_PAGE = Name(\"SinglePage\")\n    \"Display one page at a time\"\n\n    ONE_COLUMN = Name(\"OneColumn\")\n    \"Display the pages in one column\"\n\n    TWO_COLUMN_LEFT = Name(\"TwoColumnLeft\")\n    \"Display the pages in two columns, with odd-numbered pages on the left\"\n\n    TWO_COLUMN_RIGHT = Name(\"TwoColumnRight\")\n    \"Display the pages in two columns, with odd-numbered pages on the right\"\n\n    TWO_PAGE_LEFT = Name(\"TwoPageLeft\")\n    \"Display the pages two at a time, with odd-numbered pages on the left\"\n\n    TWO_PAGE_RIGHT = Name(\"TwoPageRight\")\n    \"Display the pages two at a time, with odd-numbered pages on the right\"",
+      "language": "python"
+    },
+    {
+      "code": "class PageMode(CoerciveEnum):\n    \"Specifying how to display the document on exiting full-screen mode\"\n\n    USE_NONE = Name(\"UseNone\")\n    \"Neither document outline nor thumbnail images visible\"\n\n    USE_OUTLINES = Name(\"UseOutlines\")\n    \"Document outline visible\"\n\n    USE_THUMBS = Name(\"UseThumbs\")\n    \"Thumbnail images visible\"\n\n    FULL_SCREEN = Name(\"FullScreen\")\n    \"Full-screen mode, with no menu bar, window controls, or any other window visible\"\n\n    USE_OC = Name(\"UseOC\")\n    \"Optional content group panel visible\"\n\n    USE_ATTACHMENTS = Name(\"UseAttachments\")\n    \"Attachments panel visible\"",
+      "language": "python"
+    },
+    {
+      "code": "class PageOrientation(CoerciveEnum):\n    PORTRAIT = intern(\"P\")\n    LANDSCAPE = intern(\"L\")\n\n    @classmethod\n    def coerce(  # pyright: ignore[reportIncompatibleMethodOverride]\n        cls, value: Union[\"PageOrientation\", str], case_sensitive: bool = False\n    ) -> \"PageOrientation\":\n        if isinstance(value, str):\n            value = value.upper()\n        return super(cls, cls).coerce(\n            value, case_sensitive  # pyright: ignore[reportArgumentType]\n        )",
+      "language": "python"
+    },
+    {
+      "code": "class PathPaintRule(CoerciveEnum):\n    \"\"\"\n    An enumeration of the PDF drawing directives that determine how the renderer should\n    paint a given path.\n    \"\"\"\n\n    # the auto-close paint rules are omitted here because it's easier to just emit\n    # close operators when appropriate, programmatically\n    STROKE = \"S\"\n    '''\"Stroke the path.\"'''\n\n    FILL_NONZERO = \"f\"\n    \"\"\"\n    \"Fill the path, using the nonzero winding number rule to determine the region to\n    fill. Any subpaths that are open are implicitly closed before being filled.\"\n    \"\"\"\n\n    FILL_EVENODD = \"f*\"\n    \"\"\"\n    \"Fill the path, using the even-odd rule to determine the region to fill. Any\n    subpaths that are open are implicitly closed before being filled.\"\n    \"\"\"\n\n    STROKE_FILL_NONZERO = \"B\"\n    \"\"\"\n    \"Fill and then stroke the path, using the nonzero winding number rule to determine\n    the region to fill. This operator produces the same result as constructing two\n    identical path objects, painting the first with `FILL_NONZERO` and the second with\n    `STROKE`.\"\n    \"\"\"\n\n    STROKE_FILL_EVENODD = \"B*\"\n    \"\"\"\n    \"Fill and then stroke the path, using the even-odd rule to determine the region to\n    fill. This operator produces the same result as `STROKE_FILL_NONZERO`, except that\n    the path is filled as if with `FILL_EVENODD` instead of `FILL_NONZERO`.\"\n    \"\"\"\n\n    DONT_PAINT = \"n\"\n    \"\"\"\n    \"End the path object without filling or stroking it. This operator is a\n    path-painting no-op, used primarily for the side effect of changing the current\n    clipping path.\"\n    \"\"\"\n\n    AUTO = \"auto\"\n    \"\"\"\n    Automatically determine which `PathPaintRule` should be used.\n\n    PaintedPath will select one of the above `PathPaintRule`s based on the resolved\n    set/inherited values of its style property.\n    \"\"\"",
+      "language": "python"
+    },
+    {
+      "code": "class RenderStyle(CoerciveEnum):\n    \"Defines how to render shapes\"\n\n    D = intern(\"DRAW\")\n    \"\"\"\n    Draw lines.\n    Line color can be controlled with `fpdf.fpdf.FPDF.set_draw_color()`.\n    Line thickness can be controlled with `fpdf.fpdf.FPDF.set_line_width()`.\n    \"\"\"\n\n    F = intern(\"FILL\")\n    \"\"\"\n    Fill areas.\n    Filling color can be controlled with `fpdf.fpdf.FPDF.set_fill_color()`.\n    \"\"\"\n\n    DF = intern(\"DRAW_FILL\")\n    \"Draw lines and fill areas\"\n\n    @property\n    def operator(self) -> str:\n        return {RenderStyle.D: \"S\", RenderStyle.F: \"f\", RenderStyle.DF: \"B\"}[self]\n\n    @property\n    def is_draw(self) -> bool:\n        return self in (RenderStyle.D, RenderStyle.DF)\n\n    @property\n    def is_fill(self) -> bool:\n        return self in (RenderStyle.F, RenderStyle.DF)\n\n    @classmethod\n    def coerce(  # pyright: ignore[reportIncompatibleMethodOverride]\n        cls, value: Union[\"RenderStyle\", str], case_sensitive: bool = False\n    ) -> \"RenderStyle\":\n        if not value:\n            return cls.D\n        if value == \"FD\":\n            value = \"DF\"\n        return super(cls, cls).coerce(\n            value, case_sensitive  # pyright: ignore[reportArgumentType]\n        )",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef is_draw(self) -> bool:\n    return self in (RenderStyle.D, RenderStyle.DF)",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef is_fill(self) -> bool:\n    return self in (RenderStyle.F, RenderStyle.DF)",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef operator(self) -> str:\n    return {RenderStyle.D: \"S\", RenderStyle.F: \"f\", RenderStyle.DF: \"B\"}[self]",
+      "language": "python"
+    },
+    {
+      "code": "class SignatureFlag(IntEnum):\n    SIGNATURES_EXIST = 1\n    \"If set, the document contains at least one signature field.\"\n    APPEND_ONLY = 2\n    \"\"\"\n    If set, the document contains signatures that may be invalidated\n    if the file is saved (written) in a way that alters its previous contents,\n    as opposed to an incremental update.\n    \"\"\"",
+      "language": "python"
+    },
+    {
+      "code": "class StrokeCapStyle(CoerciveIntEnum):\n    \"\"\"\n    An enumeration of values defining how the end of a stroke should be rendered.\n\n    This affects the ends of the segments of dashed strokes, as well.\n    \"\"\"\n\n    BUTT = 0\n    \"\"\"\n    \"The stroke is squared off at the endpoint of the path. There is no projection\n    beyond the end of the path.\"\n    \"\"\"\n    ROUND = 1\n    \"\"\"\n    \"A semicircular arc with a diameter equal to the line width is drawn around the\n    endpoint and filled in.\"\n    \"\"\"\n    SQUARE = 2\n    \"\"\"\n    \"The stroke continues beyond the endpoint of the path for a distance equal to half\n    the line width and is squared off.\"\n    \"\"\"",
+      "language": "python"
+    },
+    {
+      "code": "class StrokeJoinStyle(CoerciveIntEnum):\n    \"\"\"\n    An enumeration of values defining how the corner joining two path components should\n    be rendered.\n    \"\"\"\n\n    MITER = 0\n    \"\"\"\n    \"The outer edges of the strokes for the two segments are extended until they meet at\n    an angle, as in a picture frame. If the segments meet at too sharp an angle\n    (as defined by the miter limit parameter), a bevel join is used instead.\"\n    \"\"\"\n    ROUND = 1\n    \"\"\"\n    \"An arc of a circle with a diameter equal to the line width is drawn around the\n    point where the two segments meet, connecting the outer edges of the strokes for\n    the two segments. This pieslice-shaped figure is filled in, pro- ducing a rounded\n    corner.\"\n    \"\"\"\n    BEVEL = 2\n    \"\"\"\n    \"The two segments are finished with butt caps and the resulting notch beyond the\n    ends of the segments is filled with a triangle.\"\n    \"\"\"",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass\nclass TableBorderStyle:\n    \"\"\"A helper class for drawing one border of a table\n\n    Attributes:\n        thickness: The thickness of the border. If None use default. If <= 0 don't draw the border.\n        color: The color of the border. If None use default.\n    \"\"\"\n\n    thickness: Optional[float] = None\n    color: Union[\n        int, tuple[int, int, int], \"DeviceRGB\", \"DeviceGray\", \"DeviceCMYK\", None\n    ] = None\n    dash: Optional[float] = None\n    gap: float = 0.0\n    phase: float = 0.0\n\n    @staticmethod\n    def from_bool(should_draw: Union[bool, \"TableBorderStyle\"]) -> \"TableBorderStyle\":\n        \"\"\"\n        From boolean or TableBorderStyle input, convert to definite TableBorderStyle class object\n        \"\"\"\n        if isinstance(should_draw, TableBorderStyle):\n            return should_draw  # don't change specified TableBorderStyle\n        if should_draw:\n            return TableBorderStyle()  # keep default stroke\n        return TableBorderStyle(thickness=0.0)  # don't draw the border\n\n    def _changes_thickness(self, pdf: \"FPDF\") -> bool:\n        \"\"\"Return True if this style changes the thickness of the draw command, False otherwise\"\"\"\n        return (\n            self.thickness is not None\n            and self.thickness > 0.0\n            and self.thickness != pdf.line_width\n        )\n\n    def _changes_color(self, pdf: \"FPDF\") -> bool:\n        \"\"\"Return True if this style changes the color of the draw command, False otherwise\"\"\"\n        return self.color is not None and self.color != pdf.draw_color\n\n    @property\n    def dash_dict(self) -> dict[str, Optional[float]]:\n        \"\"\"Return dict object specifying dash in the same format as the pdf object\"\"\"\n        return {\"dash\": self.dash, \"gap\": self.gap, \"phase\": self.phase}\n\n    def _changes_dash(self, pdf: \"FPDF\") -> bool:\n        \"\"\"Return True if this style changes the dash of the draw command, False otherwise\"\"\"\n        return self.dash is not None and self.dash_dict != pdf.dash_pattern\n\n    def changes_stroke(self, pdf: \"FPDF\") -> bool:\n        \"\"\"Return True if this style changes the any aspect of the draw command, False otherwise\"\"\"\n        return self.should_render() and (\n            self._changes_color(pdf)\n            or self._changes_thickness(pdf)\n            or self._changes_dash(pdf)\n        )\n\n    def should_render(self) -> bool:\n        \"\"\"Return True if this style produces a visible stroke, False otherwise\"\"\"\n        return self.thickness is None or self.thickness > 0.0\n\n    def _get_change_thickness_command(\n        self, scale: float, pdf: Optional[\"FPDF\"] = None\n    ) -> list[str]:\n        \"\"\"Return list with string for the draw command to change thickness (empty if no change)\"\"\"\n        thickness = self.thickness if pdf is None else pdf.line_width\n        return [] if thickness is None else [f\"{thickness * scale:.2f} w\"]\n\n    def _get_change_line_color_command(self, pdf: Optional[\"FPDF\"] = None) -> list[str]:\n        \"\"\"Return list with string for the draw command to change color (empty if no change)\"\"\"\n        if pdf is None:\n            color = self.color\n        else:\n            color = pdf.draw_color\n        return (\n            []\n            if color is None\n            else [convert_to_device_color(color).serialize().upper()]\n        )\n\n    def _get_change_dash_command(\n        self, scale: float, pdf: Optional[\"FPDF\"] = None\n    ) -> list[str]:\n        \"\"\"Return list with string for the draw command to change dash (empty if no change)\"\"\"\n        dash_dict = self.dash_dict if pdf is None else pdf.dash_pattern\n        dash, gap, phase = dash_dict[\"dash\"], dash_dict[\"gap\"], dash_dict[\"phase\"]\n        if dash is None:\n            return []\n        if dash <= 0:\n            return [\"[] 0 d\"]\n        assert phase is not None\n        if gap is None or gap <= 0:\n            return [f\"[{dash * scale:.3f}] {phase * scale:.3f} d\"]\n        return [f\"[{dash * scale:.3f} {gap * scale:.3f}] {phase * scale:.3f} d\"]\n\n    def get_change_stroke_commands(self, scale: float) -> list[str]:\n        \"\"\"Return list of strings for the draw command to change stroke (empty if no change)\"\"\"\n        return (\n            self._get_change_dash_command(scale)\n            + self._get_change_line_color_command()\n            + self._get_change_thickness_command(scale)\n        )\n\n    @staticmethod\n    def get_line_command(x1: float, y1: float, x2: float, y2: float) -> list[str]:\n        \"\"\"Return list with string for the command to draw a line at the specified endpoints\"\"\"\n        return [f\"{x1:.2f} {y1:.2f} m {x2:.2f} {y2:.2f} l S\"]\n\n    def get_draw_commands(\n        self, pdf: \"FPDF\", x1: float, y1: float, x2: float, y2: float\n    ) -> list[str]:\n        \"\"\"\n        Get draw commands for this section of a cell border. x and y are presumed to be already\n        shifted and scaled.\n        \"\"\"\n        if not self.should_render():\n            return []\n\n        if self.changes_stroke(pdf):\n            draw_commands = self.get_change_stroke_commands(\n                scale=pdf.k\n            ) + self.get_line_command(x1, y1, x2, y2)\n            # wrap in local context to prevent stroke changes from affecting later rendering\n            return wrap_in_local_context(draw_commands)\n        return self.get_line_command(x1, y1, x2, y2)",
+      "language": "python"
+    },
+    {
+      "code": "@staticmethod\ndef from_bool(should_draw: Union[bool, \"TableBorderStyle\"]) -> \"TableBorderStyle\":\n    \"\"\"\n    From boolean or TableBorderStyle input, convert to definite TableBorderStyle class object\n    \"\"\"\n    if isinstance(should_draw, TableBorderStyle):\n        return should_draw  # don't change specified TableBorderStyle\n    if should_draw:\n        return TableBorderStyle()  # keep default stroke\n    return TableBorderStyle(thickness=0.0)  # don't draw the border",
+      "language": "python"
+    },
+    {
+      "code": "@staticmethod\ndef get_line_command(x1: float, y1: float, x2: float, y2: float) -> list[str]:\n    \"\"\"Return list with string for the command to draw a line at the specified endpoints\"\"\"\n    return [f\"{x1:.2f} {y1:.2f} m {x2:.2f} {y2:.2f} l S\"]",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef dash_dict(self) -> dict[str, Optional[float]]:\n    \"\"\"Return dict object specifying dash in the same format as the pdf object\"\"\"\n    return {\"dash\": self.dash, \"gap\": self.gap, \"phase\": self.phase}",
+      "language": "python"
+    },
+    {
+      "code": "def changes_stroke(self, pdf: \"FPDF\") -> bool:\n    \"\"\"Return True if this style changes the any aspect of the draw command, False otherwise\"\"\"\n    return self.should_render() and (\n        self._changes_color(pdf)\n        or self._changes_thickness(pdf)\n        or self._changes_dash(pdf)\n    )",
+      "language": "python"
+    },
+    {
+      "code": "def get_change_stroke_commands(self, scale: float) -> list[str]:\n    \"\"\"Return list of strings for the draw command to change stroke (empty if no change)\"\"\"\n    return (\n        self._get_change_dash_command(scale)\n        + self._get_change_line_color_command()\n        + self._get_change_thickness_command(scale)\n    )",
+      "language": "python"
+    },
+    {
+      "code": "def get_draw_commands(\n    self, pdf: \"FPDF\", x1: float, y1: float, x2: float, y2: float\n) -> list[str]:\n    \"\"\"\n    Get draw commands for this section of a cell border. x and y are presumed to be already\n    shifted and scaled.\n    \"\"\"\n    if not self.should_render():\n        return []\n\n    if self.changes_stroke(pdf):\n        draw_commands = self.get_change_stroke_commands(\n            scale=pdf.k\n        ) + self.get_line_command(x1, y1, x2, y2)\n        # wrap in local context to prevent stroke changes from affecting later rendering\n        return wrap_in_local_context(draw_commands)\n    return self.get_line_command(x1, y1, x2, y2)",
+      "language": "python"
+    },
+    {
+      "code": "def should_render(self) -> bool:\n    \"\"\"Return True if this style produces a visible stroke, False otherwise\"\"\"\n    return self.thickness is None or self.thickness > 0.0",
+      "language": "python"
+    },
+    {
+      "code": "class TableBordersLayout(abc.ABC):\n    \"\"\"\n    Customizable class for setting the drawing style of cell borders for the whole table.\n    cell_style_getter is an abstract method that derived classes must implement. All current classes\n    do not use self, but it is available in case a very complicated derived class needs to refer to\n    stored internal data.\n\n    Standard TableBordersLayouts are available as static members of this class\n\n    Attributes:\n        cell_style_getter: a callable that takes row_num, column_num,\n            num_heading_rows, num_rows, num_columns; and returns the drawing style of\n            the cell border (as a TableCellStyle object)\n        ALL: static TableBordersLayout that draws all table cells borders\n        NONE: static TableBordersLayout that draws no table cells borders\n        INTERNAL: static TableBordersLayout that draws only internal horizontal & vertical borders\n        MINIMAL: static TableBordersLayout that draws only the top horizontal border, below the\n            headings, and internal vertical borders\n        HORIZONTAL_LINES: static TableBordersLayout that draws only horizontal lines\n        NO_HORIZONTAL_LINES: static TableBordersLayout that draws all cells border except interior\n            horizontal lines after the headings\n        SINGLE_TOP_LINE: static TableBordersLayout that draws only the top horizontal border, below\n            the headings\n    \"\"\"\n\n    ALL: ClassVar[\"TableBordersLayout\"]\n    NONE: ClassVar[\"TableBordersLayout\"]\n    INTERNAL: ClassVar[\"TableBordersLayout\"]\n    MINIMAL: ClassVar[\"TableBordersLayout\"]\n    HORIZONTAL_LINES: ClassVar[\"TableBordersLayout\"]\n    NO_HORIZONTAL_LINES: ClassVar[\"TableBordersLayout\"]\n    SINGLE_TOP_LINE: ClassVar[\"TableBordersLayout\"]\n\n    @abc.abstractmethod\n    def cell_style_getter(\n        self,\n        row_idx: int,\n        col_idx: int,\n        col_pos: int,\n        num_heading_rows: int,\n        num_rows: int,\n        num_col_idx: int,\n        num_col_pos: int,\n    ) -> TableCellStyle:\n        \"\"\"Specify the desired TableCellStyle for the given position in the table\n\n        Args:\n            row_idx: the 0-based index of the row in the table\n            col_idx: the 0-based logical index of the cell in the row. If colspan > 1, this indexes\n                into non-null cells. e.g. if there are two cells with colspan = 3, then col_idx will\n                be 0 or 1\n            col_pos: the 0-based physical position of the cell in the row. If colspan > 1, this\n                indexes into all cells including null ones. e.g. e.g. if there are two cells with\n                colspan = 3, then col_pos will be 0 or 3\n            num_heading_rows: the number of rows in the table heading\n            num_rows: the total number of rows in the table\n            num_col_idx: the number of non-null cells. e.g. if there are two cells with colspan = 3,\n                then num_col_idx = 2\n            num_col_pos: the full width of the table in physical cells. e.g. if there are two cells\n                with colspan = 3, then num_col_pos = 6\n        Returns:\n            TableCellStyle for the given position in the table\n        \"\"\"\n        raise NotImplementedError\n\n    @classmethod\n    def coerce(cls, value: Union[\"TableBordersLayout\", str]) -> \"TableBordersLayout\":\n        \"\"\"\n        Attempt to coerce `value` into a member of this class.\n\n        If value is already a member of this enumeration it is returned unchanged.\n        Otherwise, if it is a string, attempt to convert it as an enumeration value. If\n        that fails, attempt to convert it (case insensitively, by upcasing) as an\n        enumeration name.\n\n        If all different conversion attempts fail, an exception is raised.\n\n        Args:\n            value (Enum, str): the value to be coerced.\n\n        Raises:\n            ValueError: if `value` is a string but neither a member by name nor value.\n            TypeError: if `value`'s type is neither a member of the enumeration nor a\n                string.\n        \"\"\"\n\n        if isinstance(value, cls):\n            return value\n\n        if isinstance(value, str):\n            try:\n                coerced_value = getattr(cls, value.upper())\n                if isinstance(coerced_value, cls):\n                    return coerced_value\n            except ValueError:\n                pass\n\n        raise ValueError(f\"{value} is not a valid {cls.__name__}\")",
+      "language": "python"
+    },
+    {
+      "code": "@abc.abstractmethod\ndef cell_style_getter(\n    self,\n    row_idx: int,\n    col_idx: int,\n    col_pos: int,\n    num_heading_rows: int,\n    num_rows: int,\n    num_col_idx: int,\n    num_col_pos: int,\n) -> TableCellStyle:\n    \"\"\"Specify the desired TableCellStyle for the given position in the table\n\n    Args:\n        row_idx: the 0-based index of the row in the table\n        col_idx: the 0-based logical index of the cell in the row. If colspan > 1, this indexes\n            into non-null cells. e.g. if there are two cells with colspan = 3, then col_idx will\n            be 0 or 1\n        col_pos: the 0-based physical position of the cell in the row. If colspan > 1, this\n            indexes into all cells including null ones. e.g. e.g. if there are two cells with\n            colspan = 3, then col_pos will be 0 or 3\n        num_heading_rows: the number of rows in the table heading\n        num_rows: the total number of rows in the table\n        num_col_idx: the number of non-null cells. e.g. if there are two cells with colspan = 3,\n            then num_col_idx = 2\n        num_col_pos: the full width of the table in physical cells. e.g. if there are two cells\n            with colspan = 3, then num_col_pos = 6\n    Returns:\n        TableCellStyle for the given position in the table\n    \"\"\"\n    raise NotImplementedError",
+      "language": "python"
+    },
+    {
+      "code": "class TableBordersLayoutAll(TableBordersLayout):\n    \"\"\"Class for drawing all cell borders\"\"\"\n\n    def cell_style_getter(\n        self,\n        row_idx: int,\n        col_idx: int,\n        col_pos: int,\n        num_heading_rows: int,\n        num_rows: int,\n        num_col_idx: int,\n        num_col_pos: int,\n    ) -> TableCellStyle:\n        return TableCellStyle(left=True, bottom=True, right=True, top=True)",
+      "language": "python"
+    },
+    {
+      "code": "def cell_style_getter(\n    self,\n    row_idx: int,\n    col_idx: int,\n    col_pos: int,\n    num_heading_rows: int,\n    num_rows: int,\n    num_col_idx: int,\n    num_col_pos: int,\n) -> TableCellStyle:\n    return TableCellStyle(left=True, bottom=True, right=True, top=True)",
+      "language": "python"
+    },
+    {
+      "code": "class TableBordersLayoutHorizontalLines(TableBordersLayout):\n    \"\"\"Class to draw only horizontal lines\"\"\"\n\n    def cell_style_getter(\n        self,\n        row_idx: int,\n        col_idx: int,\n        col_pos: int,\n        num_heading_rows: int,\n        num_rows: int,\n        num_col_idx: int,\n        num_col_pos: int,\n    ) -> TableCellStyle:\n        return TableCellStyle(\n            left=False,\n            bottom=row_idx < num_rows - 1,\n            right=False,\n            top=row_idx > 0,\n        )",
+      "language": "python"
+    },
+    {
+      "code": "def cell_style_getter(\n    self,\n    row_idx: int,\n    col_idx: int,\n    col_pos: int,\n    num_heading_rows: int,\n    num_rows: int,\n    num_col_idx: int,\n    num_col_pos: int,\n) -> TableCellStyle:\n    return TableCellStyle(\n        left=False,\n        bottom=row_idx < num_rows - 1,\n        right=False,\n        top=row_idx > 0,\n    )",
+      "language": "python"
+    },
+    {
+      "code": "class TableBordersLayoutInternal(TableBordersLayout):\n    \"\"\"Class to draw only internal horizontal & vertical borders\"\"\"\n\n    def cell_style_getter(\n        self,\n        row_idx: int,\n        col_idx: int,\n        col_pos: int,\n        num_heading_rows: int,\n        num_rows: int,\n        num_col_idx: int,\n        num_col_pos: int,\n    ) -> TableCellStyle:\n        return TableCellStyle(\n            left=col_idx > 0,\n            bottom=row_idx < num_rows - 1,\n            right=col_idx < num_col_idx - 1,\n            top=row_idx > 0,\n        )",
+      "language": "python"
+    },
+    {
+      "code": "def cell_style_getter(\n    self,\n    row_idx: int,\n    col_idx: int,\n    col_pos: int,\n    num_heading_rows: int,\n    num_rows: int,\n    num_col_idx: int,\n    num_col_pos: int,\n) -> TableCellStyle:\n    return TableCellStyle(\n        left=col_idx > 0,\n        bottom=row_idx < num_rows - 1,\n        right=col_idx < num_col_idx - 1,\n        top=row_idx > 0,\n    )",
+      "language": "python"
+    },
+    {
+      "code": "class TableBordersLayoutMinimal(TableBordersLayout):\n    \"\"\"\n    Class to draw only the top horizontal border, below the headings, and internal vertical borders\n    \"\"\"\n\n    def cell_style_getter(\n        self,\n        row_idx: int,\n        col_idx: int,\n        col_pos: int,\n        num_heading_rows: int,\n        num_rows: int,\n        num_col_idx: int,\n        num_col_pos: int,\n    ) -> TableCellStyle:\n        return TableCellStyle(\n            left=col_idx > 0,\n            bottom=row_idx < num_heading_rows,\n            right=col_idx < num_col_idx - 1,\n            top=0 < row_idx <= num_heading_rows,\n        )",
+      "language": "python"
+    },
+    {
+      "code": "def cell_style_getter(\n    self,\n    row_idx: int,\n    col_idx: int,\n    col_pos: int,\n    num_heading_rows: int,\n    num_rows: int,\n    num_col_idx: int,\n    num_col_pos: int,\n) -> TableCellStyle:\n    return TableCellStyle(\n        left=col_idx > 0,\n        bottom=row_idx < num_heading_rows,\n        right=col_idx < num_col_idx - 1,\n        top=0 < row_idx <= num_heading_rows,\n    )",
+      "language": "python"
+    },
+    {
+      "code": "class TableBordersLayoutNoHorizontalLines(TableBordersLayout):\n    \"\"\"Class to draw all cells border except interior horizontal lines after the headings\"\"\"\n\n    def cell_style_getter(\n        self,\n        row_idx: int,\n        col_idx: int,\n        col_pos: int,\n        num_heading_rows: int,\n        num_rows: int,\n        num_col_idx: int,\n        num_col_pos: int,\n    ) -> TableCellStyle:\n        return TableCellStyle(\n            left=True,\n            bottom=row_idx == num_rows - 1,\n            right=True,\n            top=row_idx <= num_heading_rows,\n        )",
+      "language": "python"
+    },
+    {
+      "code": "def cell_style_getter(\n    self,\n    row_idx: int,\n    col_idx: int,\n    col_pos: int,\n    num_heading_rows: int,\n    num_rows: int,\n    num_col_idx: int,\n    num_col_pos: int,\n) -> TableCellStyle:\n    return TableCellStyle(\n        left=True,\n        bottom=row_idx == num_rows - 1,\n        right=True,\n        top=row_idx <= num_heading_rows,\n    )",
+      "language": "python"
+    },
+    {
+      "code": "class TableBordersLayoutNone(TableBordersLayout):\n    \"\"\"Class for drawing zero cell borders\"\"\"\n\n    def cell_style_getter(\n        self,\n        row_idx: int,\n        col_idx: int,\n        col_pos: int,\n        num_heading_rows: int,\n        num_rows: int,\n        num_col_idx: int,\n        num_col_pos: int,\n    ) -> TableCellStyle:\n        return TableCellStyle(left=False, bottom=False, right=False, top=False)",
+      "language": "python"
+    },
+    {
+      "code": "def cell_style_getter(\n    self,\n    row_idx: int,\n    col_idx: int,\n    col_pos: int,\n    num_heading_rows: int,\n    num_rows: int,\n    num_col_idx: int,\n    num_col_pos: int,\n) -> TableCellStyle:\n    return TableCellStyle(left=False, bottom=False, right=False, top=False)",
+      "language": "python"
+    },
+    {
+      "code": "class TableBordersLayoutSingleTopLine(TableBordersLayout):\n    \"\"\"Class to draw a single top line\"\"\"\n\n    def cell_style_getter(\n        self,\n        row_idx: int,\n        col_idx: int,\n        col_pos: int,\n        num_heading_rows: int,\n        num_rows: int,\n        num_col_idx: int,\n        num_col_pos: int,\n    ) -> TableCellStyle:\n        return TableCellStyle(\n            left=False, bottom=row_idx <= num_heading_rows - 1, right=False, top=False\n        )",
+      "language": "python"
+    },
+    {
+      "code": "def cell_style_getter(\n    self,\n    row_idx: int,\n    col_idx: int,\n    col_pos: int,\n    num_heading_rows: int,\n    num_rows: int,\n    num_col_idx: int,\n    num_col_pos: int,\n) -> TableCellStyle:\n    return TableCellStyle(\n        left=False, bottom=row_idx <= num_heading_rows - 1, right=False, top=False\n    )",
+      "language": "python"
+    },
+    {
+      "code": "class TableCellFillMode(CoerciveEnum):\n    \"Defines which table cells to fill\"\n\n    NONE = intern(\"NONE\")\n    \"Fill zero table cell\"\n\n    ALL = intern(\"ALL\")\n    \"Fill all table cells\"\n\n    ROWS = intern(\"ROWS\")\n    \"Fill only table cells in odd rows\"\n\n    COLUMNS = intern(\"COLUMNS\")\n    \"Fill only table cells in odd columns\"\n\n    EVEN_ROWS = intern(\"EVEN_ROWS\")\n    \"Fill only table cells in even rows\"\n\n    EVEN_COLUMNS = intern(\"EVEN_COLUMNS\")\n    \"Fill only table cells in even columns\"\n\n    @classmethod\n    def coerce(  # type: ignore[override]\n        cls,\n        value: Union[TableCellFillModeType, str],\n        case_sensitive: bool = False,\n    ) -> TableCellFillModeType:\n        if callable(getattr(value, \"should_fill_cell\", None)):\n            return cast(CellFillProtocol, value)\n        return super().coerce(value, case_sensitive)  # type: ignore[arg-type] # pyright: ignore[reportArgumentType]\n\n    def should_fill_cell(self, i: int, j: int) -> bool:\n        if self is TableCellFillMode.NONE:\n            return False\n        if self is TableCellFillMode.ALL:\n            return True\n        if self is TableCellFillMode.ROWS:\n            return i % 2 == 1\n        if self is TableCellFillMode.COLUMNS:\n            return j % 2 == 1\n        if self is TableCellFillMode.EVEN_ROWS:\n            return i % 2 == 0\n        if self is TableCellFillMode.EVEN_COLUMNS:\n            return j % 2 == 0\n        raise NotImplementedError",
+      "language": "python"
+    },
+    {
+      "code": "def should_fill_cell(self, i: int, j: int) -> bool:\n    if self is TableCellFillMode.NONE:\n        return False\n    if self is TableCellFillMode.ALL:\n        return True\n    if self is TableCellFillMode.ROWS:\n        return i % 2 == 1\n    if self is TableCellFillMode.COLUMNS:\n        return j % 2 == 1\n    if self is TableCellFillMode.EVEN_ROWS:\n        return i % 2 == 0\n    if self is TableCellFillMode.EVEN_COLUMNS:\n        return j % 2 == 0\n    raise NotImplementedError",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass\nclass TableCellStyle:\n    \"\"\"A helper class for drawing all the borders of one cell in a table\n\n    Attributes:\n        left: bool or TableBorderStyle specifying the style of the cell's left border\n        bottom: bool or TableBorderStyle specifying the style of the cell's bottom border\n        right: bool or TableBorderStyle specifying the style of the cell's right border\n        top: bool or TableBorderStyle specifying the style of the cell's top border\n    \"\"\"\n\n    left: bool | TableBorderStyle = False\n    bottom: bool | TableBorderStyle = False\n    right: bool | TableBorderStyle = False\n    top: bool | TableBorderStyle = False\n\n    def _get_common_border_style(self) -> Optional[bool | TableBorderStyle]:\n        \"\"\"Return bool or TableBorderStyle if all borders have the same style, otherwise None\"\"\"\n        if all(\n            isinstance(border, bool)\n            for border in [self.left, self.bottom, self.right, self.top]\n        ):\n            if all(border for border in [self.left, self.bottom, self.right, self.top]):\n                return True\n            if all(\n                not border for border in [self.left, self.bottom, self.right, self.top]\n            ):\n                return False\n        elif all(\n            isinstance(border, TableBorderStyle)\n            for border in [self.left, self.bottom, self.right, self.top]\n        ):\n            common = self.left\n            if all(border == common for border in [self.bottom, self.right, self.top]):\n                return common\n        return None\n\n    @staticmethod\n    def get_change_fill_color_command(color: Union[\"Color\", str]) -> list[str]:\n        \"\"\"Return list with string for command to change device color (empty list if no color)\"\"\"\n        return (\n            []\n            if color is None\n            else [convert_to_device_color(color).serialize().lower()]\n        )\n\n    def get_draw_commands(\n        self,\n        pdf: \"FPDF\",\n        x1: float,\n        y1: float,\n        x2: float,\n        y2: float,\n        fill_color: Optional[Union[\"Color\", str]] = None,\n    ) -> list[str]:\n        \"\"\"\n        Get list of primitive commands to draw the cell border for this cell, and fill it with the\n        given fill color.\n        \"\"\"\n        # y top to bottom instead of bottom to top\n        y1 = pdf.h - y1\n        y2 = pdf.h - y2\n        # scale coordinates and thickness\n        scale = pdf.k\n        x1 *= scale\n        y1 *= scale\n        x2 *= scale\n        y2 *= scale\n\n        common_border_style = self._get_common_border_style()\n        draw_commands, needs_wrap = (\n            self._draw_when_no_common_style(x1, y1, x2, y2, pdf, fill_color)\n            if common_border_style is None\n            else (\n                self._draw_with_no_border(x1, y1, x2, y2, pdf, fill_color)\n                if common_border_style is False\n                else self._draw_all_borders_the_same(\n                    x1, y1, x2, y2, pdf, fill_color, scale, common_border_style\n                )\n            )\n        )\n\n        if needs_wrap:\n            draw_commands = wrap_in_local_context(draw_commands)\n\n        return draw_commands\n\n    def _draw_when_no_common_style(\n        self,\n        x1: float,\n        y1: float,\n        x2: float,\n        y2: float,\n        pdf: \"FPDF\",\n        fill_color: Optional[Union[\"Color\", str]],\n    ) -> tuple[list[str], bool]:\n        \"\"\"Get draw commands for case when some of the borders have different styles\"\"\"\n        needs_wrap = False\n        draw_commands: list[str] = []\n        if fill_color is not None:\n            # draw fill with no box\n            if fill_color != pdf.fill_color:\n                needs_wrap = True\n                draw_commands.extend(self.get_change_fill_color_command(fill_color))\n            draw_commands.append(f\"{x1:.2f} {y2:.2f} {x2 - x1:.2f} {y1 - y2:.2f} re f\")\n        # draw the individual borders\n        draw_commands.extend(\n            TableBorderStyle.from_bool(self.left).get_draw_commands(pdf, x1, y2, x1, y1)\n            + TableBorderStyle.from_bool(self.bottom).get_draw_commands(\n                pdf, x1, y2, x2, y2\n            )\n            + TableBorderStyle.from_bool(self.right).get_draw_commands(\n                pdf, x2, y2, x2, y1\n            )\n            + TableBorderStyle.from_bool(self.top).get_draw_commands(\n                pdf, x1, y1, x2, y1\n            )\n        )\n        return draw_commands, needs_wrap\n\n    def _draw_with_no_border(\n        self,\n        x1: float,\n        y1: float,\n        x2: float,\n        y2: float,\n        pdf: \"FPDF\",\n        fill_color: Optional[Union[\"Color\", str]],\n    ) -> tuple[list[str], bool]:\n        \"\"\"Get draw commands for case when all of the borders are off / not drawn\"\"\"\n        needs_wrap = False\n        draw_commands: list[str] = []\n        if fill_color is not None:\n            # draw fill with no box\n            if fill_color != pdf.fill_color:\n                needs_wrap = True\n                draw_commands.extend(self.get_change_fill_color_command(fill_color))\n            draw_commands.append(f\"{x1:.2f} {y2:.2f} {x2 - x1:.2f} {y1 - y2:.2f} re f\")\n        return draw_commands, needs_wrap\n\n    def _draw_all_borders_the_same(\n        self,\n        x1: float,\n        y1: float,\n        x2: float,\n        y2: float,\n        pdf: \"FPDF\",\n        fill_color: Optional[Union[\"Color\", str]],\n        scale: float,\n        common_border_style: Optional[TableBorderStyle | bool],\n    ) -> tuple[list[str], bool]:\n        \"\"\"Get draw commands for case when all the borders have the same style\"\"\"\n        needs_wrap = False\n        draw_commands: list[str] = []\n        # all borders are the same\n        if isinstance(\n            common_border_style, TableBorderStyle\n        ) and common_border_style.changes_stroke(pdf):\n            # the border styles aren't default, so\n            draw_commands.extend(common_border_style.get_change_stroke_commands(scale))\n            needs_wrap = True\n        if fill_color is not None:\n            # draw filled rectangle\n            if fill_color != pdf.fill_color:\n                needs_wrap = True\n                draw_commands.extend(self.get_change_fill_color_command(fill_color))\n            draw_commands.append(f\"{x1:.2f} {y2:.2f} {x2 - x1:.2f} {y1 - y2:.2f} re B\")\n        else:\n            # draw empty rectangle\n            draw_commands.append(f\"{x1:.2f} {y2:.2f} {x2 - x1:.2f} {y1 - y2:.2f} re S\")\n        return draw_commands, needs_wrap\n\n    def override_cell_border(self, cell_border: CellBordersLayout) -> \"TableCellStyle\":\n        \"\"\"Allow override by CellBordersLayout mechanism\"\"\"\n        return (\n            self\n            if cell_border == CellBordersLayout.INHERIT\n            else TableCellStyle(  # translate cell_border into equivalent TableCellStyle\n                left=bool(cell_border & CellBordersLayout.LEFT),\n                bottom=bool(cell_border & CellBordersLayout.BOTTOM),\n                right=bool(cell_border & CellBordersLayout.RIGHT),\n                top=bool(cell_border & CellBordersLayout.TOP),\n            )\n        )\n\n    def draw_cell_border(\n        self,\n        pdf: \"FPDF\",\n        x1: float,\n        y1: float,\n        x2: float,\n        y2: float,\n        fill_color: Optional[Union[\"Color\", str]] = None,\n    ) -> None:\n        \"\"\"\n        Draw the cell border for this cell, and fill it with the given fill color.\n        \"\"\"\n        pdf._out(  # pylint: disable=protected-access # pyright: ignore[reportPrivateUsage]\n            \" \".join(self.get_draw_commands(pdf, x1, y1, x2, y2, fill_color=fill_color))\n        )",
+      "language": "python"
+    },
+    {
+      "code": "@staticmethod\ndef get_change_fill_color_command(color: Union[\"Color\", str]) -> list[str]:\n    \"\"\"Return list with string for command to change device color (empty list if no color)\"\"\"\n    return (\n        []\n        if color is None\n        else [convert_to_device_color(color).serialize().lower()]\n    )",
+      "language": "python"
+    },
+    {
+      "code": "def draw_cell_border(\n    self,\n    pdf: \"FPDF\",\n    x1: float,\n    y1: float,\n    x2: float,\n    y2: float,\n    fill_color: Optional[Union[\"Color\", str]] = None,\n) -> None:\n    \"\"\"\n    Draw the cell border for this cell, and fill it with the given fill color.\n    \"\"\"\n    pdf._out(  # pylint: disable=protected-access # pyright: ignore[reportPrivateUsage]\n        \" \".join(self.get_draw_commands(pdf, x1, y1, x2, y2, fill_color=fill_color))\n    )",
+      "language": "python"
+    },
+    {
+      "code": "def get_draw_commands(\n    self,\n    pdf: \"FPDF\",\n    x1: float,\n    y1: float,\n    x2: float,\n    y2: float,\n    fill_color: Optional[Union[\"Color\", str]] = None,\n) -> list[str]:\n    \"\"\"\n    Get list of primitive commands to draw the cell border for this cell, and fill it with the\n    given fill color.\n    \"\"\"\n    # y top to bottom instead of bottom to top\n    y1 = pdf.h - y1\n    y2 = pdf.h - y2\n    # scale coordinates and thickness\n    scale = pdf.k\n    x1 *= scale\n    y1 *= scale\n    x2 *= scale\n    y2 *= scale\n\n    common_border_style = self._get_common_border_style()\n    draw_commands, needs_wrap = (\n        self._draw_when_no_common_style(x1, y1, x2, y2, pdf, fill_color)\n        if common_border_style is None\n        else (\n            self._draw_with_no_border(x1, y1, x2, y2, pdf, fill_color)\n            if common_border_style is False\n            else self._draw_all_borders_the_same(\n                x1, y1, x2, y2, pdf, fill_color, scale, common_border_style\n            )\n        )\n    )\n\n    if needs_wrap:\n        draw_commands = wrap_in_local_context(draw_commands)\n\n    return draw_commands",
+      "language": "python"
+    },
+    {
+      "code": "def override_cell_border(self, cell_border: CellBordersLayout) -> \"TableCellStyle\":\n    \"\"\"Allow override by CellBordersLayout mechanism\"\"\"\n    return (\n        self\n        if cell_border == CellBordersLayout.INHERIT\n        else TableCellStyle(  # translate cell_border into equivalent TableCellStyle\n            left=bool(cell_border & CellBordersLayout.LEFT),\n            bottom=bool(cell_border & CellBordersLayout.BOTTOM),\n            right=bool(cell_border & CellBordersLayout.RIGHT),\n            top=bool(cell_border & CellBordersLayout.TOP),\n        )\n    )",
+      "language": "python"
+    },
+    {
+      "code": "class TableHeadingsDisplay(CoerciveIntEnum):\n    \"Defines how the table headings should be displayed\"\n\n    NONE = 0\n    \"0: Only render the table headings at the beginning of the table\"\n\n    ON_TOP_OF_EVERY_PAGE = 1\n    \"1: When a page break occurs, repeat the table headings at the top of every table fragment\"",
+      "language": "python"
+    },
+    {
+      "code": "class TableSpan(CoerciveEnum):\n    ROW = intern(\"ROW\")\n    \"Mark this cell as a continuation of the previous row\"\n\n    COL = intern(\"COL\")\n    \"Mark this cell as a continuation of the previous column\"",
+      "language": "python"
+    },
+    {
+      "code": "class TextDirection(CoerciveEnum):\n    \"Text rendering direction for text shaping\"\n\n    LTR = intern(\"LTR\")\n    \"left to right\"\n\n    RTL = intern(\"RTL\")\n    \"right to left\"\n\n    TTB = intern(\"TTB\")\n    \"top to bottom\"\n\n    BTT = intern(\"BTT\")\n    \"bottom to top\"",
+      "language": "python"
+    },
+    {
+      "code": "class TextEmphasis(CoerciveIntFlag):\n    \"\"\"\n    Indicates use of bold / italics / underline.\n\n    This enum values can be combined with & and | operators:\n        style = B | I\n    \"\"\"\n\n    NONE = 0\n    \"No emphasis\"\n\n    B = 1\n    \"Bold\"\n\n    I = 2\n    \"Italics\"\n\n    U = 4\n    \"Underline\"\n\n    S = 8\n    \"Strikethrough\"\n\n    @property\n    def style(self) -> str:\n        return \"\".join(\n            name for name, value in self.__class__.__members__.items() if value & self\n        )\n\n    def add(self, value: \"TextEmphasis\") -> \"TextEmphasis\":\n        return self | value\n\n    def remove(self, value: \"TextEmphasis\") -> \"TextEmphasis\":\n        return TextEmphasis.coerce(\n            \"\".join(s for s in self.style if s not in value.style)\n        )\n\n    @classmethod\n    def coerce(cls, value: Union[\"TextEmphasis\", str, int]) -> \"TextEmphasis\":\n        if isinstance(value, str):\n            if value == \"\":\n                return cls.NONE\n            if value.upper() == \"BOLD\":\n                return cls.B\n            if value.upper() == \"ITALICS\":\n                return cls.I\n            if value.upper() == \"UNDERLINE\":\n                return cls.U\n            if value.upper() == \"STRIKETHROUGH\":\n                return cls.S\n        return super(cls, cls).coerce(value)",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef style(self) -> str:\n    return \"\".join(\n        name for name, value in self.__class__.__members__.items() if value & self\n    )",
+      "language": "python"
+    },
+    {
+      "code": "def add(self, value: \"TextEmphasis\") -> \"TextEmphasis\":\n    return self | value",
+      "language": "python"
+    },
+    {
+      "code": "def remove(self, value: \"TextEmphasis\") -> \"TextEmphasis\":\n    return TextEmphasis.coerce(\n        \"\".join(s for s in self.style if s not in value.style)\n    )",
+      "language": "python"
+    },
+    {
+      "code": "class TextMarkupType(CoerciveEnum):\n    \"Subtype of a text markup annotation\"\n\n    HIGHLIGHT = Name(\"Highlight\")\n\n    UNDERLINE = Name(\"Underline\")\n\n    SQUIGGLY = Name(\"Squiggly\")\n\n    STRIKE_OUT = Name(\"StrikeOut\")",
+      "language": "python"
+    },
+    {
+      "code": "class TextMode(CoerciveIntEnum):\n    \"Values described in PDF spec section 'Text Rendering Mode'\"\n\n    FILL = 0\n    STROKE = 1\n    FILL_STROKE = 2\n    INVISIBLE = 3\n    FILL_CLIP = 4\n    STROKE_CLIP = 5\n    FILL_STROKE_CLIP = 6\n    CLIP = 7",
+      "language": "python"
+    },
+    {
+      "code": "class VAlign(CoerciveEnum):\n    \"\"\"Defines how to vertically render text in a cell.\n    Default value is MIDDLE\"\"\"\n\n    M = intern(\"MIDDLE\")\n    \"Center text vertically\"\n\n    T = intern(\"TOP\")\n    \"Place text at the top of the cell, but obey the cells padding\"\n\n    B = intern(\"BOTTOM\")\n    \"Place text at the bottom of the cell, but obey the cells padding\"\n\n    @classmethod\n    def coerce(  # pyright: ignore[reportIncompatibleMethodOverride]\n        cls, value: Union[\"VAlign\", str], case_sensitive: bool = False\n    ) -> \"VAlign\":\n        if value == \"\":\n            return cls.M\n        return super(cls, cls).coerce(\n            value, case_sensitive  # pyright: ignore[reportArgumentType]\n        )",
+      "language": "python"
+    },
+    {
+      "code": "class WrapMode(CoerciveEnum):\n    \"Defines how to break and wrap lines in multi-line text.\"\n\n    WORD = intern(\"WORD\")\n    \"Wrap by word\"\n\n    CHAR = intern(\"CHAR\")\n    \"Wrap by character\"",
+      "language": "python"
+    },
+    {
+      "code": "class XPos(CoerciveEnum):\n    \"Positional values in horizontal direction for use after printing text.\"\n\n    LEFT = intern(\"LEFT\")  # self.x\n    \"left end of the cell\"\n\n    RIGHT = intern(\"RIGHT\")  # self.x + w\n    \"right end of the cell (default)\"\n\n    START = intern(\"START\")\n    \"left start of actual text\"\n\n    END = intern(\"END\")\n    \"right end of actual text\"\n\n    WCONT = intern(\"WCONT\")\n    \"for write() to continue next (slightly left of END)\"\n\n    CENTER = intern(\"CENTER\")\n    \"center of actual text\"\n\n    LMARGIN = intern(\"LMARGIN\")  # self.l_margin\n    \"left page margin (start of printable area)\"\n\n    RMARGIN = intern(\"RMARGIN\")  # self.w - self.r_margin\n    \"right page margin (end of printable area)\"",
+      "language": "python"
+    },
+    {
+      "code": "class YPos(CoerciveEnum):\n    \"Positional values in vertical direction for use after printing text\"\n\n    TOP = intern(\"TOP\")  # self.y\n    \"top of the first line (default)\"\n\n    LAST = intern(\"LAST\")\n    \"top of the last line (same as TOP for single-line text)\"\n\n    NEXT = intern(\"NEXT\")  # LAST + h\n    \"top of next line (bottom of current text)\"\n\n    TMARGIN = intern(\"TMARGIN\")  # self.t_margin\n    \"top page margin (start of printable area)\"\n\n    BMARGIN = intern(\"BMARGIN\")  # self.h - self.b_margin\n    \"bottom page margin (end of printable area)\"",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/fpdf/enums.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html"
+  ]
+}

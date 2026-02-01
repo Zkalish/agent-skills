@@ -1,0 +1,175 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/TextShaping.html",
+  "title": "Text Shaping¶",
+  "content": "This is currently incompatible with the special {nb} string that inserts the number of pages.cf. GitHub issue #1090\n\nText shaping is a fundamental process in typography and computer typesetting that influences the aesthetics and readability of text in various languages and scripts. It involves the transformation of Unicode text into glyphs, which are then positioned for display or print.\n\nFor texts in latin script, text shaping can improve the aesthetics by replacing characters that would collide or overlap by a single glyph specially crafted to look harmonious.\n\nThis process is especially important for scripts that require complex layout, such as Arabic or Indic scripts, where characters change shape depending on their context.\n\nThere are three primary aspects of text shaping that contribute to the overall appearance of the text: kerning, ligatures, and glyph substitution.\n\nKerning refers to the adjustment of space between individual letter pairs in a font. This process is essential to avoid awkward gaps or overlaps that may occur due to the default spacing of the font. By manually or programmatically modifying the kerning, we can ensure an even and visually pleasing distribution of letters, which significantly improves the readability and aesthetic quality of the text.\n\nLigatures are special characters that are created by combining two or more glyphs. This is frequently used to avoid collision between characters or to adhere to the typographic traditions. For instance, in English typography, the most common ligatures are \"fi\" and \"fl\", which are often fused into single characters to provide a more seamless reading experience.\n\nGlyph substitution is a mechanism that replaces one glyph or a set of glyphs with one or more alternative glyphs. This is a crucial aspect of text shaping, especially for complex scripts where the representation of a character can significantly vary based on its surrounding characters. For example, in Arabic script, a letter can have different forms depending on whether it's at the beginning, middle, or end of a word.\n\nAnother common use of glyph substitution is to replace a sequence of characters by a symbol that better represent the meaning of those characters on a specialized context (mathematical, programming, etc.).\n\nText shaping is disabled by default to keep backwards compatibility, reduce resource requirements and not make uharfbuzz a hard dependency.\n\nIf you want to use text shaping, the first step is installing the uharfbuzz package via pip.\n\n⚠️ Text shaping is not available for type 1 fonts.\n\nThe method set_text_shaping() is used to control text shaping on a document. The only mandatory argument, use_shaping_engine can be set to True to enable the shaping mechanism or False to disable it.\n\nOn most languages, Harfbuzz enables all features by default. If you want to enable or disable a specific feature you can pass a dictionary containing the 4 digit OpenType feature code as key and a boolean value to indicate if it should be enabled or disable.\n\nExample: pdf.set_text_shaping(use_shaping_engine=True, features={\"kern\": False, \"liga\": False})\n\nThe full list of OpenType feature codes can be found here\n\nTo perform the text shaping, harfbuzz needs to know some information like the language and the direction (right-to-left, left-to-right, etc) in order to apply the correct rules. Those information can be guessed based on the text being shaped, but you can also set the information to make sure the correct rules will be applied.\n\nExamples: pdf.set_text_shaping(use_shaping_engine=True, direction=\"rtl\", script=\"arab\", language=\"ara\") pdf.set_text_shaping(use_shaping_engine=True, direction=\"ltr\", script=\"latn\", language=\"eng\")\n\nDirection can be ltr (left to right) or rtl (right to left). The ttb (top to bottom) and btt (bottom to top) directions are not supported by fpdf2 for now.\n\nValid OpenType script tags\n\nValid OpenType language codes\n\nBidirectional text refers to text containing both left-to-right (LTR) and right-to-left (RTL) language scripts. Languages such as Arabic, Hebrew, and Persian are written from right to left, whereas languages like English, Spanish, and French are written from left to right. The Unicode Bidirectional Algorithm is a set of rules defined by the Unicode Consortium to properly display mixed-directional text. This algorithm ensures that characters are shown in their correct order, preserving the logical sequence of the text.\n\nThe Unicode Bidirectional Algorithm, often abbreviated as the Bidi Algorithm, is essential for displaying text containing both RTL and LTR scripts. It determines the directionality of characters and arranges them in a visually correct order. This algorithm takes into account the inherent directionality of characters (such as those in Arabic or Hebrew being inherently RTL) and the surrounding context to decide how text should be displayed.\n\nfpdf2 will automatically apply the unicode bidirectional algorithm if text shaping is enabled.\n\nIf no direction parameter is provided - or direction is None - paragraph direction will be set according to the first directional character present on the text.\n\nIf there is a need to explicitly set the direction of a paragraph, regardless of the content, you can force the paragraph direction to either RTL or LTR.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Text Shaping¶",
+      "id": "text-shaping"
+    },
+    {
+      "level": "h2",
+      "text": "What is text shaping?¶",
+      "id": "what-is-text-shaping"
+    },
+    {
+      "level": "h3",
+      "text": "Kerning¶",
+      "id": "kerning"
+    },
+    {
+      "level": "h3",
+      "text": "Ligatures¶",
+      "id": "ligatures"
+    },
+    {
+      "level": "h3",
+      "text": "Glyph Substitution¶",
+      "id": "glyph-substitution"
+    },
+    {
+      "level": "h2",
+      "text": "Usage¶",
+      "id": "usage"
+    },
+    {
+      "level": "h3",
+      "text": "Basic usage¶",
+      "id": "basic-usage"
+    },
+    {
+      "level": "h3",
+      "text": "Features¶",
+      "id": "features"
+    },
+    {
+      "level": "h3",
+      "text": "Additional options¶",
+      "id": "additional-options"
+    },
+    {
+      "level": "h2",
+      "text": "Bidirectional Text¶",
+      "id": "bidirectional-text"
+    },
+    {
+      "level": "h3",
+      "text": "Unicode Bidirectional Algorithm¶",
+      "id": "unicode-bidirectional-algorithm"
+    },
+    {
+      "level": "h3",
+      "text": "Paragraph direction¶",
+      "id": "paragraph-direction"
+    },
+    {
+      "level": "h3",
+      "text": "Bidirectional text in fpdf2¶",
+      "id": "bidirectional-text-in-fpdf2"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "pip install uharfbuzz",
+      "language": "unknown"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.add_font(family=\"ViaodaLibre\", fname=HERE / \"ViaodaLibre-Regular.ttf\")\npdf.set_font(\"ViaodaLibre\", size=40)\npdf.set_text_shaping(True)\npdf.cell(text=\"final soft stuff\")\npdf.output(\"Example.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "pdf.set_text_shaping(use_shaping_engine=True, features={\"kern\": False, \"liga\": False})",
+      "language": "json"
+    },
+    {
+      "code": "pdf.set_text_shaping(use_shaping_engine=True, direction=\"rtl\", script=\"arab\", language=\"ara\")",
+      "language": "unknown"
+    },
+    {
+      "code": "pdf.set_text_shaping(use_shaping_engine=True, direction=\"ltr\", script=\"latn\", language=\"eng\")",
+      "language": "unknown"
+    },
+    {
+      "code": "fpdf.set_text_shaping(use_shaping_engine=True, direction=\"rtl\")",
+      "language": "unknown"
+    }
+  ],
+  "patterns": [
+    {
+      "description": "Example: pdf.set_text_shaping(use_shaping_engine=True, features={\"kern\": False, \"liga\": False})",
+      "code": "pdf.set_text_shaping(use_shaping_engine=True, features={\"kern\": False, \"liga\": False})"
+    }
+  ],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html"
+  ]
+}

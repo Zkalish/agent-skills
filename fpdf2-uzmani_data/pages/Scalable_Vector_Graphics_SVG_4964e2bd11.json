@@ -1,0 +1,155 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/SVG.html",
+  "title": "Scalable Vector Graphics (SVG)¶",
+  "content": "fpdf2 supports basic conversion of SVG paths into PDF paths, which can be inserted into an existing PDF document or used as the contents of a new PDF document.\n\nNot all SVGs will convert correctly. Please see the list of unsupported features for more information about what to look out for.\n\nSVG files can be directly inserted inside a PDF file using the image() method:\n\nEither the embedded .svg file must includes width and/or height attributes (absolute or relative), or some dimensions must be provided to .image() through its w= and/or h= parameters.\n\nThe following script will create a PDF that consists only of the graphics contents of the provided SVG file, filling the whole page:\n\nBecause this takes the PDF document size from the source SVG, it does assume that the width/height of the SVG are specified in absolute units rather than relative ones (i.e. the top-level <svg> tag has something like width=\"5cm\" and not width=50%). In this case, if the values are percentages, they will be interpreted as their literal numeric value (i.e. 100% would be treated as 100 pt). The next example uses transform_to_page_viewport, which will scale an SVG with a percentage based width to the pre-defined PDF page size.\n\nThe converted SVG object can be returned as an fpdf.drawing.GraphicsContext collection of drawing directives for more control over how it is rendered:\n\nUsually, embedding SVG as vector graphics in PDF documents is the best approach, as it is both lightweight and will allow for better details / precision of the images inserted.\n\nBut sometimes, SVG images cannot be directly embedded as vector graphics (SVG), and a conversion to raster graphics (PNG, JPG) must be performed.\n\nThe following sections demonstrate how to perform such conversion, using Pygal charts as examples:\n\nA faster and efficient approach for embedding Pygal SVG charts into a PDF file is to use the cairosvg library to convert the vector graphics generated into a BytesIO instance, so that we can keep these data in an in-memory buffer:\n\nimport pygal from fpdf import FPDF from io import BytesIO import cairosvg # Create a Pygal bar chart bar_chart = pygal.Bar() bar_chart.title = 'Browser usage evolution (in %)' bar_chart.x_labels = map(str, range(2002, 2013)) bar_chart.add('Firefox', [None, None, 0, 16.6, 25, 31, 36.4, 45.5, 46.3, 42.8, 37.1]) bar_chart.add('Chrome', [None, None, None, None, None, None, 0, 3.9, 10.8, 23.8, 35.3]) bar_chart.add('IE', [85.8, 84.6, 84.7, 74.5, 66, 58.6, 54.7, 44.8, 36.2, 26.6, 20.1]) bar_chart.add('Others', [14.2, 15.4, 15.3, 8.9, 9, 10.4, 8.9, 5.8, 6.7, 6.8, 7.5]) svg_img = bar_chart.render() # Convert the SVG chart to a PNG image in a BytesIO object img_bytesio = BytesIO() cairosvg.svg2png(svg_img, write_to=img_bytesio, dpi=96) # Set the position and size of the image in the PDF x = 50 y = 50 w = 100 h = 70 # Build the PDF pdf = FPDF() pdf.add_page() pdf.image(img_bytesio, x=x, y=y, w=w, h=h) pdf.output('browser-usage-bar-chart.pdf') The above code generates a PDF with the following graph:\n\n!! Troubleshooting advice !!\n\nYou may encounter GTK (Gnome Toolkit) errors while executing the above example in windows. Error could be like following - OSError: no library called \"cairo-2\" was found no library called \"cairo\" was found no library called \"libcairo-2\" was found cannot load library 'libcairo.so.2': error 0x7e cannot load library 'libcairo.2.dylib': error 0x7e cannot load library 'libcairo-2.dll': error 0x7e In this case install install GTK from GTK-for-Windows-Runtime-Environment-Installer. Restart your editor. And you are all done.\n\nAn alternative, purely pythonic but slightly slower solution is to use reportlab and svglib:\n\nThe above code generates the following output:\n\nPerformance considerations\n\nRegarding performance, cairosvg is generally faster than svglib when it comes to rendering SVG files to other formats. This is because cairosvg is built on top of a fast C-based rendering engine, while svglib is written entirely in Python, and hence a bit slower. Additionally, cairosvg offers various options for optimizing the rendering performance, such as disabling certain features, like fonts or filters.\n\nThe fpdf.svg module produces WARNING log messages for some unsupported SVG tags & attributes. If need be, you can suppress those logs:\n\nEverything not listed as supported is unsupported, which is a lot. SVG is a very complex format that has become increasingly complex as it absorbs more of the entire browser rendering stack into its specification.\n\nHowever, there are some pretty commonly used features that are unsupported and may cause unexpected results, up to and including a normal-looking SVG rendering as a completely blank PDF.\n\nThere are some common SVG features that are currently unsupported, but that fpdf2 could end up supporting with the help of contributors :\n\nContributions would be very welcome to add support for more SVG features! 👍\n\nIf you are interested in contributing to fpdf2 regarding this, drop a comment on GitHub issue #537 and a maintainer will give some pointers to start poking with the code 😊",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Scalable Vector Graphics (SVG)¶",
+      "id": "scalable-vector-graphics-svg"
+    },
+    {
+      "level": "h2",
+      "text": "Basic usage¶",
+      "id": "basic-usage"
+    },
+    {
+      "level": "h2",
+      "text": "Detailed example¶",
+      "id": "detailed-example"
+    },
+    {
+      "level": "h2",
+      "text": "Converting vector graphics to raster graphics¶",
+      "id": "converting-vector-graphics-to-raster-graphics"
+    },
+    {
+      "level": "h3",
+      "text": "Using cairosvg¶",
+      "id": "using-cairosvg"
+    },
+    {
+      "level": "h3",
+      "text": "Using svglib and reportlab¶",
+      "id": "using-svglib-and-reportlab"
+    },
+    {
+      "level": "h2",
+      "text": "Warning logs¶",
+      "id": "warning-logs"
+    },
+    {
+      "level": "h2",
+      "text": "Supported SVG Features¶",
+      "id": "supported-svg-features"
+    },
+    {
+      "level": "h2",
+      "text": "Currently Unsupported Notable SVG Features¶",
+      "id": "currently-unsupported-notable-svg-features"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.image(\"vector.svg\")\npdf.output(\"doc-with-svg.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "import fpdf\n\nsvg = fpdf.svg.SVGObject.from_file(\"my_file.svg\")\n\npdf = fpdf.FPDF(unit=\"pt\", format=(svg.width, svg.height))\npdf.add_page()\nsvg.draw_to_page(pdf)\n\npdf.output(\"my_file.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "import fpdf\n\nsvg = fpdf.svg.SVGObject.from_file(\"my_file.svg\")\n\npdf = FPDF(unit=\"in\", format=(8.5, 11))\npdf.add_page()\n\n# We pass align_viewbox=False because we want to perform positioning manually\n# after the size transform has been computed.\nwidth, height, paths = svg.transform_to_page_viewport(pdf, align_viewbox=False)\n# note: transformation order is important! This centers the svg drawing at the\n# origin, rotates it 90 degrees clockwise, and then repositions it to the\n# middle of the output page.\npaths.transform = paths.transform @ fpdf.drawing.Transform.translation(\n    -width / 2, -height / 2\n).rotate_d(90).translate(pdf.w / 2, pdf.h / 2)\n\npdf.draw_path(paths)\n\npdf.output(\"my_file.pdf\")",
+      "language": "csharp"
+    },
+    {
+      "code": "import pygal\nfrom fpdf import FPDF\nfrom io import BytesIO\nimport cairosvg\n\n# Create a Pygal bar chart\nbar_chart = pygal.Bar()\nbar_chart.title = 'Browser usage evolution (in %)'\nbar_chart.x_labels = map(str, range(2002, 2013))\nbar_chart.add('Firefox', [None, None, 0, 16.6,   25,   31, 36.4, 45.5, 46.3, 42.8, 37.1])\nbar_chart.add('Chrome',  [None, None, None, None, None, None,    0,  3.9, 10.8, 23.8, 35.3])\nbar_chart.add('IE',      [85.8, 84.6, 84.7, 74.5,   66, 58.6, 54.7, 44.8, 36.2, 26.6, 20.1])\nbar_chart.add('Others',  [14.2, 15.4, 15.3,  8.9,    9, 10.4,  8.9,  5.8,  6.7,  6.8,  7.5])\nsvg_img = bar_chart.render()\n\n# Convert the SVG chart to a PNG image in a BytesIO object\nimg_bytesio = BytesIO()\ncairosvg.svg2png(svg_img, write_to=img_bytesio, dpi=96)\n\n# Set the position and size of the image in the PDF\nx = 50\ny = 50\nw = 100\nh = 70\n\n# Build the PDF\npdf = FPDF()\npdf.add_page()\npdf.image(img_bytesio, x=x, y=y, w=w, h=h)\npdf.output('browser-usage-bar-chart.pdf')",
+      "language": "swift"
+    },
+    {
+      "code": "OSError: no library called \"cairo-2\" was found\nno library called \"cairo\" was found\nno library called \"libcairo-2\" was found\ncannot load library 'libcairo.so.2': error 0x7e\ncannot load library 'libcairo.2.dylib': error 0x7e\ncannot load library 'libcairo-2.dll': error 0x7e",
+      "language": "yaml"
+    },
+    {
+      "code": "import io\nimport pygal\nfrom reportlab.graphics import renderPM\nfrom svglib.svglib import SvgRenderer\nfrom fpdf import FPDF\nfrom lxml import etree\n\n# Create a Pygal bar chart\nbar_chart = pygal.Bar()\nbar_chart.title = 'Sales by Year'\nbar_chart.x_labels = ['2016', '2017', '2018', '2019', '2020']\nbar_chart.add('Product A', [500, 750, 1000, 1250, 1500])\nbar_chart.add('Product B', [750, 1000, 1250, 1500, 1750])\nsvg_img = bar_chart.render()\n\n# Convert the SVG chart to a JPEG image in a BytesIO object\ndrawing = SvgRenderer('').render(etree.fromstring(svg_img))\njpg_img_bytes = renderPM.drawToString(drawing, fmt='JPG', dpi=72)\nimg_bytesio = io.BytesIO(jpg_img_bytes)\n\n# Set the position and size of the image in the PDF\nx = 50\ny = 50\nw = 100\nh = 70\n\n# Build the PDF\npdf = FPDF()\npdf.add_page()\npdf.image(img_bytesio, x=x, y=y, w=w, h=h)\npdf.output('sales-by-year-bar-chart.pdf')",
+      "language": "swift"
+    },
+    {
+      "code": "logging.getLogger(\"fpdf.svg\").propagate = False",
+      "language": "unknown"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html"
+  ]
+}

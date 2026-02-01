@@ -1,0 +1,150 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/index.html",
+  "title": "fpdf2¶",
+  "content": "fpdf2 is a library for simple & fast PDF document generation in Python. It is a fork and the successor of PyFPDF (cf. history).\n\nLatest Released Version:\n\nGo try it now online in a Jupyter notebook: or\n\nFrom PyPI: pip install fpdf2\n\nTo get the latest, unreleased, development version straight from the development branch of this repository:\n\nDevelopment: check the dedicated documentation page.\n\nDeprecationWarnings are not displayed by Python by default.\n\nHence, every time you use a newer version of fpdf2, we strongly encourage you to execute your scripts with the -Wd option (cf. documentation) in order to get warned about deprecated features used in your code.\n\nThis can also be enabled programmatically with warnings.simplefilter('default', DeprecationWarning).\n\nFor community support, please feel free to file an issue or open a discussion.\n\nOnline classes & open source projects:",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "fpdf2¶",
+      "id": "fpdf2"
+    },
+    {
+      "level": "h2",
+      "text": "Main features¶",
+      "id": "main-features"
+    },
+    {
+      "level": "h2",
+      "text": "Tutorials¶",
+      "id": "tutorials"
+    },
+    {
+      "level": "h2",
+      "text": "Installation¶",
+      "id": "installation"
+    },
+    {
+      "level": "h3",
+      "text": "Displaying deprecation warnings¶",
+      "id": "displaying-deprecation-warnings"
+    },
+    {
+      "level": "h2",
+      "text": "Community¶",
+      "id": "community"
+    },
+    {
+      "level": "h3",
+      "text": "Support¶",
+      "id": "support"
+    },
+    {
+      "level": "h3",
+      "text": "They use fpdf2¶",
+      "id": "they-use-fpdf2"
+    },
+    {
+      "level": "h3",
+      "text": "Usage statistics¶",
+      "id": "usage-statistics"
+    },
+    {
+      "level": "h3",
+      "text": "Related¶",
+      "id": "related"
+    },
+    {
+      "level": "h2",
+      "text": "Misc¶",
+      "id": "misc"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font('Helvetica', size=12)\npdf.cell(text=\"Hello world!\")\npdf.output(\"hello_world.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "pip install fpdf2",
+      "language": "unknown"
+    },
+    {
+      "code": "pip install git+https://github.com/py-pdf/fpdf2.git@master",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ua.html",
+    "https://py-pdf.github.io/fpdf2/fpdf2-manual.pdf"
+  ]
+}

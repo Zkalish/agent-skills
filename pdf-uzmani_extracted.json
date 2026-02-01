@@ -1,0 +1,100 @@
+{
+  "source_file": "test_dokuman.pdf",
+  "metadata": {
+    "format": "PDF 1.3",
+    "title": "untitled",
+    "author": "anonymous",
+    "subject": "unspecified",
+    "keywords": "",
+    "creator": "anonymous",
+    "producer": "ReportLab PDF Library - (opensource)",
+    "creationDate": "D:20260129085516+01'00'",
+    "modDate": "D:20260129085516+01'00'",
+    "trapped": "",
+    "encryption": null
+  },
+  "total_pages": 1,
+  "total_chars": 516,
+  "total_code_blocks": 1,
+  "total_headings": 0,
+  "total_images": 0,
+  "total_extracted_images": 0,
+  "total_tables": 0,
+  "image_directory": "output/pdf-uzmani/assets/images",
+  "extracted_images": [],
+  "total_chunks": 1,
+  "chapters": [],
+  "languages_detected": {
+    "python": 1
+  },
+  "quality_statistics": {
+    "average_quality": 7.4,
+    "average_confidence": 0.2,
+    "valid_code_blocks": 1,
+    "invalid_code_blocks": 0,
+    "validation_rate": 1.0,
+    "high_quality_blocks": 1,
+    "medium_quality_blocks": 0,
+    "low_quality_blocks": 0
+  },
+  "chunks": [
+    {
+      "chunk_number": 1,
+      "start_page": 1,
+      "end_page": 1,
+      "pages": [
+        {
+          "page_number": 1,
+          "text": "PDF UzmanI Skill Dokümantasyonu\n1. GiriI\nBu skill PDF dosyalarIndan otomatik olarak Claude skill oluIturur.\n2. Temel KullanIm\n- skill-seekers pdf --pdf dosya.pdf --name skillismi\n3. GeliImiI Seçenekler\n--config: JSON config dosyasI kullan\n--name: Skill ismini belirle\n--description: Skill açIklamasInI yaz\n4. API ReferansI\nextract_pdf(pdf_path, output_dir)\nconvert_to_skill(json_data, skill_name)\n5. Örnek Kod\nfrom skill_seekers import PDFExtractor\nextractor = PDFExtractor('doc.pdf')\ndata = extractor.extract_all()",
+          "markdown": "PDF UzmanI Skill Dokümantasyonu\n1. GiriI\nBu skill PDF dosyalarIndan otomatik olarak Claude skill oluIturur.\n2. Temel KullanIm\n- skill-seekers pdf --pdf dosya.pdf --name skillismi\n3. GeliImiI Seçenekler\n--config: JSON config dosyasI kullan\n--name: Skill ismini belirle\n--description: Skill açIklamasInI yaz\n4. API ReferansI\nextract_pdf(pdf_path, output_dir)\nconvert_to_skill(json_data, skill_name)\n5. Örnek Kod\nfrom skill_seekers import PDFExtractor\nextractor = PDFExtractor('doc.pdf')\ndata = extractor.extract_all()",
+          "headings": [],
+          "code_samples": [
+            {
+              "code": "import PDFExtractor",
+              "language": "python",
+              "confidence": 0.2,
+              "quality_score": 7.4,
+              "is_valid": true,
+              "validation_issues": [],
+              "detection_method": "pattern",
+              "pattern_type": "imports"
+            }
+          ],
+          "images_count": 0,
+          "extracted_images": [],
+          "tables": [],
+          "char_count": 516,
+          "code_blocks_count": 1,
+          "tables_count": 0
+        }
+      ],
+      "chapter_title": null
+    }
+  ],
+  "pages": [
+    {
+      "page_number": 1,
+      "text": "PDF UzmanI Skill Dokümantasyonu\n1. GiriI\nBu skill PDF dosyalarIndan otomatik olarak Claude skill oluIturur.\n2. Temel KullanIm\n- skill-seekers pdf --pdf dosya.pdf --name skillismi\n3. GeliImiI Seçenekler\n--config: JSON config dosyasI kullan\n--name: Skill ismini belirle\n--description: Skill açIklamasInI yaz\n4. API ReferansI\nextract_pdf(pdf_path, output_dir)\nconvert_to_skill(json_data, skill_name)\n5. Örnek Kod\nfrom skill_seekers import PDFExtractor\nextractor = PDFExtractor('doc.pdf')\ndata = extractor.extract_all()",
+      "markdown": "PDF UzmanI Skill Dokümantasyonu\n1. GiriI\nBu skill PDF dosyalarIndan otomatik olarak Claude skill oluIturur.\n2. Temel KullanIm\n- skill-seekers pdf --pdf dosya.pdf --name skillismi\n3. GeliImiI Seçenekler\n--config: JSON config dosyasI kullan\n--name: Skill ismini belirle\n--description: Skill açIklamasInI yaz\n4. API ReferansI\nextract_pdf(pdf_path, output_dir)\nconvert_to_skill(json_data, skill_name)\n5. Örnek Kod\nfrom skill_seekers import PDFExtractor\nextractor = PDFExtractor('doc.pdf')\ndata = extractor.extract_all()",
+      "headings": [],
+      "code_samples": [
+        {
+          "code": "import PDFExtractor",
+          "language": "python",
+          "confidence": 0.2,
+          "quality_score": 7.4,
+          "is_valid": true,
+          "validation_issues": [],
+          "detection_method": "pattern",
+          "pattern_type": "imports"
+        }
+      ],
+      "images_count": 0,
+      "extracted_images": [],
+      "tables": [],
+      "char_count": 516,
+      "code_blocks_count": 1,
+      "tables_count": 0
+    }
+  ]
+}

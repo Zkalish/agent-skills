@@ -1,0 +1,128 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/image_datastructures.html",
+  "title": "Module fpdf.image_datastructures",
+  "content": "ImageCache(images: dict[str, fpdf.image_datastructures.RasterImageInfo | fpdf.image_datastructures.VectorImageInfo] = , icc_profiles: dict[bytes, int] = , image_filter: Literal['AUTO', 'FlateDecode', 'DCTDecode', 'JPXDecode', 'LZWDecode', 'CCITTFaxDecode'] = 'AUTO')\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nThe type of the None singleton.\n\nInformation about an image used in the PDF document (base class). We subclass this to distinguish between raster and vector images.\n\nIntrinsic image height\n\nOnly available if the image has been placed on the document\n\nOnly available if the image has been placed on the document\n\nIntrinsic image width\n\nMake an image fit within a bounding box, maintaining its proportions. In the reduced dimension it will be centered within the available space.\n\nInformation about a raster image used in the PDF document\n\nInherited from: ImageInfo.height\n\nIntrinsic image height\n\nInherited from: ImageInfo.rendered_height\n\nOnly available if the image has been placed on the document\n\nInherited from: ImageInfo.rendered_width\n\nOnly available if the image has been placed on the document\n\nInherited from: ImageInfo.width\n\nIntrinsic image width\n\nInherited from: ImageInfo.scale_inside_box\n\nMake an image fit within a bounding box, maintaining its proportions. In the reduced dimension it will be centered within the available space.\n\nInformation about a vector image used in the PDF document\n\nInherited from: ImageInfo.height\n\nIntrinsic image height\n\nInherited from: ImageInfo.rendered_height\n\nOnly available if the image has been placed on the document\n\nInherited from: ImageInfo.rendered_width\n\nOnly available if the image has been placed on the document\n\nInherited from: ImageInfo.width\n\nIntrinsic image width\n\nInherited from: ImageInfo.scale_inside_box\n\nMake an image fit within a bounding box, maintaining its proportions. In the reduced dimension it will be centered within the available space.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.image_datastructures",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Subclasses",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "@dataclass\nclass ImageCache:\n    # Map image identifiers to dicts describing raster or vector images\n    images: dict[str, RasterImageInfo | VectorImageInfo] = field(default_factory=dict)\n    # Map icc profiles (bytes) to their index (number)\n    icc_profiles: dict[bytes, int] = field(default_factory=dict)\n    # Must be one of SUPPORTED_IMAGE_FILTERS values\n    image_filter: ImageFilter = \"AUTO\"\n\n    def reset_usages(self) -> None:\n        for img in self.images.values():\n            img[\"usages\"] = 0",
+      "language": "python"
+    },
+    {
+      "code": "def reset_usages(self) -> None:\n    for img in self.images.values():\n        img[\"usages\"] = 0",
+      "language": "python"
+    },
+    {
+      "code": "class ImageInfo(dict[str, object]):\n    \"\"\"Information about an image used in the PDF document (base class).\n    We subclass this to distinguish between raster and vector images.\"\"\"\n\n    @property\n    def width(self) -> float:\n        \"Intrinsic image width\"\n        return cast(float, self[\"w\"])\n\n    @property\n    def height(self) -> float:\n        \"Intrinsic image height\"\n        return cast(float, self[\"h\"])\n\n    @property\n    def rendered_width(self) -> float:\n        \"Only available if the image has been placed on the document\"\n        return cast(float, self[\"rendered_width\"])\n\n    @property\n    def rendered_height(self) -> float:\n        \"Only available if the image has been placed on the document\"\n        return cast(float, self[\"rendered_height\"])\n\n    def __str__(self) -> str:\n        d = {\n            k: (\"...\" if k in (\"data\", \"iccp\", \"smask\") else v) for k, v in self.items()\n        }\n        return f\"self.__class__.__name__({d})\"\n\n    def scale_inside_box(\n        self, x: float, y: float, w: float, h: float\n    ) -> tuple[float, float, float, float]:\n        \"\"\"\n        Make an image fit within a bounding box, maintaining its proportions.\n        In the reduced dimension it will be centered within the available space.\n        \"\"\"\n        img_w: float = self[\"w\"]  # type: ignore\n        img_h: float = self[\"h\"]  # type: ignore\n        ratio = img_w / img_h\n        if h * ratio < w:\n            new_w = h * ratio\n            new_h = h\n            x += (w - new_w) / 2\n        else:  # => too wide, limiting width:\n            new_h = w / ratio\n            new_w = w\n            y += (h - new_h) / 2\n        return x, y, new_w, new_h",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef height(self) -> float:\n    \"Intrinsic image height\"\n    return cast(float, self[\"h\"])",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef rendered_height(self) -> float:\n    \"Only available if the image has been placed on the document\"\n    return cast(float, self[\"rendered_height\"])",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef rendered_width(self) -> float:\n    \"Only available if the image has been placed on the document\"\n    return cast(float, self[\"rendered_width\"])",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef width(self) -> float:\n    \"Intrinsic image width\"\n    return cast(float, self[\"w\"])",
+      "language": "python"
+    },
+    {
+      "code": "def scale_inside_box(\n    self, x: float, y: float, w: float, h: float\n) -> tuple[float, float, float, float]:\n    \"\"\"\n    Make an image fit within a bounding box, maintaining its proportions.\n    In the reduced dimension it will be centered within the available space.\n    \"\"\"\n    img_w: float = self[\"w\"]  # type: ignore\n    img_h: float = self[\"h\"]  # type: ignore\n    ratio = img_w / img_h\n    if h * ratio < w:\n        new_w = h * ratio\n        new_h = h\n        x += (w - new_w) / 2\n    else:  # => too wide, limiting width:\n        new_h = w / ratio\n        new_w = w\n        y += (h - new_h) / 2\n    return x, y, new_w, new_h",
+      "language": "python"
+    },
+    {
+      "code": "class RasterImageInfo(ImageInfo):\n    \"Information about a raster image used in the PDF document\"\n\n    def size_in_document_units(\n        self, w: float, h: float, scale: float = 1\n    ) -> tuple[float, float]:\n        img_w: float = self[\"w\"]  # type: ignore\n        img_h: float = self[\"h\"]  # type: ignore\n        if w == 0 and h == 0:  # Put image at 72 dpi\n            w = img_w / scale\n            h = img_h / scale\n        elif w == 0:\n            w = h * img_w / img_h\n        elif h == 0:\n            h = w * img_h / img_w\n        return w, h",
+      "language": "python"
+    },
+    {
+      "code": "def size_in_document_units(\n    self, w: float, h: float, scale: float = 1\n) -> tuple[float, float]:\n    img_w: float = self[\"w\"]  # type: ignore\n    img_h: float = self[\"h\"]  # type: ignore\n    if w == 0 and h == 0:  # Put image at 72 dpi\n        w = img_w / scale\n        h = img_h / scale\n    elif w == 0:\n        w = h * img_w / img_h\n    elif h == 0:\n        h = w * img_h / img_w\n    return w, h",
+      "language": "python"
+    },
+    {
+      "code": "class VectorImageInfo(ImageInfo):\n    \"Information about a vector image used in the PDF document\"\n\n    # pass",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/fpdf/image_datastructures.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html"
+  ]
+}

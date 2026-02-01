@@ -1,0 +1,252 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Images.html",
+  "title": "Images¶",
+  "content": "When rendering an image, its size on the page can be specified in several ways:\n\nNote that if an image is displayed several times, only one copy is embedded in the file.\n\nBy default an image is rendered with a resolution of 72 dpi, but you can control its dimension on the page using the w= & h= parameters of the image() method.\n\nfpdf2 allows to embed images with alpha pixels.\n\nTechnically, it is implemented by extracting an /SMask from images with transparency, and inserting it along with the image data in the PDF document. Related code is in the image_parsing module.\n\nThe following code snippets provide examples of some basic layouts for assembling images into PDF files.\n\nWhen you want to scale an image to fill a rectangle, while keeping its aspect ratio, and ensuring it does not overflow the rectangle width nor height in the process, you can set w / h and also provide keep_aspect_ratio=True to the image() method. This will place the image at the centre of the bounding box.\n\nThe following unit tests illustrate that:\n\nTo anchor the image to a specific corner, you can use this function:\n\nYou can control the color blending mode of overlapping images. Valid values for blend_mode are Normal, Multiply, Screen, Overlay, Darken, Lighten, ColorDodge, ColorBurn, HardLight, SoftLight, Difference, Exclusion, Hue, Saturation, Color and Luminosity.\n\nDemo of all color blend modes: blending_images.pdf\n\nYou can select only a portion of the image to render using clipping methods:\n\nA textual description of the image can be provided, for accessibility purposes:\n\nYou can perform image manipulations using the Pillow library, and easily embed the result:\n\nSVG images passed to the image() method will be embedded as PDF paths: from fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.image(\"SVG_logo.svg\", w=100) pdf.output(\"pdf-with-vector-image.pdf\")\n\nURLs to images can be directly passed to the image() method:\n\nBy default, fpdf2 will avoid altering or recompressing your images: when possible, the original bytes from the JPG or TIFF file will be used directly. Bitonal images are by default compressed as TIFF Group4.\n\nHowever, you can easily tell fpdf2 to embed all images as JPEGs in order to reduce your PDF size, using set_image_filter():\n\nThe allowed image_filter values are listed in the set_image_filter() method documentation.\n\nBeware that \"flattening\" images into JPEGs this way will fill transparent areas of your images with color (usually black).\n\nOutput Intents [allow] the contents of referenced icc profiles to be embedded directly within the body of the PDF file. This makes the PDF file a self-contained unit that can be stored or transmitted as a single entity.\n\nThe dedicated method for adding output intent to a PDF is add_output_intent().\n\nYou can optionally provide a PDFICCProfileObject as icc_profile.\n\nExample: from pathlib import Path from fpdf import FPDF from fpdf.enums import OutputIntentSubType from fpdf.output import PDFICCProfileObject HERE = Path(__file__).resolve().parent pdf = FPDF() with open(HERE / \"sRGB2014.icc\", \"rb\") as iccp_file: icc_profile = PDFICCProfileObject( contents=iccp_file.read(), n=3, alternate=\"DeviceRGB\" ) pdf.add_output_intent( OutputIntentSubType.PDFA, \"sRGB\", 'IEC 61966-2-1:1999', \"http://www.color.org\", icc_file, \"sRGB2014 (v2)\", )\n\nThe needed profiles and descriptions can be found at International Color Consortium.\n\nThe ICC profile of the included images are read through the PIL function Image.info.get(\"icc_profile)\" and are included in the PDF as objects.\n\nAn ICC profile can also be added by using the .add_output_intent() method, as described in the previous section.\n\nIf the resulting PDF size is a concern, you may want to check if some inserted images are oversized, meaning their resolution is unnecessarily high given the size they are displayed.\n\nThere is how to enable this detection mechanism with fpdf2:\n\nAfter setting this property, a WARNING log will be displayed whenever an oversized image is inserted.\n\nfpdf2 is also able to automatically downscale such oversized images:\n\nAfter this, oversized images will be automatically resized, generating DEBUG logs like this: OVERSIZED: Generated new low-res image with name=lowres-test.png dims=(319, 451) id=2\n\nFor finer control, you can set pdf.oversized_images_ratio to set the threshold determining if an image is oversized.\n\nIf the concepts of \"image compression\" or \"image resolution\" are a bit obscure for you, this article is a recommended reading: The 5 minute guide to image quality\n\nBy default images transparency is preserved: alpha channels are extracted and converted to an embedded SMask. This can be disabled by setting .allow_images_transparency, e.g. to allow compliance with PDF/A-1:\n\nThis will fill transparent areas of your images with color (usually black).\n\ncf. also documentation on controlling transparency.\n\ncf. Per-page format, orientation and background\n\nImage parsing is often the most CPU & memory intensive step when inserting pictures in a PDF.\n\nIf you create several PDF files that use the same illustrations, you can share the images cache among FPDF instances:\n\nThis recipe is valid for fpdf2 v2.5.7+. For previous versions of fpdf2, a deepcopy of .images must be made, (cf. issue #501).",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Images¶",
+      "id": "images"
+    },
+    {
+      "level": "h2",
+      "text": "Simple example¶",
+      "id": "simple-example"
+    },
+    {
+      "level": "h2",
+      "text": "Alpha / transparency¶",
+      "id": "alpha-transparency"
+    },
+    {
+      "level": "h2",
+      "text": "Assembling images¶",
+      "id": "assembling-images"
+    },
+    {
+      "level": "h3",
+      "text": "Side by side images, full height, landscape page¶",
+      "id": "side-by-side-images-full-height-landscape-page"
+    },
+    {
+      "level": "h3",
+      "text": "Fitting an image inside a rectangle¶",
+      "id": "fitting-an-image-inside-a-rectangle"
+    },
+    {
+      "level": "h4",
+      "text": "Image alignment in the bounding box¶",
+      "id": "image-alignment-in-the-bounding-box"
+    },
+    {
+      "level": "h3",
+      "text": "Blending images¶",
+      "id": "blending-images"
+    },
+    {
+      "level": "h2",
+      "text": "Image clipping¶",
+      "id": "image-clipping"
+    },
+    {
+      "level": "h2",
+      "text": "Alternative description¶",
+      "id": "alternative-description"
+    },
+    {
+      "level": "h2",
+      "text": "Usage with Pillow¶",
+      "id": "usage-with-pillow"
+    },
+    {
+      "level": "h2",
+      "text": "SVG images¶",
+      "id": "svg-images"
+    },
+    {
+      "level": "h2",
+      "text": "Retrieve images from URLs¶",
+      "id": "retrieve-images-from-urls"
+    },
+    {
+      "level": "h2",
+      "text": "Image compression¶",
+      "id": "image-compression"
+    },
+    {
+      "level": "h2",
+      "text": "Output Intents¶",
+      "id": "output-intents"
+    },
+    {
+      "level": "h2",
+      "text": "ICC Profiles¶",
+      "id": "icc-profiles"
+    },
+    {
+      "level": "h2",
+      "text": "Oversized images detection & downscaling¶",
+      "id": "oversized-images-detection-downscaling"
+    },
+    {
+      "level": "h2",
+      "text": "Disabling transparency¶",
+      "id": "disabling-transparency"
+    },
+    {
+      "level": "h2",
+      "text": "Page background¶",
+      "id": "page-background"
+    },
+    {
+      "level": "h2",
+      "text": "Sharing the image cache among FPDF instances¶",
+      "id": "sharing-the-image-cache-among-fpdf-instances"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.image(\"docs/fpdf2-logo.png\", x=20, y=60)\npdf.output(\"pdf-with-image.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF(orientation=\"landscape\")\npdf.set_margin(0)\npdf.add_page()\npdf.image(\"imgA.png\", h=pdf.eph, w=pdf.epw/2)               # full page height, half page width\npdf.set_y(0)\npdf.image(\"imgB.jpg\", h=pdf.eph, w=pdf.epw/2, x=pdf.epw/2)  # full page height, half page width, right half of the page\npdf.output(\"side-by-side.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from typing import Literal, TypedDict\nfrom fpdf import FPDF\nfrom fpdf.image_parsing import preload_image\n\nclass FpdfBoundingBox(TypedDict):\n    x: float\n    y: float\n    w: float\n    h: float\n\ndef scale_and_position_image(\n    pdf: FPDF,\n    image_path: str,\n    bounding_box: FpdfBoundingBox,\n    anchor: Literal[\"TL\", \"TR\", \"BL\", \"BR\", \"C\"],\n) -> None:\n    if anchor == \"C\":\n        pdf.image(\n            str(image_path),\n            x=bounding_box[\"x\"],\n            y=bounding_box[\"y\"],\n            w=bounding_box[\"w\"],\n            h=bounding_box[\"h\"],\n            keep_aspect_ratio=True,\n        )\n        return\n\n    info = preload_image(pdf.image_cache, str(image_path))[2]\n    _, _, scaled_w, scaled_h = info.scale_inside_box(**bounding_box)\n\n    # default to top left\n    x, y = bounding_box[\"x\"], bounding_box[\"y\"]\n    if \"B\" in anchor:\n        y = bounding_box[\"y\"] + bounding_box[\"h\"] - scaled_h\n    if \"R\" in anchor:\n        x = bounding_box[\"x\"] + bounding_box[\"w\"] - scaled_w\n\n    pdf.image(\n        str(image_path),\n        x=x,\n        y=y,\n        w=scaled_w,\n        h=scaled_h,\n        keep_aspect_ratio=True,\n    )\n\n# Usage example:\npdf = FPDF()\npdf.add_page()\nbounding_box = FpdfBoundingBox(x=pdf.w-pdf.r_margin-100, y=pdf.t_margin, w=100, h=50)\n# Render the bounding box:\npdf.set_draw_color(255, 0, 0)\npdf.rect(**bounding_box, style=\"D\")\n# Insert image:\nscale_and_position_image(pdf, \"./test/image/png_indexed/flower1.png\", bounding_box, \"BR\")\npdf.output(\"image_in_bounding_box_example.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.image(\"imgA.png\", ...)\nwith pdf.local_context(blend_mode=\"ColorBurn\"):\n    pdf.image(\"imgB.jpg\", ...)\npdf.output(\"blended-images.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "pdf.image(\"docs/fpdf2-logo.png\", x=20, y=60, alt_text=\"Snake logo of the fpdf2 library\")",
+      "language": "swift"
+    },
+    {
+      "code": "from fpdf import FPDF\nfrom PIL import Image\n\npdf = FPDF()\npdf.add_page()\nimg = Image.open(\"docs/fpdf2-logo.png\")\nimg = img.crop((10, 10, 490, 490)).resize((96, 96), resample=Image.NEAREST)\npdf.image(img, x=80, y=100)\npdf.output(\"pdf-with-image.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.image(\"SVG_logo.svg\", w=100)\npdf.output(\"pdf-with-vector-image.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "pdf.image(\"https://upload.wikimedia.org/wikipedia/commons/7/70/Example.png\")",
+      "language": "swift"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.set_image_filter(\"DCTDecode\")\npdf.add_page()\npdf.image(\"docs/fpdf2-logo.png\", x=20, y=60)\npdf.output(\"pdf-with-image.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from pathlib import Path\nfrom fpdf import FPDF\nfrom fpdf.enums import OutputIntentSubType\nfrom fpdf.output import PDFICCProfileObject\n\nHERE = Path(__file__).resolve().parent\n\npdf = FPDF()\n\nwith open(HERE / \"sRGB2014.icc\", \"rb\") as iccp_file:\n    icc_profile = PDFICCProfileObject(\n        contents=iccp_file.read(), n=3, alternate=\"DeviceRGB\"\n    )\n\npdf.add_output_intent(\n    OutputIntentSubType.PDFA,\n    \"sRGB\",\n    'IEC 61966-2-1:1999',\n    \"http://www.color.org\",\n    icc_file,\n    \"sRGB2014 (v2)\",\n)",
+      "language": "typescript"
+    },
+    {
+      "code": "pdf.oversized_images = \"WARN\"",
+      "language": "unknown"
+    },
+    {
+      "code": "pdf.oversized_images = \"DOWNSCALE\"",
+      "language": "unknown"
+    },
+    {
+      "code": "OVERSIZED: Generated new low-res image with name=lowres-test.png dims=(319, 451) id=2",
+      "language": "yaml"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.allow_images_transparency = False\npdf.set_font(\"Helvetica\", size=15)\npdf.cell(w=pdf.epw, h=30, text=\"Text behind. \" * 6)\npdf.image(\"docs/fpdf2-logo.png\", x=0)\npdf.output(\"pdf-including-image-without-transparency.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "image_cache = None\n\nfor ... # loop\n    pdf = FPDF()\n    if image_cache is None:\n        image_cache = pdf.image_cache\n    else:\n        pdf.image_cache = image_cache\n    ... # build the PDF\n    pdf.output(...)\n    # Reset the \"usages\" count, to avoid ALL images to be inserted in subsequent PDFs:\n    image_cache.reset_usages()",
+      "language": "typescript"
+    }
+  ],
+  "patterns": [
+    {
+      "description": "from typing import Literal, TypedDict from fpdf import FPDF from fpdf.image_parsing import preload_image class FpdfBoundingBox(TypedDict): x: float y: float w: float h: float def scale_and_position_image( pdf: FPDF, image_path: str, bounding_box: FpdfBoundingBox, anchor: Literal[\"TL\", \"TR\", \"BL\", \"BR\", \"C\"], ) -> None: if anchor == \"C\": pdf.image( str(image_path), x=bounding_box[\"x\"], y=bounding_box[\"y\"], w=bounding_box[\"w\"], h=bounding_box[\"h\"], keep_aspect_ratio=True, ) return info = preload_image(pdf.image_cache, str(image_path))[2] _, _, scaled_w, scaled_h = info.scale_inside_box(**bounding_box) # default to top left x, y = bounding_box[\"x\"], bounding_box[\"y\"] if \"B\" in anchor: y = bounding_box[\"y\"] + bounding_box[\"h\"] - scaled_h if \"R\" in anchor: x = bounding_box[\"x\"] + bounding_box[\"w\"] - scaled_w pdf.image( str(image_path), x=x, y=y, w=scaled_w, h=scaled_h, keep_aspect_ratio=True, ) # Usage example: pdf = FPDF() pdf.add_page() bounding_box = FpdfBoundingBox(x=pdf.w-pdf.r_margin-100, y=pdf.t_margin, w=100, h=50) # Render the bounding box: pdf.set_draw_color(255, 0, 0) pdf.rect(**bounding_box, style=\"D\") # Insert image: scale_and_position_image(pdf, \"./test/image/png_indexed/flower1.png\", bounding_box, \"BR\") pdf.output(\"image_in_bounding_box_example.pdf\")",
+      "code": "from typing import Literal, TypedDict\nfrom fpdf import FPDF\nfrom fpdf.image_parsing import preload_image\n\nclass FpdfBoundingBox(TypedDict):\n    x: float\n    y: float\n    w: float\n    h: float\n\ndef scale_and_position_image(\n    pdf: FPDF,\n    image_path: str,\n    bounding_box: FpdfBoundingBox,\n    anchor: Literal[\"TL\", \"TR\", \"BL\", \"BR\", \"C\"],\n) -> None:\n    if anchor == \"C\":\n        pdf.image(\n            str(image_path),\n            x=bounding_box[\"x\"],\n            y=bounding_box[\"y\"],\n            w=bounding_box[\"w\"],\n            h=bounding_box[\"h\"],\n            keep_aspect_ratio=True,\n        )\n        return\n\n    info = preload_image(pdf.image_cache, str(image_path))[2]\n    _, _, scaled_w, scaled_h = info.scale_inside_box(**bounding_box)\n\n    # default to top left\n    x, y = bounding_box[\"x\"], bounding_box[\"y\"]\n    if \"B\" in anchor:\n        y = bounding_box[\"y\"] + bounding_box[\"h\"] - scaled_h\n    if \"R\" in anchor:\n        x = bounding_box[\"x\"] + bounding_box[\"w\"] - scaled_w\n\n    pdf.image(\n        str(image_path),\n        x=x,\n        y=y,\n        w=scaled_w,\n        h=scaled_h,\n        keep_aspect_ratio=True,\n    )\n\n# Usage example:\npdf = FPDF()\npdf.add_page()\nbounding_box = FpdfBoundingBox(x=pdf.w-pdf.r_margin-100, y=pdf.t_margin, w=100, h=50)\n# Render the bounding box:\npdf.set_draw_color(255, 0, 0)\npdf.rect(**bounding_box, style=\"D\")\n# Insert image:\nscale_and_position_image(pdf, \"./test/image/png_indexed/flower1.png\", bounding_box, \"BR\")\npdf.output(\"image_in_bounding_box_example.pdf\")"
+    },
+    {
+      "description": "Example: from pathlib import Path from fpdf import FPDF from fpdf.enums import OutputIntentSubType from fpdf.output import PDFICCProfileObject HERE = Path(__file__).resolve().parent pdf = FPDF() with open(HERE / \"sRGB2014.icc\", \"rb\") as iccp_file: icc_profile = PDFICCProfileObject( contents=iccp_file.read(), n=3, alternate=\"DeviceRGB\" ) pdf.add_output_intent( OutputIntentSubType.PDFA, \"sRGB\", 'IEC 61966-2-1:1999', \"http://www.color.org\", icc_file, \"sRGB2014 (v2)\", )",
+      "code": "from pathlib import Path\nfrom fpdf import FPDF\nfrom fpdf.enums import OutputIntentSubType\nfrom fpdf.output import PDFICCProfileObject\n\nHERE = Path(__file__).resolve().parent\n\npdf = FPDF()\n\nwith open(HERE / \"sRGB2014.icc\", \"rb\") as iccp_file:\n    icc_profile = PDFICCProfileObject(\n        contents=iccp_file.read(), n=3, alternate=\"DeviceRGB\"\n    )\n\npdf.add_output_intent(\n    OutputIntentSubType.PDFA,\n    \"sRGB\",\n    'IEC 61966-2-1:1999',\n    \"http://www.color.org\",\n    icc_file,\n    \"sRGB2014 (v2)\",\n)"
+    }
+  ],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/output.html"
+  ]
+}

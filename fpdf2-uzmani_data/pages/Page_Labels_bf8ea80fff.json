@@ -1,0 +1,148 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/PageLabels.html",
+  "title": "Page Labels¶",
+  "content": "In a PDF document, each page is identified by an integer page index, representing the page's position within the document. Optionally, a document can also define page labels to visually display page identifiers.\n\nPage labels can be customized. For example, a document might begin with front matter numbered in roman numerals and transition to arabic numerals for the main content. In this case:\n\nThe most popular PDF readers, such as Sumatra PDF and Adobe Acrobat Reader, will accurately display page labels as configured in the PDF. However, not all PDF readers support this feature, and some may not honor or display page labels correctly. In particular, browser-based PDF viewers, like those in Chrome and Edge, currently do not display page labels and will only show default page numbering.\n\nA page label consists of three main parts: Style, Prefix, and Start.\n\nThe style defines the numbering format for the numeric portion of each page label. Available styles are:\n\nThe prefix is an optional string added before the numeric portion of each page label. For instance, a prefix of \"Appendix-\" with a style of \"D\" might result in labels like \"Appendix-1\", \"Appendix-2\", etc.\n\nThe starting number for the first page of a labeled section. This is the initial numeric value applied to the first page of the label range.\n\nYou can add page labels directly when adding a new page using the add_page() method or update them later using set_page_label().\n\nWhen adding a page, you can specify the values for label_style, label_prefix, and label_start to define the page label. Here’s how to do it:\n\nYou can also modify page labels after a page has been added by using set_page_label(). This is helpful to set a new label after adding a ToC placeholder or other action that automatically adds a page break, but keep in mind set_page_label() will always happen after the header have been rendered. If you need this, prefer to have the label written on footer only.\n\nIf you need to get the current page label, for example, to display it in a header or footer, you can use the get_page_label() method.\n\nIn case of a table of contents spanning more than one page, the page number returned by get_page_label() will be incorrect.cf. GitHub issue #1343\n\nBelow is a complete example that demonstrates adding multiple pages with different page label styles and prefixes:\n\nThis example creates a document with three sections, each using a different labeling style and prefix.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Page Labels¶",
+      "id": "page-labels"
+    },
+    {
+      "level": "h2",
+      "text": "Overview¶",
+      "id": "overview"
+    },
+    {
+      "level": "h2",
+      "text": "Page Label Components¶",
+      "id": "page-label-components"
+    },
+    {
+      "level": "h3",
+      "text": "1. Style¶",
+      "id": "1-style"
+    },
+    {
+      "level": "h3",
+      "text": "2. Prefix¶",
+      "id": "2-prefix"
+    },
+    {
+      "level": "h3",
+      "text": "3. Start¶",
+      "id": "3-start"
+    },
+    {
+      "level": "h2",
+      "text": "Using Page Labels in fpdf2¶",
+      "id": "using-page-labels-in-fpdf2"
+    },
+    {
+      "level": "h3",
+      "text": "Adding a Page with Labels in add_page()¶",
+      "id": "adding-a-page-with-labels-in-add_page"
+    },
+    {
+      "level": "h3",
+      "text": "Modifying Page Labels with set_page_label()¶",
+      "id": "modifying-page-labels-with-set_page_label"
+    },
+    {
+      "level": "h3",
+      "text": "Retrieving the Current Page Label with get_page_label()¶",
+      "id": "retrieving-the-current-page-label-with-get_page_label"
+    },
+    {
+      "level": "h2",
+      "text": "Example Usage¶",
+      "id": "example-usage"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\n\n# Add a page with specific label parameters\npdf.add_page(\n    label_style=\"r\",           # Lowercase Roman numerals\n    label_prefix=\"Preface-\",   # Prefix for the label\n    label_start=1              # Start numbering at 1\n)\npdf.output(\"document_with_labels.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "# Set a page label with style, prefix, and start value\npdf.set_page_label(\n    label_style=\"D\",           # Decimal Arabic numerals\n    label_prefix=\"Chapter-\",   # Prefix for the label\n    label_start=1              # Start numbering at 1\n)",
+      "language": "markdown"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\n\n# Adding front matter with lowercase Roman numerals\npdf.add_page(label_style=\"r\", label_start=1)  # Starts with \"i\", \"ii\", \"iii\", etc.\n\n# Adding main content with decimal numbers and a prefix\npdf.add_page(label_style=\"D\", label_prefix=\"Chapter-\", label_start=1)  # \"Chapter-1\", \"Chapter-2\", etc.\n\n# Adding an appendix section with uppercase letters\npdf.add_page(label_style=\"A\", label_prefix=\"Appendix-\", label_start=1)  # \"Appendix-A\", \"Appendix-B\", etc.\n\npdf.output(\"labeled_document.pdf\")",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html"
+  ]
+}

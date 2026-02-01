@@ -1,0 +1,117 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Encryption.html",
+  "title": "Encryption¶",
+  "content": "A PDF document can be encrypted to protect access to its contents.\n\nAn owner password is mandatory. Using the owner password anyone can perform any change on the document, including removing all encryption and access permissions.\n\nThe optional parameters are user password, access permissions and encryption method.\n\nUser password is optional. If none is provided the document content is accessible for everyone.\n\nIf a user password is set, the content of the document will be encrypted and a password prompt displayed when a user opens the document. The document will only be displayed after either the user or owner password is entered.\n\nUsing access permissions flags you can restrict how the user interact with the document. The available access permission flags are:\n\nPRINT_LOW_RES Print the document, limiting the quality of the printed version.\n\nPRINT_HIGH_RES Print the document at the highest quality.\n\nMODIFY Modify the contents of the document.\n\nCOPY Copy or extract text and graphics from the document.\n\nANNOTATION Add or modify text annotations.\n\nFILL_FORMS Fill in existing interactive form fields.\n\nCOPY_FOR_ACCESSIBILITY Extract text and graphics in support of accessibility to users with disabilities\n\nASSEMBLE Insert, rotate or delete pages and create bookmarks or thumbnail images.\n\nThe flags can be combined using |:\n\nThe method all() grants all permissions and none() denies all permissions.\n\nIf no permission is specified it will default to all().\n\nThere are 4 available encryption methods:\n\nNO_ENCRYPTION Data is not encrypted, only add the access permission flags.\n\nRC4 (default) Default PDF encryption algorithm.\n\nAES_128 Encrypts the data with 128 bit key AES algorithm. Requires the cryptography package.\n\nAES_256 Encrypts the data with 256 bit key AES algorithm. Requires the cryptography package.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Encryption¶",
+      "id": "encryption"
+    },
+    {
+      "level": "h2",
+      "text": "Password locking¶",
+      "id": "password-locking"
+    },
+    {
+      "level": "h2",
+      "text": "Access permissions¶",
+      "id": "access-permissions"
+    },
+    {
+      "level": "h2",
+      "text": "Encryption method¶",
+      "id": "encryption-method"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "pdf.set_encryption(\n    owner_password=\"foo\",\n    user_password=\"bar\"\n)",
+      "language": "unknown"
+    },
+    {
+      "code": "from fpdf import FPDF\nfrom fpdf.enums import AccessPermission\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"helvetica\", size=12)\npdf.cell(text=\"hello world\")\n\npdf.set_encryption(\n    owner_password=\"98765421\",\n    permissions=AccessPermission.PRINT_LOW_RES | AccessPermission.PRINT_HIGH_RES\n)\n\npdf.output(\"output.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "pdf.set_encryption(\n    owner_password=\"xyz\",\n    permissions=AccessPermission.all()\n)",
+      "language": "unknown"
+    },
+    {
+      "code": "from fpdf import FPDF\nfrom fpdf.enums import AccessPermission, EncryptionMethod\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"helvetica\", size=12)\npdf.cell(text=\"hello world\")\n\npdf.set_encryption(\n    owner_password=\"123\",\n    encryption_method=EncryptionMethod.AES_128,\n    permissions=AccessPermission.none()\n)\n\npdf.output(\"output.pdf\")",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html"
+  ]
+}

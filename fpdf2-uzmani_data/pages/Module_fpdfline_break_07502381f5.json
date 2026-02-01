@@ -1,0 +1,406 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/line_break.html",
+  "title": "Module fpdf.line_break",
+  "content": "Routines for organizing lines and larger blocks of text, with manual and automatic line wrapping.\n\nThe contents of this module are internal to fpdf2, and not part of the public API. They may change at any time without prior warning or any deprecation period, in non-backward-compatible ways.\n\nUsage documentation at: https://py-pdf.github.io/fpdf2/LineBreaks.html\n\nPer-line text fragment management for use by MultiLineBreak. Args: print_sh (bool): If true, a soft-hyphen will be rendered normally, instead of triggering a line break. Default: False\n\nA fragment of text with font/size/style and other associated information.\n\nReturn the width of a single character out of the stored text.\n\nReturn the width of the string with the given font/size/style/etc.\n\nReturns if 2 fragments are equivalent other than the characters/string\n\nHyphenHint(original_fragment_index, original_character_index, current_line_fragment_index, current_line_character_index, line_width, number_of_spaces, curchar, curchar_width, graphics_state, k)\n\nAlias for field number 6\n\nAlias for field number 7\n\nAlias for field number 3\n\nAlias for field number 2\n\nAlias for field number 8\n\nAlias for field number 9\n\nAlias for field number 4\n\nAlias for field number 5\n\nAlias for field number 1\n\nAlias for field number 0\n\nAccept text as Fragments, to be split into individual lines depending on line width and text height.\n\nSpaceHint(original_fragment_index, original_character_index, current_line_fragment_index, current_line_character_index, line_width, number_of_spaces)\n\nAlias for field number 3\n\nAlias for field number 2\n\nAlias for field number 4\n\nAlias for field number 5\n\nAlias for field number 1\n\nAlias for field number 0\n\nTextLine(fragments, text_width, number_of_spaces, align, height, max_width, trailing_nl, trailing_form_feed, indent)\n\nAlias for field number 3\n\nAlias for field number 0\n\nAlias for field number 4\n\nAlias for field number 8\n\nAlias for field number 5\n\nAlias for field number 2\n\nAlias for field number 1\n\nAlias for field number 7\n\nAlias for field number 6\n\nA special type of text fragment that represents a placeholder for the total number of pages in a PDF document.\n\nA placeholder will be generated during the initial content rendering phase of a PDF document. This placeholder is later replaced by the total number of pages in the document when the final output is being produced.\n\nInherited from: Fragment.get_character_width\n\nReturn the width of a single character out of the stored text.\n\nThis method returns a placeholder string containing a universally unique identifier (UUID4), ensuring that the placeholder is distinct and does not conflict with other placeholders within the document.\n\nInherited from: Fragment.get_width\n\nReturn the width of the string with the given font/size/style/etc …\n\nInherited from: Fragment.has_same_style\n\nReturns if 2 fragments are equivalent other than the characters/string\n\nThis method is invoked during the page content rendering phase, which is common to all Fragment instances. It stores the provided arguments and keyword arguments to preserve the necessary information and graphic state for the final substitution rendering.\n\nThe method then returns the unique placeholder string.\n\nThis method is invoked at the output phase. It calls render_pdf_text() from the superclass to render the fragment with the preserved rendering state (stored in _render_args and _render_kwargs) and insert the final text in place of the placeholder.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.line_break",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Subclasses",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "class CurrentLine:\n    def __init__(\n        self, max_width: float, print_sh: bool = False, indent: float = 0\n    ) -> None:\n        \"\"\"\n        Per-line text fragment management for use by MultiLineBreak.\n            Args:\n                print_sh (bool): If true, a soft-hyphen will be rendered\n                    normally, instead of triggering a line break. Default: False\n        \"\"\"\n        self.max_width = max_width\n        self.print_sh = print_sh\n        self.indent = indent\n        self.fragments: List[Fragment] = []\n        self.height: float = 0\n        self.number_of_spaces: int = 0\n\n        # automatic break hints\n        # CurrentLine class remembers 3 positions\n        # 1 - position of last inserted character.\n        #     class attributes (`width`, `fragments`)\n        #     is used for this purpose\n        # 2 - position of last inserted space\n        #     SpaceHint is used for this purpose.\n        # 3 - position of last inserted soft-hyphen\n        #     HyphenHint is used for this purpose.\n        # The purpose of multiple positions tracking - to have an ability\n        # to break in multiple places, depending on condition.\n        self.space_break_hint: Optional[SpaceHint] = None\n        self.hyphen_break_hint: Optional[HyphenHint] = None\n\n    @property\n    def width(self) -> float:\n        width: float = 0\n        for i, fragment in enumerate(self.fragments):\n            width += fragment.get_width(initial_cs=i > 0)\n        return width\n\n    def add_character(\n        self,\n        character: str,\n        character_width: float,\n        original_fragment: Fragment | HyphenHint,\n        original_fragment_index: int,\n        original_character_index: int,\n        height: float,\n        url: Optional[str | int] = None,\n    ) -> None:\n        assert character != NEWLINE\n        self.height = height\n        if not self.fragments:\n            assert isinstance(original_fragment, Fragment)\n            self.fragments.append(\n                original_fragment.__class__(\n                    characters=\"\",\n                    graphics_state=original_fragment.graphics_state,\n                    k=original_fragment.k,\n                    link=url,\n                )\n            )\n\n        # characters are expected to be grouped into fragments by font and\n        # character attributes. If the last existing fragment doesn't match\n        # the properties of the pending character -> add a new fragment.\n        elif isinstance(original_fragment, Fragment):\n            if isinstance(\n                self.fragments[-1], Fragment\n            ) and not original_fragment.has_same_style(self.fragments[-1]):\n                self.fragments.append(\n                    original_fragment.__class__(\n                        characters=\"\",\n                        graphics_state=original_fragment.graphics_state,\n                        k=original_fragment.k,\n                        link=url,\n                    )\n                )\n        active_fragment = self.fragments[-1]\n\n        if character in BREAKING_SPACE_SYMBOLS_STR:\n            self.space_break_hint = SpaceHint(\n                original_fragment_index,\n                original_character_index,\n                len(self.fragments),\n                len(active_fragment.characters),\n                self.width,\n                self.number_of_spaces,\n            )\n            self.number_of_spaces += 1\n        elif character == NBSP:\n            # PDF viewers ignore NBSP for word spacing with \"Tw\".\n            character = SPACE\n            self.number_of_spaces += 1\n        elif character == SOFT_HYPHEN and not self.print_sh:\n            self.hyphen_break_hint = HyphenHint(\n                original_fragment_index,\n                original_character_index,\n                len(self.fragments),\n                len(active_fragment.characters),\n                self.width,\n                self.number_of_spaces,\n                HYPHEN,\n                character_width,\n                original_fragment.graphics_state,\n                original_fragment.k,\n            )\n\n        if character != SOFT_HYPHEN or self.print_sh:\n            active_fragment.characters.append(character)\n\n    def trim_trailing_spaces(self) -> None:\n        if not self.fragments:\n            return\n        last_frag = self.fragments[-1]\n        last_char = last_frag.characters[-1]\n        while last_char == \" \":\n            last_frag.trim(-1)\n            if not last_frag.characters:\n                del self.fragments[-1]\n            if not self.fragments:\n                return\n            last_frag = self.fragments[-1]\n            last_char = last_frag.characters[-1]\n\n    def _apply_automatic_hint(self, break_hint: SpaceHint | HyphenHint) -> None:\n        \"\"\"\n        This function mutates the current_line, applying one of the states\n        observed in the past and stored in\n        `hyphen_break_hint` or `space_break_hint` attributes.\n        \"\"\"\n        self.fragments = self.fragments[: break_hint.current_line_fragment_index]\n        if self.fragments:\n            self.fragments[-1].trim(break_hint.current_line_character_index)\n        self.number_of_spaces = break_hint.number_of_spaces\n\n    def manual_break(\n        self, align: Align, trailing_nl: bool = False, trailing_form_feed: bool = False\n    ) -> TextLine:\n        return TextLine(\n            fragments=self.fragments,\n            text_width=self.width,\n            number_of_spaces=self.number_of_spaces,\n            align=align,\n            height=self.height,\n            max_width=self.max_width - self.indent,\n            trailing_nl=trailing_nl,\n            trailing_form_feed=trailing_form_feed,\n            indent=self.indent,\n        )\n\n    def automatic_break_possible(self) -> bool:\n        return self.hyphen_break_hint is not None or self.space_break_hint is not None\n\n    def automatic_break(self, align: Align) -> Tuple[int, int, TextLine]:\n        assert self.automatic_break_possible()\n        if self.hyphen_break_hint is not None and (\n            self.space_break_hint is None\n            or self.hyphen_break_hint.line_width > self.space_break_hint.line_width\n        ):\n            self._apply_automatic_hint(self.hyphen_break_hint)\n            self.add_character(\n                self.hyphen_break_hint.curchar,\n                self.hyphen_break_hint.curchar_width,\n                self.hyphen_break_hint,\n                self.hyphen_break_hint.original_fragment_index,\n                self.hyphen_break_hint.original_character_index,\n                self.height,\n            )\n            return (\n                self.hyphen_break_hint.original_fragment_index,\n                self.hyphen_break_hint.original_character_index,\n                self.manual_break(align),\n            )\n        assert self.space_break_hint is not None\n        self._apply_automatic_hint(self.space_break_hint)\n        return (\n            self.space_break_hint.original_fragment_index,\n            self.space_break_hint.original_character_index,\n            self.manual_break(align),\n        )",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef width(self) -> float:\n    width: float = 0\n    for i, fragment in enumerate(self.fragments):\n        width += fragment.get_width(initial_cs=i > 0)\n    return width",
+      "language": "python"
+    },
+    {
+      "code": "def add_character(\n    self,\n    character: str,\n    character_width: float,\n    original_fragment: Fragment | HyphenHint,\n    original_fragment_index: int,\n    original_character_index: int,\n    height: float,\n    url: Optional[str | int] = None,\n) -> None:\n    assert character != NEWLINE\n    self.height = height\n    if not self.fragments:\n        assert isinstance(original_fragment, Fragment)\n        self.fragments.append(\n            original_fragment.__class__(\n                characters=\"\",\n                graphics_state=original_fragment.graphics_state,\n                k=original_fragment.k,\n                link=url,\n            )\n        )\n\n    # characters are expected to be grouped into fragments by font and\n    # character attributes. If the last existing fragment doesn't match\n    # the properties of the pending character -> add a new fragment.\n    elif isinstance(original_fragment, Fragment):\n        if isinstance(\n            self.fragments[-1], Fragment\n        ) and not original_fragment.has_same_style(self.fragments[-1]):\n            self.fragments.append(\n                original_fragment.__class__(\n                    characters=\"\",\n                    graphics_state=original_fragment.graphics_state,\n                    k=original_fragment.k,\n                    link=url,\n                )\n            )\n    active_fragment = self.fragments[-1]\n\n    if character in BREAKING_SPACE_SYMBOLS_STR:\n        self.space_break_hint = SpaceHint(\n            original_fragment_index,\n            original_character_index,\n            len(self.fragments),\n            len(active_fragment.characters),\n            self.width,\n            self.number_of_spaces,\n        )\n        self.number_of_spaces += 1\n    elif character == NBSP:\n        # PDF viewers ignore NBSP for word spacing with \"Tw\".\n        character = SPACE\n        self.number_of_spaces += 1\n    elif character == SOFT_HYPHEN and not self.print_sh:\n        self.hyphen_break_hint = HyphenHint(\n            original_fragment_index,\n            original_character_index,\n            len(self.fragments),\n            len(active_fragment.characters),\n            self.width,\n            self.number_of_spaces,\n            HYPHEN,\n            character_width,\n            original_fragment.graphics_state,\n            original_fragment.k,\n        )\n\n    if character != SOFT_HYPHEN or self.print_sh:\n        active_fragment.characters.append(character)",
+      "language": "python"
+    },
+    {
+      "code": "def automatic_break(self, align: Align) -> Tuple[int, int, TextLine]:\n    assert self.automatic_break_possible()\n    if self.hyphen_break_hint is not None and (\n        self.space_break_hint is None\n        or self.hyphen_break_hint.line_width > self.space_break_hint.line_width\n    ):\n        self._apply_automatic_hint(self.hyphen_break_hint)\n        self.add_character(\n            self.hyphen_break_hint.curchar,\n            self.hyphen_break_hint.curchar_width,\n            self.hyphen_break_hint,\n            self.hyphen_break_hint.original_fragment_index,\n            self.hyphen_break_hint.original_character_index,\n            self.height,\n        )\n        return (\n            self.hyphen_break_hint.original_fragment_index,\n            self.hyphen_break_hint.original_character_index,\n            self.manual_break(align),\n        )\n    assert self.space_break_hint is not None\n    self._apply_automatic_hint(self.space_break_hint)\n    return (\n        self.space_break_hint.original_fragment_index,\n        self.space_break_hint.original_character_index,\n        self.manual_break(align),\n    )",
+      "language": "python"
+    },
+    {
+      "code": "def automatic_break_possible(self) -> bool:\n    return self.hyphen_break_hint is not None or self.space_break_hint is not None",
+      "language": "python"
+    },
+    {
+      "code": "def manual_break(\n    self, align: Align, trailing_nl: bool = False, trailing_form_feed: bool = False\n) -> TextLine:\n    return TextLine(\n        fragments=self.fragments,\n        text_width=self.width,\n        number_of_spaces=self.number_of_spaces,\n        align=align,\n        height=self.height,\n        max_width=self.max_width - self.indent,\n        trailing_nl=trailing_nl,\n        trailing_form_feed=trailing_form_feed,\n        indent=self.indent,\n    )",
+      "language": "python"
+    },
+    {
+      "code": "def trim_trailing_spaces(self) -> None:\n    if not self.fragments:\n        return\n    last_frag = self.fragments[-1]\n    last_char = last_frag.characters[-1]\n    while last_char == \" \":\n        last_frag.trim(-1)\n        if not last_frag.characters:\n            del self.fragments[-1]\n        if not self.fragments:\n            return\n        last_frag = self.fragments[-1]\n        last_char = last_frag.characters[-1]",
+      "language": "python"
+    },
+    {
+      "code": "class Fragment:\n    \"\"\"\n    A fragment of text with font/size/style and other associated information.\n    \"\"\"\n\n    def __init__(\n        self,\n        characters: Union[list[str], str],\n        graphics_state: StateStackType,\n        k: float,\n        link: Optional[int | str] = None,\n    ) -> None:\n        if isinstance(characters, str):\n            self.characters = list(characters)\n        else:\n            self.characters = characters\n        self.graphics_state = graphics_state\n        self.k = k\n        self.link = link\n\n    def __repr__(self) -> str:\n        return (\n            f\"Fragment(characters={self.characters},\"\n            f\" graphics_state={self.graphics_state},\"\n            f\" k={self.k}, link={self.link})\"\n        )\n\n    @property\n    def font(self) -> CoreFont | TTFFont:\n        if TYPE_CHECKING:\n            assert self.graphics_state.current_font is not None\n        return self.graphics_state.current_font\n\n    @font.setter\n    def font(self, v: CoreFont | TTFFont) -> None:\n        self.graphics_state.current_font = v\n\n    @property\n    def is_ttf_font(self) -> bool:\n        return self.font is not None and self.font.type == \"TTF\"\n\n    @property\n    def font_style(self) -> str:\n        return self.graphics_state.font_style\n\n    @property\n    def font_family(self) -> str:\n        return self.graphics_state.font_family\n\n    @property\n    def font_size_pt(self) -> float:\n        size = self.graphics_state.font_size_pt\n        vpos = self.graphics_state.char_vpos\n        if vpos == CharVPos.SUB:\n            size *= self.graphics_state.sub_scale\n        elif vpos == CharVPos.SUP:\n            size *= self.graphics_state.sup_scale\n        elif vpos == CharVPos.NOM:\n            size *= self.graphics_state.nom_scale\n        elif vpos == CharVPos.DENOM:\n            size *= self.graphics_state.denom_scale\n        return size\n\n    @property\n    def font_size(self) -> float:\n        return self.graphics_state.font_size_pt / self.k\n\n    @property\n    def font_stretching(self) -> float:\n        return self.graphics_state.font_stretching\n\n    @property\n    def char_spacing(self) -> float:\n        return self.graphics_state.char_spacing\n\n    @property\n    def text_mode(self) -> TextMode:\n        return self.graphics_state.text_mode\n\n    @property\n    def underline(self) -> bool:\n        return self.graphics_state.underline\n\n    @property\n    def strikethrough(self) -> bool:\n        return self.graphics_state.strikethrough\n\n    @property\n    def draw_color(self) -> Optional[DeviceRGB | DeviceGray | DeviceCMYK]:\n        return self.graphics_state.draw_color\n\n    @property\n    def fill_color(self) -> Optional[DeviceRGB | DeviceGray | DeviceCMYK]:\n        return self.graphics_state.fill_color\n\n    @property\n    def text_color(self) -> Optional[DeviceRGB | DeviceGray | DeviceCMYK]:\n        return self.graphics_state.text_color\n\n    @property\n    def line_width(self) -> float:\n        return self.graphics_state.line_width\n\n    @property\n    def char_vpos(self) -> CharVPos:\n        return self.graphics_state.char_vpos\n\n    @property\n    def lift(self) -> float:\n        vpos = self.graphics_state.char_vpos\n        if vpos == CharVPos.SUB:\n            lift: float = self.graphics_state.sub_lift\n        elif vpos == CharVPos.SUP:\n            lift = self.graphics_state.sup_lift\n        elif vpos == CharVPos.NOM:\n            lift = self.graphics_state.nom_lift\n        elif vpos == CharVPos.DENOM:\n            lift = self.graphics_state.denom_lift\n        else:\n            lift = 0.0\n        return lift * self.graphics_state.font_size_pt\n\n    @property\n    def string(self) -> str:\n        return \"\".join(self.characters)\n\n    @property\n    def width(self) -> float:\n        return self.get_width()\n\n    @property\n    def text_shaping_parameters(self) -> Optional[Dict[str, Any]]:\n        return self.graphics_state.text_shaping\n\n    @property\n    def paragraph_direction(self) -> TextDirection:\n        if TYPE_CHECKING:\n            assert self.text_shaping_parameters is not None\n            assert isinstance(\n                self.text_shaping_parameters[\"paragraph_direction\"], TextDirection\n            )\n        return (\n            self.text_shaping_parameters[\"paragraph_direction\"]\n            if self.text_shaping_parameters\n            else TextDirection.LTR\n        )\n\n    @property\n    def fragment_direction(self) -> TextDirection:\n        if TYPE_CHECKING:\n            assert self.text_shaping_parameters is not None\n            assert isinstance(\n                self.text_shaping_parameters[\"fragment_direction\"], TextDirection\n            )\n        return (\n            self.text_shaping_parameters[\"fragment_direction\"]\n            if self.text_shaping_parameters\n            else TextDirection.LTR\n        )\n\n    def trim(self, index: int) -> None:\n        self.characters = self.characters[:index]\n\n    def __eq__(self, other: Any) -> bool:\n        if not isinstance(other, Fragment):\n            return False\n        return (\n            self.characters == other.characters\n            and self.graphics_state == other.graphics_state\n            and self.k == other.k\n        )\n\n    def __hash__(self) -> int:\n        return hash((self.characters, self.graphics_state, self.k))\n\n    def get_width(\n        self,\n        start: int = 0,\n        end: Optional[int] = None,\n        chars: Optional[str] = None,\n        initial_cs: bool = True,\n    ) -> float:\n        \"\"\"\n        Return the width of the string with the given font/size/style/etc.\n\n        Args:\n            start (int): Index of the start character. Default start of fragment.\n            end (int): Index of the end character. Default end of fragment.\n            chars (str): Specific text to get the width for (not necessarily the\n                same as the contents of the fragment). If given, this takes\n                precedence over the start/end arguments.\n        \"\"\"\n\n        if chars is None:\n            if end is not None:\n                chars = \"\".join(self.characters[start:end])\n            else:\n                chars = \"\".join(self.characters[start:])\n        char_len, w = self.font.get_text_width(\n            chars, self.font_size_pt, self.text_shaping_parameters\n        )\n        char_spacing = self.char_spacing\n        if self.font_stretching != 100:\n            w *= self.font_stretching * 0.01\n            char_spacing *= self.font_stretching * 0.01\n        if self.char_spacing != 0:\n            # initial_cs must be False if the fragment is located at the\n            # beginning of a text object, because the first char won't get spaced.\n            if initial_cs:\n                w += char_spacing * char_len\n            else:\n                w += char_spacing * (char_len - 1)\n        return w / self.k\n\n    def has_same_style(self, other: \"Fragment\") -> bool:\n        \"\"\"Returns if 2 fragments are equivalent other than the characters/string\"\"\"\n        return (\n            self.graphics_state == other.graphics_state\n            and self.k == other.k\n            and self.__class__ == other.__class__\n        )\n\n    def get_character_width(\n        self, character: str, print_sh: bool = False, initial_cs: bool = True\n    ) -> float:\n        \"\"\"\n        Return the width of a single character out of the stored text.\n        \"\"\"\n        if character == SOFT_HYPHEN and not print_sh:\n            # HYPHEN is inserted instead of SOFT_HYPHEN\n            character = HYPHEN\n        return self.get_width(chars=character, initial_cs=initial_cs)\n\n    def render_pdf_text(\n        self,\n        frag_ws: float,\n        current_ws: float,\n        word_spacing: float,\n        adjust_x: float,\n        adjust_y: float,\n        h: float,\n    ) -> str:\n        if self.is_ttf_font:\n            if self.text_shaping_parameters:\n                return self.render_with_text_shaping(\n                    adjust_x, adjust_y, h, word_spacing\n                )\n            return self.render_pdf_text_ttf(frag_ws, word_spacing)\n        return self.render_pdf_text_core(frag_ws, current_ws)\n\n    def render_pdf_text_ttf(self, frag_ws: float, word_spacing: float) -> str:\n        assert isinstance(self.font, TTFFont)\n        ret = \"\"\n        mapped_text = \"\"\n        for char in self.string:\n            mapped_char = self.font.subset.pick(ord(char))\n            if mapped_char:\n                mapped_text += chr(mapped_char)\n        if word_spacing:\n            # do this once in advance\n            u_space = self.font.escape_text(\" \")\n\n            # According to the PDF reference, word spacing shall be applied to every\n            # occurrence of the single-byte character code 32 in a string when using\n            # a simple font or a composite font that defines code 32 as a single-byte code.\n            # It shall not apply to occurrences of the byte value 32 in multiple-byte codes.\n            # FPDF uses 2 bytes per character (UTF-16-BE encoding) so the \"Tw\" operator doesn't work\n            # As a workaround, we do word spacing using an adjustment before each space.\n            # Determine the index of the space character (\" \") in the current\n            # subset and split words whenever this mapping code is found\n            #\n            space_char_id = self.font.subset.pick(ord(\" \"))\n            assert space_char_id is not None\n            words = mapped_text.split(chr(space_char_id))\n            words_strl: list[str] = []\n            for word_i, word in enumerate(words):\n                # pylint: disable=redefined-loop-name\n                word = self.font.escape_text(word)\n                if word_i == 0:\n                    words_strl.append(f\"({word})\")\n                else:\n                    adj = -(frag_ws * self.k) * 1000 / self.font_size_pt\n                    words_strl.append(f\"{adj:.3f}({u_space}{word})\")\n            escaped_text = \" \".join(words_strl)\n            ret += f\"[{escaped_text}] TJ\"\n        else:\n            escaped_text = self.font.escape_text(mapped_text)\n            ret += f\"({escaped_text}) Tj\"\n        return ret\n\n    def render_with_text_shaping(\n        self, pos_x: float, pos_y: float, h: float, word_spacing: float\n    ) -> str:\n        assert isinstance(self.font, TTFFont)\n        ret = \"\"\n        text = \"\"\n        space_mapped_code = self.font.subset.pick(ord(\" \"))\n\n        def adjust_pos(pos: float) -> float:\n            if TYPE_CHECKING:\n                assert isinstance(self.font, TTFFont)\n            return (\n                pos\n                * self.font.scale\n                * self.font_size_pt\n                * (self.font_stretching / 100)\n                / 1000\n                / self.k\n            )\n\n        char_spacing = self.char_spacing * (self.font_stretching / 100) / self.k\n        for ti in self.font.shape_text(\n            self.string, self.font_size_pt, self.text_shaping_parameters\n        ):\n            if ti[\"mapped_char\"] is None:  # Missing glyph\n                continue\n            char = self.font.escape_text(chr(ti[\"mapped_char\"]))\n            if ti[\"x_offset\"] != 0 or ti[\"y_offset\"] != 0:\n                if text:\n                    ret += f\"({text}) Tj \"\n                    text = \"\"\n                offsetx = pos_x + adjust_pos(ti[\"x_offset\"])\n                offsety = pos_y - adjust_pos(ti[\"y_offset\"])\n                ret += (\n                    f\"1 0 0 1 {(offsetx) * self.k:.2f} {(h - offsety) * self.k:.2f} Tm \"\n                )\n            text += char\n            pos_x += adjust_pos(ti[\"x_advance\"]) + char_spacing\n            pos_y += adjust_pos(ti[\"y_advance\"])\n            if word_spacing and ti[\"mapped_char\"] == space_mapped_code:\n                pos_x += word_spacing\n\n            # if only moving \"x\" we don't need to move the text matrix\n            if ti[\"force_positioning\"] or (\n                word_spacing and ti[\"mapped_char\"] == space_mapped_code\n            ):\n                if text:\n                    ret += f\"({text}) Tj \"\n                    text = \"\"\n                ret += f\"1 0 0 1 {(pos_x) * self.k:.2f} {(h - pos_y) * self.k:.2f} Tm \"\n\n        if text:\n            ret += f\"({text}) Tj\"\n        return ret\n\n    def render_pdf_text_core(self, frag_ws: float, current_ws: float) -> str:\n        ret = \"\"\n        if frag_ws != current_ws:\n            ret += f\"{frag_ws * self.k:.3f} Tw \"\n        escaped_text = escape_parens(self.string)\n        ret += f\"({escaped_text}) Tj\"\n        return ret",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef char_spacing(self) -> float:\n    return self.graphics_state.char_spacing",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef char_vpos(self) -> CharVPos:\n    return self.graphics_state.char_vpos",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef draw_color(self) -> Optional[DeviceRGB | DeviceGray | DeviceCMYK]:\n    return self.graphics_state.draw_color",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef fill_color(self) -> Optional[DeviceRGB | DeviceGray | DeviceCMYK]:\n    return self.graphics_state.fill_color",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef font(self) -> CoreFont | TTFFont:\n    if TYPE_CHECKING:\n        assert self.graphics_state.current_font is not None\n    return self.graphics_state.current_font",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef font_family(self) -> str:\n    return self.graphics_state.font_family",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef font_size(self) -> float:\n    return self.graphics_state.font_size_pt / self.k",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef font_size_pt(self) -> float:\n    size = self.graphics_state.font_size_pt\n    vpos = self.graphics_state.char_vpos\n    if vpos == CharVPos.SUB:\n        size *= self.graphics_state.sub_scale\n    elif vpos == CharVPos.SUP:\n        size *= self.graphics_state.sup_scale\n    elif vpos == CharVPos.NOM:\n        size *= self.graphics_state.nom_scale\n    elif vpos == CharVPos.DENOM:\n        size *= self.graphics_state.denom_scale\n    return size",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef font_stretching(self) -> float:\n    return self.graphics_state.font_stretching",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef font_style(self) -> str:\n    return self.graphics_state.font_style",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef fragment_direction(self) -> TextDirection:\n    if TYPE_CHECKING:\n        assert self.text_shaping_parameters is not None\n        assert isinstance(\n            self.text_shaping_parameters[\"fragment_direction\"], TextDirection\n        )\n    return (\n        self.text_shaping_parameters[\"fragment_direction\"]\n        if self.text_shaping_parameters\n        else TextDirection.LTR\n    )",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef is_ttf_font(self) -> bool:\n    return self.font is not None and self.font.type == \"TTF\"",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef lift(self) -> float:\n    vpos = self.graphics_state.char_vpos\n    if vpos == CharVPos.SUB:\n        lift: float = self.graphics_state.sub_lift\n    elif vpos == CharVPos.SUP:\n        lift = self.graphics_state.sup_lift\n    elif vpos == CharVPos.NOM:\n        lift = self.graphics_state.nom_lift\n    elif vpos == CharVPos.DENOM:\n        lift = self.graphics_state.denom_lift\n    else:\n        lift = 0.0\n    return lift * self.graphics_state.font_size_pt",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef line_width(self) -> float:\n    return self.graphics_state.line_width",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef paragraph_direction(self) -> TextDirection:\n    if TYPE_CHECKING:\n        assert self.text_shaping_parameters is not None\n        assert isinstance(\n            self.text_shaping_parameters[\"paragraph_direction\"], TextDirection\n        )\n    return (\n        self.text_shaping_parameters[\"paragraph_direction\"]\n        if self.text_shaping_parameters\n        else TextDirection.LTR\n    )",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef strikethrough(self) -> bool:\n    return self.graphics_state.strikethrough",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef string(self) -> str:\n    return \"\".join(self.characters)",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef text_color(self) -> Optional[DeviceRGB | DeviceGray | DeviceCMYK]:\n    return self.graphics_state.text_color",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef text_mode(self) -> TextMode:\n    return self.graphics_state.text_mode",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef text_shaping_parameters(self) -> Optional[Dict[str, Any]]:\n    return self.graphics_state.text_shaping",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef underline(self) -> bool:\n    return self.graphics_state.underline",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef width(self) -> float:\n    return self.get_width()",
+      "language": "python"
+    },
+    {
+      "code": "def get_character_width(\n    self, character: str, print_sh: bool = False, initial_cs: bool = True\n) -> float:\n    \"\"\"\n    Return the width of a single character out of the stored text.\n    \"\"\"\n    if character == SOFT_HYPHEN and not print_sh:\n        # HYPHEN is inserted instead of SOFT_HYPHEN\n        character = HYPHEN\n    return self.get_width(chars=character, initial_cs=initial_cs)",
+      "language": "python"
+    },
+    {
+      "code": "def get_width(\n    self,\n    start: int = 0,\n    end: Optional[int] = None,\n    chars: Optional[str] = None,\n    initial_cs: bool = True,\n) -> float:\n    \"\"\"\n    Return the width of the string with the given font/size/style/etc.\n\n    Args:\n        start (int): Index of the start character. Default start of fragment.\n        end (int): Index of the end character. Default end of fragment.\n        chars (str): Specific text to get the width for (not necessarily the\n            same as the contents of the fragment). If given, this takes\n            precedence over the start/end arguments.\n    \"\"\"\n\n    if chars is None:\n        if end is not None:\n            chars = \"\".join(self.characters[start:end])\n        else:\n            chars = \"\".join(self.characters[start:])\n    char_len, w = self.font.get_text_width(\n        chars, self.font_size_pt, self.text_shaping_parameters\n    )\n    char_spacing = self.char_spacing\n    if self.font_stretching != 100:\n        w *= self.font_stretching * 0.01\n        char_spacing *= self.font_stretching * 0.01\n    if self.char_spacing != 0:\n        # initial_cs must be False if the fragment is located at the\n        # beginning of a text object, because the first char won't get spaced.\n        if initial_cs:\n            w += char_spacing * char_len\n        else:\n            w += char_spacing * (char_len - 1)\n    return w / self.k",
+      "language": "python"
+    },
+    {
+      "code": "def has_same_style(self, other: \"Fragment\") -> bool:\n    \"\"\"Returns if 2 fragments are equivalent other than the characters/string\"\"\"\n    return (\n        self.graphics_state == other.graphics_state\n        and self.k == other.k\n        and self.__class__ == other.__class__\n    )",
+      "language": "python"
+    },
+    {
+      "code": "def render_pdf_text(\n    self,\n    frag_ws: float,\n    current_ws: float,\n    word_spacing: float,\n    adjust_x: float,\n    adjust_y: float,\n    h: float,\n) -> str:\n    if self.is_ttf_font:\n        if self.text_shaping_parameters:\n            return self.render_with_text_shaping(\n                adjust_x, adjust_y, h, word_spacing\n            )\n        return self.render_pdf_text_ttf(frag_ws, word_spacing)\n    return self.render_pdf_text_core(frag_ws, current_ws)",
+      "language": "python"
+    },
+    {
+      "code": "def render_pdf_text_core(self, frag_ws: float, current_ws: float) -> str:\n    ret = \"\"\n    if frag_ws != current_ws:\n        ret += f\"{frag_ws * self.k:.3f} Tw \"\n    escaped_text = escape_parens(self.string)\n    ret += f\"({escaped_text}) Tj\"\n    return ret",
+      "language": "python"
+    },
+    {
+      "code": "def render_pdf_text_ttf(self, frag_ws: float, word_spacing: float) -> str:\n    assert isinstance(self.font, TTFFont)\n    ret = \"\"\n    mapped_text = \"\"\n    for char in self.string:\n        mapped_char = self.font.subset.pick(ord(char))\n        if mapped_char:\n            mapped_text += chr(mapped_char)\n    if word_spacing:\n        # do this once in advance\n        u_space = self.font.escape_text(\" \")\n\n        # According to the PDF reference, word spacing shall be applied to every\n        # occurrence of the single-byte character code 32 in a string when using\n        # a simple font or a composite font that defines code 32 as a single-byte code.\n        # It shall not apply to occurrences of the byte value 32 in multiple-byte codes.\n        # FPDF uses 2 bytes per character (UTF-16-BE encoding) so the \"Tw\" operator doesn't work\n        # As a workaround, we do word spacing using an adjustment before each space.\n        # Determine the index of the space character (\" \") in the current\n        # subset and split words whenever this mapping code is found\n        #\n        space_char_id = self.font.subset.pick(ord(\" \"))\n        assert space_char_id is not None\n        words = mapped_text.split(chr(space_char_id))\n        words_strl: list[str] = []\n        for word_i, word in enumerate(words):\n            # pylint: disable=redefined-loop-name\n            word = self.font.escape_text(word)\n            if word_i == 0:\n                words_strl.append(f\"({word})\")\n            else:\n                adj = -(frag_ws * self.k) * 1000 / self.font_size_pt\n                words_strl.append(f\"{adj:.3f}({u_space}{word})\")\n        escaped_text = \" \".join(words_strl)\n        ret += f\"[{escaped_text}] TJ\"\n    else:\n        escaped_text = self.font.escape_text(mapped_text)\n        ret += f\"({escaped_text}) Tj\"\n    return ret",
+      "language": "python"
+    },
+    {
+      "code": "def render_with_text_shaping(\n    self, pos_x: float, pos_y: float, h: float, word_spacing: float\n) -> str:\n    assert isinstance(self.font, TTFFont)\n    ret = \"\"\n    text = \"\"\n    space_mapped_code = self.font.subset.pick(ord(\" \"))\n\n    def adjust_pos(pos: float) -> float:\n        if TYPE_CHECKING:\n            assert isinstance(self.font, TTFFont)\n        return (\n            pos\n            * self.font.scale\n            * self.font_size_pt\n            * (self.font_stretching / 100)\n            / 1000\n            / self.k\n        )\n\n    char_spacing = self.char_spacing * (self.font_stretching / 100) / self.k\n    for ti in self.font.shape_text(\n        self.string, self.font_size_pt, self.text_shaping_parameters\n    ):\n        if ti[\"mapped_char\"] is None:  # Missing glyph\n            continue\n        char = self.font.escape_text(chr(ti[\"mapped_char\"]))\n        if ti[\"x_offset\"] != 0 or ti[\"y_offset\"] != 0:\n            if text:\n                ret += f\"({text}) Tj \"\n                text = \"\"\n            offsetx = pos_x + adjust_pos(ti[\"x_offset\"])\n            offsety = pos_y - adjust_pos(ti[\"y_offset\"])\n            ret += (\n                f\"1 0 0 1 {(offsetx) * self.k:.2f} {(h - offsety) * self.k:.2f} Tm \"\n            )\n        text += char\n        pos_x += adjust_pos(ti[\"x_advance\"]) + char_spacing\n        pos_y += adjust_pos(ti[\"y_advance\"])\n        if word_spacing and ti[\"mapped_char\"] == space_mapped_code:\n            pos_x += word_spacing\n\n        # if only moving \"x\" we don't need to move the text matrix\n        if ti[\"force_positioning\"] or (\n            word_spacing and ti[\"mapped_char\"] == space_mapped_code\n        ):\n            if text:\n                ret += f\"({text}) Tj \"\n                text = \"\"\n            ret += f\"1 0 0 1 {(pos_x) * self.k:.2f} {(h - pos_y) * self.k:.2f} Tm \"\n\n    if text:\n        ret += f\"({text}) Tj\"\n    return ret",
+      "language": "python"
+    },
+    {
+      "code": "def trim(self, index: int) -> None:\n    self.characters = self.characters[:index]",
+      "language": "python"
+    },
+    {
+      "code": "class HyphenHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int\n    curchar: str\n    curchar_width: float\n    graphics_state: StateStackType\n    k: float",
+      "language": "python"
+    },
+    {
+      "code": "class HyphenHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int\n    curchar: str\n    curchar_width: float\n    graphics_state: StateStackType\n    k: float",
+      "language": "python"
+    },
+    {
+      "code": "class HyphenHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int\n    curchar: str\n    curchar_width: float\n    graphics_state: StateStackType\n    k: float",
+      "language": "python"
+    },
+    {
+      "code": "class HyphenHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int\n    curchar: str\n    curchar_width: float\n    graphics_state: StateStackType\n    k: float",
+      "language": "python"
+    },
+    {
+      "code": "class HyphenHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int\n    curchar: str\n    curchar_width: float\n    graphics_state: StateStackType\n    k: float",
+      "language": "python"
+    },
+    {
+      "code": "class HyphenHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int\n    curchar: str\n    curchar_width: float\n    graphics_state: StateStackType\n    k: float",
+      "language": "python"
+    },
+    {
+      "code": "class HyphenHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int\n    curchar: str\n    curchar_width: float\n    graphics_state: StateStackType\n    k: float",
+      "language": "python"
+    },
+    {
+      "code": "class HyphenHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int\n    curchar: str\n    curchar_width: float\n    graphics_state: StateStackType\n    k: float",
+      "language": "python"
+    },
+    {
+      "code": "class HyphenHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int\n    curchar: str\n    curchar_width: float\n    graphics_state: StateStackType\n    k: float",
+      "language": "python"
+    },
+    {
+      "code": "class HyphenHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int\n    curchar: str\n    curchar_width: float\n    graphics_state: StateStackType\n    k: float",
+      "language": "python"
+    },
+    {
+      "code": "class HyphenHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int\n    curchar: str\n    curchar_width: float\n    graphics_state: StateStackType\n    k: float",
+      "language": "python"
+    },
+    {
+      "code": "class MultiLineBreak:\n    def __init__(\n        self,\n        fragments: Sequence[Fragment],\n        max_width: Union[float, Callable[[float], float]],\n        margins: Sequence[float],\n        align: Align = Align.L,\n        print_sh: bool = False,\n        wrapmode: WrapMode = WrapMode.WORD,\n        line_height: float = 1.0,\n        skip_leading_spaces: bool = False,\n        first_line_indent: float = 0,\n    ):\n        \"\"\"Accept text as Fragments, to be split into individual lines depending\n        on line width and text height.\n        Args:\n            fragments: A sequence of Fragment()s containing text.\n            max_width: Either a fixed width as float or a callback function\n                get_width(height). If a function, it gets called with the largest\n                height encountered on the current line, and must return the\n                applicable width for the line with the given height at the current\n                vertical position. The height is relevant in those cases where the\n                lateral boundaries of the enclosing TextRegion() are not vertical.\n            margins (sequence of floats): The extra clearance that may apply at the beginning\n                and/or end of a line (usually either FPDF.c_margin or 0.0 for each side).\n            align (Align): The horizontal alignment of the current text block.\n            print_sh (bool): If True, a soft-hyphen will be rendered\n                normally, instead of triggering a line break. Default: False\n            wrapmode (WrapMode): Selects word or character based wrapping.\n            line_height (float, optional): A multiplier relative to the font\n                size changing the vertical space occupied by a line of text. Default 1.0.\n            skip_leading_spaces (bool, optional): On each line, any space characters\n                at the beginning will be skipped. Default value: False.\n            first_line_indent (float, optional): left spacing before first line of text in paragraph.\n        \"\"\"\n        self.get_width: Callable[[float], float]\n        self.fragments = fragments\n        if callable(max_width):\n            self.get_width = max_width\n        else:\n            self.get_width = lambda height: max_width\n        self.margins = margins\n        self.align = align\n        self.print_sh = print_sh\n        self.wrapmode = wrapmode\n        self.line_height = line_height\n        self.skip_leading_spaces = skip_leading_spaces\n        self.fragment_index: int = 0\n        self.character_index: int = 0\n        self.idx_last_forced_break: Optional[int] = None\n        self.first_line_indent = first_line_indent\n        self._is_first_line = True\n\n    # pylint: disable=too-many-return-statements\n    def get_line(self) -> Optional[TextLine]:\n        first_char = True  # \"Tw\" ignores the first character in a text object.\n        idx_last_forced_break = self.idx_last_forced_break\n        self.idx_last_forced_break = None\n\n        if self.fragment_index == len(self.fragments):\n            return None\n\n        current_font_height: float = 0\n\n        max_width = self.get_width(current_font_height)\n        # The full max width will be passed on via TextLine to FPDF._render_styled_text_line().\n        current_line = CurrentLine(\n            max_width=max_width,\n            print_sh=self.print_sh,\n            indent=self.first_line_indent if self._is_first_line else 0,\n        )\n        # For line wrapping we need to use the reduced width.\n        for margin in self.margins:\n            max_width -= float(margin)\n        if self._is_first_line:\n            max_width -= self.first_line_indent\n\n        if self.skip_leading_spaces:\n            # write_html() with TextColumns uses this, since it can't know in\n            # advance where the lines will be broken.\n            while self.fragment_index < len(self.fragments):\n                if self.character_index >= len(\n                    self.fragments[self.fragment_index].characters\n                ):\n                    self.character_index = 0\n                    self.fragment_index += 1\n                    continue\n                character = self.fragments[self.fragment_index].characters[\n                    self.character_index\n                ]\n                if character == SPACE:\n                    self.character_index += 1\n                else:\n                    break\n\n        while self.fragment_index < len(self.fragments):\n            current_fragment = self.fragments[self.fragment_index]\n\n            if current_fragment.font_size > current_font_height:\n                current_font_height = current_fragment.font_size  # document units\n                max_width = self.get_width(current_font_height)\n                current_line.max_width = max_width\n                for margin in self.margins:\n                    max_width -= float(margin)\n                if self._is_first_line:\n                    max_width -= self.first_line_indent\n\n            if self.character_index >= len(current_fragment.characters):\n                self.character_index = 0\n                self.fragment_index += 1\n                continue\n\n            character = current_fragment.characters[self.character_index]\n            character_width = current_fragment.get_character_width(\n                character, self.print_sh, initial_cs=not first_char\n            )\n            first_char = False\n\n            if character in (NEWLINE, FORM_FEED):\n                self.character_index += 1\n                if not current_line.fragments:\n                    current_line.height = current_font_height * self.line_height\n                self._is_first_line = False\n                return current_line.manual_break(\n                    Align.L if self.align == Align.J else self.align,\n                    trailing_nl=character == NEWLINE,\n                    trailing_form_feed=character == FORM_FEED,\n                )\n            if current_line.width + character_width > max_width:\n                self._is_first_line = False\n                if (\n                    character in BREAKING_SPACE_SYMBOLS_STR\n                ):  # must come first, always drop a current space.\n                    self.character_index += 1\n                    return current_line.manual_break(self.align)\n                if self.wrapmode == WrapMode.CHAR:\n                    # If the line ends with one or more spaces, then we want to get\n                    # rid of them so it can be justified correctly.\n                    current_line.trim_trailing_spaces()\n                    return current_line.manual_break(self.align)\n                if current_line.automatic_break_possible():\n                    (\n                        self.fragment_index,\n                        self.character_index,\n                        line,\n                    ) = current_line.automatic_break(self.align)\n                    self.character_index += 1\n                    return line\n                if idx_last_forced_break == self.character_index:\n                    raise FPDFException(\n                        \"Not enough horizontal space to render a single character\"\n                    )\n                self.idx_last_forced_break = self.character_index\n                return current_line.manual_break(\n                    Align.L if self.align == Align.J else self.align,\n                )\n\n            current_line.add_character(\n                character,\n                character_width,\n                current_fragment,\n                self.fragment_index,\n                self.character_index,\n                current_font_height * self.line_height,\n                current_fragment.link,\n            )\n\n            self.character_index += 1\n\n        if current_line.width:\n            self._is_first_line = False\n            return current_line.manual_break(\n                Align.L if self.align == Align.J else self.align,\n            )\n        return None",
+      "language": "python"
+    },
+    {
+      "code": "def get_line(self) -> Optional[TextLine]:\n    first_char = True  # \"Tw\" ignores the first character in a text object.\n    idx_last_forced_break = self.idx_last_forced_break\n    self.idx_last_forced_break = None\n\n    if self.fragment_index == len(self.fragments):\n        return None\n\n    current_font_height: float = 0\n\n    max_width = self.get_width(current_font_height)\n    # The full max width will be passed on via TextLine to FPDF._render_styled_text_line().\n    current_line = CurrentLine(\n        max_width=max_width,\n        print_sh=self.print_sh,\n        indent=self.first_line_indent if self._is_first_line else 0,\n    )\n    # For line wrapping we need to use the reduced width.\n    for margin in self.margins:\n        max_width -= float(margin)\n    if self._is_first_line:\n        max_width -= self.first_line_indent\n\n    if self.skip_leading_spaces:\n        # write_html() with TextColumns uses this, since it can't know in\n        # advance where the lines will be broken.\n        while self.fragment_index < len(self.fragments):\n            if self.character_index >= len(\n                self.fragments[self.fragment_index].characters\n            ):\n                self.character_index = 0\n                self.fragment_index += 1\n                continue\n            character = self.fragments[self.fragment_index].characters[\n                self.character_index\n            ]\n            if character == SPACE:\n                self.character_index += 1\n            else:\n                break\n\n    while self.fragment_index < len(self.fragments):\n        current_fragment = self.fragments[self.fragment_index]\n\n        if current_fragment.font_size > current_font_height:\n            current_font_height = current_fragment.font_size  # document units\n            max_width = self.get_width(current_font_height)\n            current_line.max_width = max_width\n            for margin in self.margins:\n                max_width -= float(margin)\n            if self._is_first_line:\n                max_width -= self.first_line_indent\n\n        if self.character_index >= len(current_fragment.characters):\n            self.character_index = 0\n            self.fragment_index += 1\n            continue\n\n        character = current_fragment.characters[self.character_index]\n        character_width = current_fragment.get_character_width(\n            character, self.print_sh, initial_cs=not first_char\n        )\n        first_char = False\n\n        if character in (NEWLINE, FORM_FEED):\n            self.character_index += 1\n            if not current_line.fragments:\n                current_line.height = current_font_height * self.line_height\n            self._is_first_line = False\n            return current_line.manual_break(\n                Align.L if self.align == Align.J else self.align,\n                trailing_nl=character == NEWLINE,\n                trailing_form_feed=character == FORM_FEED,\n            )\n        if current_line.width + character_width > max_width:\n            self._is_first_line = False\n            if (\n                character in BREAKING_SPACE_SYMBOLS_STR\n            ):  # must come first, always drop a current space.\n                self.character_index += 1\n                return current_line.manual_break(self.align)\n            if self.wrapmode == WrapMode.CHAR:\n                # If the line ends with one or more spaces, then we want to get\n                # rid of them so it can be justified correctly.\n                current_line.trim_trailing_spaces()\n                return current_line.manual_break(self.align)\n            if current_line.automatic_break_possible():\n                (\n                    self.fragment_index,\n                    self.character_index,\n                    line,\n                ) = current_line.automatic_break(self.align)\n                self.character_index += 1\n                return line\n            if idx_last_forced_break == self.character_index:\n                raise FPDFException(\n                    \"Not enough horizontal space to render a single character\"\n                )\n            self.idx_last_forced_break = self.character_index\n            return current_line.manual_break(\n                Align.L if self.align == Align.J else self.align,\n            )\n\n        current_line.add_character(\n            character,\n            character_width,\n            current_fragment,\n            self.fragment_index,\n            self.character_index,\n            current_font_height * self.line_height,\n            current_fragment.link,\n        )\n\n        self.character_index += 1\n\n    if current_line.width:\n        self._is_first_line = False\n        return current_line.manual_break(\n            Align.L if self.align == Align.J else self.align,\n        )\n    return None",
+      "language": "python"
+    },
+    {
+      "code": "class SpaceHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int",
+      "language": "python"
+    },
+    {
+      "code": "class SpaceHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int",
+      "language": "python"
+    },
+    {
+      "code": "class SpaceHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int",
+      "language": "python"
+    },
+    {
+      "code": "class SpaceHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int",
+      "language": "python"
+    },
+    {
+      "code": "class SpaceHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int",
+      "language": "python"
+    },
+    {
+      "code": "class SpaceHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int",
+      "language": "python"
+    },
+    {
+      "code": "class SpaceHint(NamedTuple):\n    original_fragment_index: int\n    original_character_index: int\n    current_line_fragment_index: int\n    current_line_character_index: int\n    line_width: float\n    number_of_spaces: int",
+      "language": "python"
+    },
+    {
+      "code": "class TextLine(NamedTuple):\n    fragments: Sequence[Fragment]\n    text_width: float\n    number_of_spaces: int\n    align: Align\n    height: float\n    max_width: Optional[float]\n    trailing_nl: bool = False\n    trailing_form_feed: bool = False\n    indent: float = 0\n\n    def get_ordered_fragments(self) -> List[Fragment]:\n        if not self.fragments:\n            return []\n        directional_runs: list[list[Fragment]] = []\n        direction = None\n        for fragment in self.fragments:\n            if direction is not None and fragment.fragment_direction == direction:\n                directional_runs[-1].append(fragment)\n            else:\n                directional_runs.append([fragment])\n                direction = fragment.fragment_direction\n        if self.fragments[0].paragraph_direction == TextDirection.RTL or (\n            not self.fragments[0].paragraph_direction\n            and self.fragments[0].fragment_direction == TextDirection.RTL\n        ):\n            directional_runs = directional_runs[::-1]\n        ordered_fragments: list[Fragment] = []\n        for run in directional_runs:\n            ordered_fragments += (\n                run[::-1] if run[0].fragment_direction == TextDirection.RTL else run\n            )\n        return ordered_fragments",
+      "language": "python"
+    },
+    {
+      "code": "class TextLine(NamedTuple):\n    fragments: Sequence[Fragment]\n    text_width: float\n    number_of_spaces: int\n    align: Align\n    height: float\n    max_width: Optional[float]\n    trailing_nl: bool = False\n    trailing_form_feed: bool = False\n    indent: float = 0\n\n    def get_ordered_fragments(self) -> List[Fragment]:\n        if not self.fragments:\n            return []\n        directional_runs: list[list[Fragment]] = []\n        direction = None\n        for fragment in self.fragments:\n            if direction is not None and fragment.fragment_direction == direction:\n                directional_runs[-1].append(fragment)\n            else:\n                directional_runs.append([fragment])\n                direction = fragment.fragment_direction\n        if self.fragments[0].paragraph_direction == TextDirection.RTL or (\n            not self.fragments[0].paragraph_direction\n            and self.fragments[0].fragment_direction == TextDirection.RTL\n        ):\n            directional_runs = directional_runs[::-1]\n        ordered_fragments: list[Fragment] = []\n        for run in directional_runs:\n            ordered_fragments += (\n                run[::-1] if run[0].fragment_direction == TextDirection.RTL else run\n            )\n        return ordered_fragments",
+      "language": "python"
+    },
+    {
+      "code": "class TextLine(NamedTuple):\n    fragments: Sequence[Fragment]\n    text_width: float\n    number_of_spaces: int\n    align: Align\n    height: float\n    max_width: Optional[float]\n    trailing_nl: bool = False\n    trailing_form_feed: bool = False\n    indent: float = 0\n\n    def get_ordered_fragments(self) -> List[Fragment]:\n        if not self.fragments:\n            return []\n        directional_runs: list[list[Fragment]] = []\n        direction = None\n        for fragment in self.fragments:\n            if direction is not None and fragment.fragment_direction == direction:\n                directional_runs[-1].append(fragment)\n            else:\n                directional_runs.append([fragment])\n                direction = fragment.fragment_direction\n        if self.fragments[0].paragraph_direction == TextDirection.RTL or (\n            not self.fragments[0].paragraph_direction\n            and self.fragments[0].fragment_direction == TextDirection.RTL\n        ):\n            directional_runs = directional_runs[::-1]\n        ordered_fragments: list[Fragment] = []\n        for run in directional_runs:\n            ordered_fragments += (\n                run[::-1] if run[0].fragment_direction == TextDirection.RTL else run\n            )\n        return ordered_fragments",
+      "language": "python"
+    },
+    {
+      "code": "class TextLine(NamedTuple):\n    fragments: Sequence[Fragment]\n    text_width: float\n    number_of_spaces: int\n    align: Align\n    height: float\n    max_width: Optional[float]\n    trailing_nl: bool = False\n    trailing_form_feed: bool = False\n    indent: float = 0\n\n    def get_ordered_fragments(self) -> List[Fragment]:\n        if not self.fragments:\n            return []\n        directional_runs: list[list[Fragment]] = []\n        direction = None\n        for fragment in self.fragments:\n            if direction is not None and fragment.fragment_direction == direction:\n                directional_runs[-1].append(fragment)\n            else:\n                directional_runs.append([fragment])\n                direction = fragment.fragment_direction\n        if self.fragments[0].paragraph_direction == TextDirection.RTL or (\n            not self.fragments[0].paragraph_direction\n            and self.fragments[0].fragment_direction == TextDirection.RTL\n        ):\n            directional_runs = directional_runs[::-1]\n        ordered_fragments: list[Fragment] = []\n        for run in directional_runs:\n            ordered_fragments += (\n                run[::-1] if run[0].fragment_direction == TextDirection.RTL else run\n            )\n        return ordered_fragments",
+      "language": "python"
+    },
+    {
+      "code": "class TextLine(NamedTuple):\n    fragments: Sequence[Fragment]\n    text_width: float\n    number_of_spaces: int\n    align: Align\n    height: float\n    max_width: Optional[float]\n    trailing_nl: bool = False\n    trailing_form_feed: bool = False\n    indent: float = 0\n\n    def get_ordered_fragments(self) -> List[Fragment]:\n        if not self.fragments:\n            return []\n        directional_runs: list[list[Fragment]] = []\n        direction = None\n        for fragment in self.fragments:\n            if direction is not None and fragment.fragment_direction == direction:\n                directional_runs[-1].append(fragment)\n            else:\n                directional_runs.append([fragment])\n                direction = fragment.fragment_direction\n        if self.fragments[0].paragraph_direction == TextDirection.RTL or (\n            not self.fragments[0].paragraph_direction\n            and self.fragments[0].fragment_direction == TextDirection.RTL\n        ):\n            directional_runs = directional_runs[::-1]\n        ordered_fragments: list[Fragment] = []\n        for run in directional_runs:\n            ordered_fragments += (\n                run[::-1] if run[0].fragment_direction == TextDirection.RTL else run\n            )\n        return ordered_fragments",
+      "language": "python"
+    },
+    {
+      "code": "class TextLine(NamedTuple):\n    fragments: Sequence[Fragment]\n    text_width: float\n    number_of_spaces: int\n    align: Align\n    height: float\n    max_width: Optional[float]\n    trailing_nl: bool = False\n    trailing_form_feed: bool = False\n    indent: float = 0\n\n    def get_ordered_fragments(self) -> List[Fragment]:\n        if not self.fragments:\n            return []\n        directional_runs: list[list[Fragment]] = []\n        direction = None\n        for fragment in self.fragments:\n            if direction is not None and fragment.fragment_direction == direction:\n                directional_runs[-1].append(fragment)\n            else:\n                directional_runs.append([fragment])\n                direction = fragment.fragment_direction\n        if self.fragments[0].paragraph_direction == TextDirection.RTL or (\n            not self.fragments[0].paragraph_direction\n            and self.fragments[0].fragment_direction == TextDirection.RTL\n        ):\n            directional_runs = directional_runs[::-1]\n        ordered_fragments: list[Fragment] = []\n        for run in directional_runs:\n            ordered_fragments += (\n                run[::-1] if run[0].fragment_direction == TextDirection.RTL else run\n            )\n        return ordered_fragments",
+      "language": "python"
+    },
+    {
+      "code": "class TextLine(NamedTuple):\n    fragments: Sequence[Fragment]\n    text_width: float\n    number_of_spaces: int\n    align: Align\n    height: float\n    max_width: Optional[float]\n    trailing_nl: bool = False\n    trailing_form_feed: bool = False\n    indent: float = 0\n\n    def get_ordered_fragments(self) -> List[Fragment]:\n        if not self.fragments:\n            return []\n        directional_runs: list[list[Fragment]] = []\n        direction = None\n        for fragment in self.fragments:\n            if direction is not None and fragment.fragment_direction == direction:\n                directional_runs[-1].append(fragment)\n            else:\n                directional_runs.append([fragment])\n                direction = fragment.fragment_direction\n        if self.fragments[0].paragraph_direction == TextDirection.RTL or (\n            not self.fragments[0].paragraph_direction\n            and self.fragments[0].fragment_direction == TextDirection.RTL\n        ):\n            directional_runs = directional_runs[::-1]\n        ordered_fragments: list[Fragment] = []\n        for run in directional_runs:\n            ordered_fragments += (\n                run[::-1] if run[0].fragment_direction == TextDirection.RTL else run\n            )\n        return ordered_fragments",
+      "language": "python"
+    },
+    {
+      "code": "class TextLine(NamedTuple):\n    fragments: Sequence[Fragment]\n    text_width: float\n    number_of_spaces: int\n    align: Align\n    height: float\n    max_width: Optional[float]\n    trailing_nl: bool = False\n    trailing_form_feed: bool = False\n    indent: float = 0\n\n    def get_ordered_fragments(self) -> List[Fragment]:\n        if not self.fragments:\n            return []\n        directional_runs: list[list[Fragment]] = []\n        direction = None\n        for fragment in self.fragments:\n            if direction is not None and fragment.fragment_direction == direction:\n                directional_runs[-1].append(fragment)\n            else:\n                directional_runs.append([fragment])\n                direction = fragment.fragment_direction\n        if self.fragments[0].paragraph_direction == TextDirection.RTL or (\n            not self.fragments[0].paragraph_direction\n            and self.fragments[0].fragment_direction == TextDirection.RTL\n        ):\n            directional_runs = directional_runs[::-1]\n        ordered_fragments: list[Fragment] = []\n        for run in directional_runs:\n            ordered_fragments += (\n                run[::-1] if run[0].fragment_direction == TextDirection.RTL else run\n            )\n        return ordered_fragments",
+      "language": "python"
+    },
+    {
+      "code": "class TextLine(NamedTuple):\n    fragments: Sequence[Fragment]\n    text_width: float\n    number_of_spaces: int\n    align: Align\n    height: float\n    max_width: Optional[float]\n    trailing_nl: bool = False\n    trailing_form_feed: bool = False\n    indent: float = 0\n\n    def get_ordered_fragments(self) -> List[Fragment]:\n        if not self.fragments:\n            return []\n        directional_runs: list[list[Fragment]] = []\n        direction = None\n        for fragment in self.fragments:\n            if direction is not None and fragment.fragment_direction == direction:\n                directional_runs[-1].append(fragment)\n            else:\n                directional_runs.append([fragment])\n                direction = fragment.fragment_direction\n        if self.fragments[0].paragraph_direction == TextDirection.RTL or (\n            not self.fragments[0].paragraph_direction\n            and self.fragments[0].fragment_direction == TextDirection.RTL\n        ):\n            directional_runs = directional_runs[::-1]\n        ordered_fragments: list[Fragment] = []\n        for run in directional_runs:\n            ordered_fragments += (\n                run[::-1] if run[0].fragment_direction == TextDirection.RTL else run\n            )\n        return ordered_fragments",
+      "language": "python"
+    },
+    {
+      "code": "class TextLine(NamedTuple):\n    fragments: Sequence[Fragment]\n    text_width: float\n    number_of_spaces: int\n    align: Align\n    height: float\n    max_width: Optional[float]\n    trailing_nl: bool = False\n    trailing_form_feed: bool = False\n    indent: float = 0\n\n    def get_ordered_fragments(self) -> List[Fragment]:\n        if not self.fragments:\n            return []\n        directional_runs: list[list[Fragment]] = []\n        direction = None\n        for fragment in self.fragments:\n            if direction is not None and fragment.fragment_direction == direction:\n                directional_runs[-1].append(fragment)\n            else:\n                directional_runs.append([fragment])\n                direction = fragment.fragment_direction\n        if self.fragments[0].paragraph_direction == TextDirection.RTL or (\n            not self.fragments[0].paragraph_direction\n            and self.fragments[0].fragment_direction == TextDirection.RTL\n        ):\n            directional_runs = directional_runs[::-1]\n        ordered_fragments: list[Fragment] = []\n        for run in directional_runs:\n            ordered_fragments += (\n                run[::-1] if run[0].fragment_direction == TextDirection.RTL else run\n            )\n        return ordered_fragments",
+      "language": "python"
+    },
+    {
+      "code": "def get_ordered_fragments(self) -> List[Fragment]:\n    if not self.fragments:\n        return []\n    directional_runs: list[list[Fragment]] = []\n    direction = None\n    for fragment in self.fragments:\n        if direction is not None and fragment.fragment_direction == direction:\n            directional_runs[-1].append(fragment)\n        else:\n            directional_runs.append([fragment])\n            direction = fragment.fragment_direction\n    if self.fragments[0].paragraph_direction == TextDirection.RTL or (\n        not self.fragments[0].paragraph_direction\n        and self.fragments[0].fragment_direction == TextDirection.RTL\n    ):\n        directional_runs = directional_runs[::-1]\n    ordered_fragments: list[Fragment] = []\n    for run in directional_runs:\n        ordered_fragments += (\n            run[::-1] if run[0].fragment_direction == TextDirection.RTL else run\n        )\n    return ordered_fragments",
+      "language": "python"
+    },
+    {
+      "code": "class TotalPagesSubstitutionFragment(Fragment):\n    \"\"\"\n    A special type of text fragment that represents a placeholder for the total number of pages\n    in a PDF document.\n\n    A placeholder will be generated during the initial content rendering phase of a PDF document.\n    This placeholder is later replaced by the total number of pages in the document when the final\n    output is being produced.\n    \"\"\"\n\n    def __init__(self, *args: Any, **kwargs: Any) -> None:\n        super().__init__(*args, **kwargs)\n        self.uuid = uuid4()\n\n    def get_placeholder_string(self) -> str:\n        \"\"\"\n        This method returns a placeholder string containing a universally unique identifier (UUID4),\n        ensuring that the placeholder is distinct and does not conflict with other placeholders\n        within the document.\n        \"\"\"\n        return f\"::placeholder:{self.uuid}::\"\n\n    def render_pdf_text(self, *args: Any, **kwargs: Any) -> str:\n        \"\"\"\n        This method is invoked during the page content rendering phase, which is common to all\n        `Fragment` instances. It stores the provided arguments and keyword arguments to preserve\n        the necessary information and graphic state for the final substitution rendering.\n\n        The method then returns the unique placeholder string.\n        \"\"\"\n        self._render_args = args\n        self._render_kwargs = kwargs\n        return self.get_placeholder_string()\n\n    def render_text_substitution(self, replacement_text: str) -> str:\n        \"\"\"\n        This method is invoked at the output phase. It calls `render_pdf_text()` from the superclass\n        to render the fragment with the preserved rendering state (stored in `_render_args` and `_render_kwargs`)\n        and insert the final text in place of the placeholder.\n        \"\"\"\n        self.characters = list(replacement_text)\n        return super().render_pdf_text(*self._render_args, **self._render_kwargs)",
+      "language": "python"
+    },
+    {
+      "code": "def get_placeholder_string(self) -> str:\n    \"\"\"\n    This method returns a placeholder string containing a universally unique identifier (UUID4),\n    ensuring that the placeholder is distinct and does not conflict with other placeholders\n    within the document.\n    \"\"\"\n    return f\"::placeholder:{self.uuid}::\"",
+      "language": "python"
+    },
+    {
+      "code": "def render_pdf_text(self, *args: Any, **kwargs: Any) -> str:\n    \"\"\"\n    This method is invoked during the page content rendering phase, which is common to all\n    `Fragment` instances. It stores the provided arguments and keyword arguments to preserve\n    the necessary information and graphic state for the final substitution rendering.\n\n    The method then returns the unique placeholder string.\n    \"\"\"\n    self._render_args = args\n    self._render_kwargs = kwargs\n    return self.get_placeholder_string()",
+      "language": "python"
+    },
+    {
+      "code": "def render_text_substitution(self, replacement_text: str) -> str:\n    \"\"\"\n    This method is invoked at the output phase. It calls `render_pdf_text()` from the superclass\n    to render the fragment with the preserved rendering state (stored in `_render_args` and `_render_kwargs`)\n    and insert the final text in place of the placeholder.\n    \"\"\"\n    self.characters = list(replacement_text)\n    return super().render_pdf_text(*self._render_args, **self._render_kwargs)",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/line_break.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/enums.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/graphics_state.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/drawing_primitives.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fonts.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html"
+  ]
+}

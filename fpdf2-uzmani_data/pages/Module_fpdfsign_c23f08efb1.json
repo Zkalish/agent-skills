@@ -1,0 +1,53 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/sign.html",
+  "title": "Module fpdf.sign",
+  "content": "Module dedicated to document signature generation.\n\nThe contents of this module are internal to fpdf2, and not part of the public API. They may change at any time without prior warning or any deprecation period, in non-backward-compatible ways.\n\nUsage documentation at: https://py-pdf.github.io/fpdf2/Signing.html\n\nPerform PDF signing based on the content of the buffer, performing substitutions on it. The signing operation does not alter the buffer size\n\nInformation provided by the signer to enable a recipient to contact the signer to verify the signature\n\nThe CPU host name or physical location of the signing\n\nThe reason for the signing",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.sign",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Functions",
+      "id": "header-functions"
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "def sign_content(\n    signer: \"signer\",  # pyright: ignore[reportGeneralTypeIssues]\n    buffer: bytearray,\n    key: Optional[\"PrivateKeyTypes\"],\n    cert: \"Certificate\",\n    extra_certs: list[\"Certificate\"],\n    hashalgo: str,\n    sign_time: \"datetime\",\n) -> bytearray:\n    \"\"\"\n    Perform PDF signing based on the content of the buffer, performing substitutions on it.\n    The signing operation does not alter the buffer size\n    \"\"\"\n    # We start by substituting the ByteRange,\n    # that defines which part of the document content the signature is based on.\n    # This is basically ALL the content EXCEPT the signature content itself.\n    sig_placeholder = _SIGNATURE_CONTENTS_PLACEHOLDER.encode(\"latin1\")\n    start_index = buffer.find(sig_placeholder)\n    end_index = start_index + len(sig_placeholder)\n    content_range = (0, start_index - 1, end_index + 1, len(buffer) - end_index - 1)\n    # pylint: disable=consider-using-f-string\n    buffer = buffer_subst(\n        buffer,\n        _SIGNATURE_BYTERANGE_PLACEHOLDER,\n        \"[%010d %010d %010d %010d]\" % content_range,\n    )\n\n    # We compute the ByteRange hash, of everything before & after the placeholder:\n    content_hash = hashlib.new(hashalgo)\n    content_hash.update(buffer[: content_range[1]])  # before\n    content_hash.update(buffer[content_range[2] :])  # after\n\n    # This monkey-patching is needed, at the time of endesive v2.0.9,\n    # to get control over signed_time, initialized by endesive.signer.sign() to be datetime.now():\n    class mock_datetime:\n        @staticmethod\n        def now(tz: Any) -> \"datetime\":  # pylint: disable=unused-argument\n            return sign_time.astimezone(timezone.utc)\n\n    sign = patch(\"endesive.signer.datetime\", mock_datetime)(signer.sign)\n\n    contents = sign(\n        datau=None,\n        key=key,\n        cert=cert,\n        othercerts=extra_certs,\n        hashalgo=hashalgo,\n        attrs=True,\n        signed_value=content_hash.digest(),\n    )\n    contents = _pkcs11_aligned(contents).encode(\"latin1\")\n    # Sanity check, otherwise we will break the xref table:\n    assert len(sig_placeholder) == len(contents)\n    return buffer.replace(sig_placeholder, contents, 1)",
+      "language": "python"
+    },
+    {
+      "code": "class Signature:\n    def __init__(\n        self,\n        contact_info: Optional[str] = None,\n        location: Optional[str] = None,\n        m: Optional[PDFDate] = None,\n        reason: Optional[str] = None,\n    ) -> None:\n        self.type = Name(\"Sig\")\n        self.filter = Name(\"Adobe.PPKLite\")\n        self.sub_filter = Name(\"adbe.pkcs7.detached\")\n        self.contact_info = contact_info\n        \"Information provided by the signer to enable a recipient to contact the signer to verify the signature\"\n        self.location = location\n        \"The CPU host name or physical location of the signing\"\n        self.m = m\n        \"The time of signing\"\n        self.reason = reason\n        \"The reason for the signing\"\n        self.byte_range = _SIGNATURE_BYTERANGE_PLACEHOLDER\n        self.contents = \"<\" + _SIGNATURE_CONTENTS_PLACEHOLDER + \">\"\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    obj_dict = build_obj_dict(\n        {key: getattr(self, key) for key in dir(self)},\n        _security_handler=_security_handler,\n        _obj_id=_obj_id,\n    )\n    return pdf_dict(obj_dict)",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/syntax.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/sign.html"
+  ]
+}

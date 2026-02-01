@@ -1,0 +1,153 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/HTML.html",
+  "title": "HTML¶",
+  "content": "fpdf2 supports basic rendering from HTML.\n\nThis is implemented by using html.parser.HTMLParser from the Python standard library. The whole HTML 5 specification is not supported, and neither is CSS, but bug reports & contributions are very welcome to improve this. cf. Supported HTML features below for details on its current limitations.\n\nFor a more robust & feature-full HTML-to-PDF converter in Python, you may want to check Reportlab (or xhtml2pdf based on it), WeasyPrint or borb.\n\nHTML rendering requires the use of FPDF.write_html():\n\nInternally FPDF.write_html() uses the fpdf.html.HTML2FPDF class that implements HTML parsing using html.parser.HTMLParser.\n\nThe style of several HTML tags (<a>, <blockquote>, <code>, <pre>, <h1>, <h2>, <h3>...) can be set globally, for the whole HTML document, by passing tag_styles to FPDF.write_html():\n\nSimilarly, the indentation of several HTML tags (<blockquote>, <dd>, <li>) can be set globally, for the whole HTML document, by passing tag_styles to FPDF.write_html():\n\n⚠️ Note that this styling is currently only supported for a subset of all HTML tags, and that some FontFace or TextStyle properties may not be honored. However, Pull Request are welcome to implement missing features!\n\nThe default font used by FPDF.write_html() is Times.\n\nYou can change this default font by passing font_family to this method: from fpdf import FPDF pdf = FPDF() pdf.add_page() pdf.write_html(\"\"\" <h1>Big title</h1> <section> <h2>Section title</h2> <p>Hello world!</p> </section> \"\"\", font_family=\"Helvetica\") pdf.output(\"html_helvetica.pdf\")\n\nPage breaks can be triggered explicitly using the break-before or break-after CSS properties. For example you can use: <br style=\"break-after: page\"> or: <p style=\"break-before: page\"> Top of a new page. </p>\n\nfpdf2 HTML renderer does not support some configurations of nested tags. For example:\n\nYou can also check the currently open GitHub issues with the tag html: label:html is:open\n\nCheck the dedicated page: Combine with Markdown",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "HTML¶",
+      "id": "html"
+    },
+    {
+      "level": "h2",
+      "text": "write_html usage example¶",
+      "id": "write_html-usage-example"
+    },
+    {
+      "level": "h3",
+      "text": "Styling HTML tags globally¶",
+      "id": "styling-html-tags-globally"
+    },
+    {
+      "level": "h3",
+      "text": "Default font¶",
+      "id": "default-font"
+    },
+    {
+      "level": "h2",
+      "text": "Supported HTML features¶",
+      "id": "supported-html-features"
+    },
+    {
+      "level": "h3",
+      "text": "Page breaks¶",
+      "id": "page-breaks"
+    },
+    {
+      "level": "h2",
+      "text": "Known limitations¶",
+      "id": "known-limitations"
+    },
+    {
+      "level": "h2",
+      "text": "Using Markdown¶",
+      "id": "using-markdown"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.write_html(\"\"\"\n  <dl>\n      <dt>Description title</dt>\n      <dd>Description Detail</dd>\n  </dl>\n  <h1>Big title</h1>\n  <section>\n    <h2>Section title</h2>\n    <p><b>Hello</b> world. <u>I am</u> <i>tired</i>.</p>\n    <p><a href=\"https://github.com/py-pdf/fpdf2\">py-pdf/fpdf2 GitHub repo</a></p>\n    <p align=\"right\">right aligned text</p>\n    <p>i am a paragraph <br>in two parts.</p>\n    <font color=\"#00ff00\"><p>hello in green</p></font>\n    <font size=\"7\"><p>hello small</p></font>\n    <font face=\"helvetica\"><p>hello helvetica</p></font>\n    <font face=\"times\"><p>hello times</p></font>\n  </section>\n  <section>\n    <h2>Other section title</h2>\n    <ul type=\"circle\">\n      <li>unordered</li>\n      <li>list</li>\n      <li>items</li>\n    </ul>\n    <ol start=\"3\" type=\"i\">\n      <li>ordered</li>\n      <li>list</li>\n      <li>items</li>\n    </ol>\n    <br>\n    <br>\n    <pre>i am preformatted text.</pre>\n    <br>\n    <blockquote>hello blockquote</blockquote>\n    <table width=\"50%\">\n      <thead>\n        <tr>\n          <th width=\"30%\">ID</th>\n          <th width=\"70%\">Name</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>1</td>\n          <td>Alice</td>\n        </tr>\n        <tr>\n          <td>2</td>\n          <td>Bob</td>\n        </tr>\n      </tbody>\n    </table>\n  </section>\n\"\"\")\npdf.output(\"html.pdf\")",
+      "language": "jsx"
+    },
+    {
+      "code": "from fpdf import FPDF, FontFace\n\npdf = FPDF()\npdf.add_page()\npdf.write_html(\"\"\"\n  <h1>Big title</h1>\n  <section>\n    <h2>Section title</h2>\n    <p>Hello world!</p>\n  </section>\n\"\"\", tag_styles={\n    \"h1\": FontFace(color=\"#948b8b\", size_pt=32),\n    \"h2\": FontFace(color=\"#948b8b\", size_pt=24),\n})\npdf.output(\"html_styled.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF, TextStyle\n\npdf = FPDF()\npdf.add_page()\npdf.write_html(\"\"\"\n  <dl>\n      <dt>Term</dt>\n      <dd>Definition</dd>\n  </dl>\n  <blockquote>\n  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.\n  Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.\n  Cras elementum ultrices diam.\n  </blockquote>\n\"\"\", tag_styles={\n    \"dd\": TextStyle(l_margin=5),\n    \"blockquote\": TextStyle(color=\"#ccc\", font_style=\"I\",\n                            t_margin=5, b_margin=5, l_margin=10),\n  })\npdf.output(\"html_dd_indented.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.write_html(\"\"\"\n  <h1>Big title</h1>\n  <section>\n    <h2>Section title</h2>\n    <p>Hello world!</p>\n  </section>\n\"\"\", font_family=\"Helvetica\")\npdf.output(\"html_helvetica.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "<br style=\"break-after: page\">",
+      "language": "jsx"
+    },
+    {
+      "code": "<p style=\"break-before: page\">\nTop of a new page.\n</p>",
+      "language": "jsx"
+    }
+  ],
+  "patterns": [
+    {
+      "description": "fpdf2 HTML renderer does not support some configurations of nested tags. For example:",
+      "code": "fpdf2"
+    }
+  ],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/html.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fonts.html"
+  ]
+}

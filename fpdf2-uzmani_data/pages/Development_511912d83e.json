@@ -1,0 +1,296 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Development.html",
+  "title": "Development¶",
+  "content": "This page has summary information about developing the fpdf2 library.\n\nWe aim to keep public behaviour stable for as long as possible, so removals go through a staged process.\n\nMethod deprecation - Document the deprecation directly in the docstring using a .. deprecated:: directive. - Emit a DeprecationWarning, while still executing a compatible code path when feasible. - Example (from fpdf/fpdf.py):\n\nParameter deprecation - Step 1: Mark the parameter as deprecated in the documentation and emit a warning when it is supplied. - Step 2: After a few releases, add the @deprecated_parameter() decorator so that the argument disappears from the public signature and linters/IDEs flag its usage. - Step 3: Remove support for the parameter entirely, once it is safe with respect to backwards compatibility.\n\nWe try to leave generous time between these steps and only delete behaviour when absolutely necessary.\n\nThis will link the installed Python package to the repository location, basically meaning any changes to the code package will get reflected directly in your environment.\n\nWe use black as a code prettifier. This \"uncomprimising Python code formatter\" must be installed in your development environment in order to auto-format source code before any commit: pip install black black . # inside fpdf2 root directory\n\nWe use pylint as a static code analyzer to detect potential issues in the code. You can install & execute it by running those commands: pip install pylint pylint fpdf/ test/\n\nIn case of special \"false positive\" cases, checks can be disabled locally with #pylint disable=XXX code comments, or globally through the .pylintrc file.\n\nStrict typing is enforced in CI with mypy and pyright (see pyproject.toml). Run them locally before pushing, or enable the pre-commit hook so they run automatically: pip install fpdf2[dev] mypy pyright\n\nGeneral guidelines: - Use # type: ignore[...] sparingly - Prefer real types over Any - Keep casts to unavoidable spots\n\nThis project uses git pre-commit hooks: https://pre-commit.com\n\nThose hooks are configured in .pre-commit-config.yaml.\n\nThey are intended to abort your commit if pylint found issues or black detected non-properly formatted code. In the later case though, it will auto-format your code and you will just have to run git commit -a again.\n\nTo install pre-commit hooks on your computer, run: pip install pre-commit pre-commit install\n\nTo run tests, cd into fpdf2 repository, install the dependencies using pip install .[dev,test], and run pytest.\n\nYou may also need to install SWIG and Ghostscript, because they are dependencies for camelot, a library for table extraction in PDF that we test in test/table/test_table_extraction.py. Those tests will always be executed by the GitHub Actions pipeline, so you can also not bother installing those tools and skip those tests by running pytest -k \"not camelot\".\n\nYou can run a single test by executing: pytest -k function_name.\n\nAlternatively, you can use Tox. It is self-documented in the tox.ini file in the repository. To run tests for all versions of Python, simply run tox. If you do not want to run tests for all versions of python, run tox -e py313 (or your version of Python).\n\nIf there are some failing tests after you made a code change, it is usually because there are difference between an expected PDF generated and the actual one produced.\n\nCalling pytest -vv will display the difference of PDF source code between the expected & actual files, but that may be difficult to understand,\n\nYou can also have a look at the PDF files involved by navigating to the temporary test directory that is printed out during the test failure: =================================== FAILURES =================================== ____________________________ test_html_simple_table ____________________________ tmp_path = PosixPath('/tmp/pytest-of-runner/pytest-0/test_html_simple_table0')\n\nThis directory contains the actual & expected files, that you can vsualize to spot differences: $ ls /tmp/pytest-of-runner/pytest-0/test_html_simple_table0 actual.pdf actual_qpdf.pdf expected_qpdf.pdf\n\nWhen a unit test generates a PDF, it is recommended to use the assert_pdf_equal utility function in order to validate the output. It relies on the very handy qpdf CLI program to generate a PDF that is easy to compare: annotated, strictly formatted, with uncompressed internal streams. You will need to have its binary in your $PATH, otherwise assert_pdf_equal will fall back to hash-based comparison.\n\nAll generated PDF files (including those processed by qpdf) will be stored in /tmp/pytest-of-USERNAME/pytest-current/NAME_OF_TEST/. By default, three last test runs will be saved and then automatically deleted, so you can check the output in case of a failed test.\n\nIn order to generate a \"reference\" PDF file, simply call assert_pdf_equal once with generate=True.\n\nNext you can invoke pytest path/to/test.py to generate the file some_feature.pdf.\n\nThis script will build an serve a single HTML page containing all PDF references file modified on your current git branch, and render them side by side with the PDF file from the master branch, so that you can quickly scroll and check for visible differences:\n\nFirst, try to write a really MINIMAL Python script that focus strictly on the performance point you are investigating. Try to choose the input dataset so that the script execution time is between 1 and 15 seconds.\n\nThen, you can use cProfile to profile your code and produce a .pstats file: python -m cProfile -o profile.pstats script.py\n\nFinally, you can quickly convert this .pstats file into a SVG flamegraph using flameprof: pip install flameprof flameprof profile.pstats > script-flamegraph.svg You will get something like this:\n\nSource GitHub thread where this was produced: issue #907\n\nA good way to track memory usage is to insert calls to fpdf.util.print_mem_usage() in the code you are investigating. This function will display the current process resident set size (RSS) which is currently, to the maintainer knowledge, one of the best way to get an accurate measure of Python scripts memory usage.\n\nThere is an example of using this function to track fpdf2 memory usage in this issue comment: issue #641. This thread also includes some tests of other libs & tools to track memory usage.\n\nWe try to have a small number of unit tests that ensure that the library performances do not degrade over time, when refactoring are made and new features added.\n\nWe have 2 test decorators to help with this:\n\nAs of fpdf2 v2.7.6, we only keep 3 non-regression performance tests:\n\nA GitHub Actions pipeline is executed on every commit on the master branch, and for every Pull Request.\n\nIt performs all validation steps detailed above: code checking with black, static code analysis with pylint, unit tests... Pull Requests submitted must pass all those checks in order to be approved. Ask maintainers through comments if some errors in the pipeline seem obscure to you.\n\nWe use Renovate to detect dependency updates & create PRs for the Python dependencies / GitHub Actions / NPM dependencies that we use.\n\nIts configuration file is renovate.json, and the full tool documentation is there: docs.renovatebot.com.\n\nTo debug issues with Renovate, it can be useful to invoke it locally using Docker, like this:\n\nWe also use zizmor as a GitHub Action to perform static analysis on our pipeline definition files.\n\nIn order to use zizmor locally:\n\ntypos is a handy CLI tool to detect & auto-fix typos in source files. Installation is relatively straightforward (read the docs).\n\nThis tool is invoked in the pre-commit hooks and in our CI pipeline.\n\nIf it fails, you should either:\n\nThe standalone documentation is in the docs/ subfolder, written in Markdown.\n\nAfter being committed to the master branch, documentation is automatically uploaded to GitHub Pages.\n\nBuilding instructions are contained in .github/workflows/continuous-integration-workflow.yml.\n\nConfiguration file: mkdocs.yml\n\nTo preview the documentation, launch a local rendering server with:\n\nConfiguration file: docs/pdoc/config.mako\n\nIt is generated from inline comments, and is available on the API page.\n\nThere is a useful one-page example Python module with docstrings illustrating how to document code: pdoc3 example_pkg.\n\nTo preview the API documentation, launch a local rendering server with:\n\nThe PDF 1.7 spec is available on Adobe website: PDF32000_2008.pdf.\n\nThe PDF 2.0 spec is available on the Adobe website or on the PDF Association website.\n\nIt may be intimidating at first, but while technical, it is usually quite clear and understandable.\n\nIt is also a great place to look for new features for fpdf2: there are still many PDF features that this library does not support.\n\nqpdf is a very powerful tool to analyze PDF documents.\n\nOne of it most useful features is the QDF mode that can convert any PDF file to a human-readable, decompressed & annotated new PDF document:\n\nThis is extremely useful to peek into the PDF document structure.\n\npdfly is a very handy CLI tool to manipulate PDF files: py-pdf/pdfly.\n\nThose are some very useful commands:\n\nA xref table is basically an index of the document internal sections. When manually modifying a PDF file (for example one produced by qpdf --qdf), if the characters count in any of its sections changes, the xref table must be rebuilt.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Development¶",
+      "id": "development"
+    },
+    {
+      "level": "h2",
+      "text": "Repository structure¶",
+      "id": "repository-structure"
+    },
+    {
+      "level": "h3",
+      "text": "Deprecation policy¶",
+      "id": "deprecation-policy"
+    },
+    {
+      "level": "h2",
+      "text": "Installing fpdf2 from a local git repository¶",
+      "id": "installing-fpdf2-from-a-local-git-repository"
+    },
+    {
+      "level": "h2",
+      "text": "Code auto-formatting¶",
+      "id": "code-auto-formatting"
+    },
+    {
+      "level": "h2",
+      "text": "Linting¶",
+      "id": "linting"
+    },
+    {
+      "level": "h2",
+      "text": "Static typing¶",
+      "id": "static-typing"
+    },
+    {
+      "level": "h2",
+      "text": "Pre-commit hook¶",
+      "id": "pre-commit-hook"
+    },
+    {
+      "level": "h2",
+      "text": "Testing¶",
+      "id": "testing"
+    },
+    {
+      "level": "h3",
+      "text": "Running tests¶",
+      "id": "running-tests"
+    },
+    {
+      "level": "h3",
+      "text": "Why is a test failing?¶",
+      "id": "why-is-a-test-failing"
+    },
+    {
+      "level": "h3",
+      "text": "assert_pdf_equal & writing new tests¶",
+      "id": "assert_pdf_equal-writing-new-tests"
+    },
+    {
+      "level": "h3",
+      "text": "Generating PDF files for testing¶",
+      "id": "generating-pdf-files-for-testing"
+    },
+    {
+      "level": "h3",
+      "text": "Visually comparing all PDF reference files modified on a branch¶",
+      "id": "visually-comparing-all-pdf-reference-files-modified-on-a-branch"
+    },
+    {
+      "level": "h2",
+      "text": "Testing performances¶",
+      "id": "testing-performances"
+    },
+    {
+      "level": "h3",
+      "text": "Code speed & profiling¶",
+      "id": "code-speed-profiling"
+    },
+    {
+      "level": "h3",
+      "text": "Tracking memory usage¶",
+      "id": "tracking-memory-usage"
+    },
+    {
+      "level": "h3",
+      "text": "Non-regression performance tests¶",
+      "id": "non-regression-performance-tests"
+    },
+    {
+      "level": "h2",
+      "text": "GitHub pipeline¶",
+      "id": "github-pipeline"
+    },
+    {
+      "level": "h3",
+      "text": "Renovate, GitHub Actions & security¶",
+      "id": "renovate-github-actions-security"
+    },
+    {
+      "level": "h3",
+      "text": "typos¶",
+      "id": "typos"
+    },
+    {
+      "level": "h2",
+      "text": "Release checklist¶",
+      "id": "release-checklist"
+    },
+    {
+      "level": "h2",
+      "text": "Documentation¶",
+      "id": "documentation"
+    },
+    {
+      "level": "h3",
+      "text": "Main documentation using mkdoc¶",
+      "id": "main-documentation-using-mkdoc"
+    },
+    {
+      "level": "h3",
+      "text": "API documentation using pdoc3¶",
+      "id": "api-documentation-using-pdoc3"
+    },
+    {
+      "level": "h2",
+      "text": "PDF spec & new features¶",
+      "id": "pdf-spec-new-features"
+    },
+    {
+      "level": "h2",
+      "text": "Useful tools to manipulate PDFs¶",
+      "id": "useful-tools-to-manipulate-pdfs"
+    },
+    {
+      "level": "h3",
+      "text": "qpdf¶",
+      "id": "qpdf"
+    },
+    {
+      "level": "h3",
+      "text": "pdfly¶",
+      "id": "pdfly"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "def set_doc_option(self, opt, value):\n    \"\"\"\n    Defines a document option.\n\n    Args:\n        opt (str): name of the option to set\n        value (str): option value\n\n    .. deprecated:: 2.4.0\n        Simply set the `FPDF.core_fonts_encoding` property as a replacement.\n    \"\"\"\n    warnings.warn(\n        (\n            \"set_doc_option() is deprecated since v2.4.0 \"\n            \"and will be removed in a future release. \"\n            \"Simply set the `.core_fonts_encoding` property as a replacement.\"\n        ),\n        DeprecationWarning,\n        stacklevel=get_stack_level(),\n    )\n    if opt != \"core_fonts_encoding\":\n        raise FPDFException(f'Unknown document option \"{opt}\"')\n    self.core_fonts_encoding = value",
+      "language": "swift"
+    },
+    {
+      "code": "pip install --editable $path/to/fpdf/repo",
+      "language": "bash"
+    },
+    {
+      "code": "pip install black\nblack .  # inside fpdf2 root directory",
+      "language": "unknown"
+    },
+    {
+      "code": "pip install pylint\npylint fpdf/ test/",
+      "language": "unknown"
+    },
+    {
+      "code": "pip install fpdf2[dev]\nmypy\npyright",
+      "language": "unknown"
+    },
+    {
+      "code": "pip install pre-commit\npre-commit install",
+      "language": "unknown"
+    },
+    {
+      "code": "=================================== FAILURES ===================================\n____________________________ test_html_simple_table ____________________________\n\ntmp_path = PosixPath('/tmp/pytest-of-runner/pytest-0/test_html_simple_table0')",
+      "language": "unknown"
+    },
+    {
+      "code": "$ ls /tmp/pytest-of-runner/pytest-0/test_html_simple_table0\nactual.pdf\nactual_qpdf.pdf\nexpected_qpdf.pdf",
+      "language": "unknown"
+    },
+    {
+      "code": "def test_some_feature(tmp_path):\n    pdf = FPDF()\n    pdf.add_page()\n    pdf.rect(10, 10, 60, 80)\n    assert_pdf_equal(pdf, HERE / \"some_feature.pdf\", tmp_path, generate=True)",
+      "language": "python"
+    },
+    {
+      "code": "scripts/compare-changed-pdfs.py",
+      "language": "unknown"
+    },
+    {
+      "code": "python -m cProfile -o profile.pstats script.py",
+      "language": "unknown"
+    },
+    {
+      "code": "pip install flameprof\nflameprof profile.pstats > script-flamegraph.svg",
+      "language": "unknown"
+    },
+    {
+      "code": "docker run -e LOG_LEVEL=debug docker.io/renovate/renovate:41-full --dry-run --token \"$GITHUB_OAUTH_TOKEN\" py-pdf/fpdf2",
+      "language": "json"
+    },
+    {
+      "code": "zizmor .github/workflows/*.yml",
+      "language": "unknown"
+    },
+    {
+      "code": "mkdocs serve --open",
+      "language": "unknown"
+    },
+    {
+      "code": "pdoc --html -o public/ fpdf --template-dir docs/pdoc --http :",
+      "language": "unknown"
+    },
+    {
+      "code": "qpdf --qdf doc.pdf doc-qdf.pdf",
+      "language": "unknown"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/contributors.html",
+    "https://py-pdf.github.io/fpdf2/"
+  ]
+}

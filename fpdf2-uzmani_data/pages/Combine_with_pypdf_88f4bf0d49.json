@@ -1,0 +1,126 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+  "title": "Combine with pypdf¶",
+  "content": "fpdf2 cannot parse existing PDF files.\n\nHowever, other Python libraries can be combined with fpdf2 in order to add new content to existing PDF files.\n\nThis page provides several examples of doing so using pypdf, an actively-maintained library formerly known as PyPDF2.\n\nIn this code snippet, new content will be added on top of existing content: #!/usr/bin/env python3 # USAGE: ./add_on_page_with_pypdf.py src_file.pdf dest_file.pdf import io, sys from contextlib import contextmanager # Before 2.8.2 use: from fpdf.util import get_scale_factor from fpdf import FPDF, get_scale_factor from pypdf import PdfReader, PdfWriter IN_FILEPATH = sys.argv[1] OUT_FILEPATH = sys.argv[2] @contextmanager def add_to_page(reader_page, unit=\"mm\"): k = get_scale_factor(unit) format = (reader_page.mediabox[2] / k, reader_page.mediabox[3] / k) pdf = FPDF(format=format, unit=unit) pdf.add_page() yield pdf page_overlay = PdfReader(io.BytesIO(pdf.output())).pages[0] reader_page.merge_page(page2=page_overlay) reader = PdfReader(IN_FILEPATH) with add_to_page(reader.pages[0]) as pdf: pdf.set_font(\"times\", style=\"B\", size=30) pdf.text(50, 150, \"Hello World!\") writer = PdfWriter() writer.append_pages_from_reader(reader) writer.write(OUT_FILEPATH)\n\nA document created with fpdf2 can the be edited with pypdf by passing its .output() to a pypdf.PdfReader: import io from fpdf import FPDF from pypdf import PdfReader pdf = FPDF() pdf.add_page() pdf.set_font('times', style='B', size=19) pdf.text(50, 10, 'Hello World!') reader = PdfReader(io.BytesIO(pdf.output()))",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Combine with pypdf¶",
+      "id": "combine-with-pypdf"
+    },
+    {
+      "level": "h2",
+      "text": "Adding content onto an existing PDF page¶",
+      "id": "adding-content-onto-an-existing-pdf-page"
+    },
+    {
+      "level": "h2",
+      "text": "Adding a page to an existing PDF¶",
+      "id": "adding-a-page-to-an-existing-pdf"
+    },
+    {
+      "level": "h2",
+      "text": "Altering with pypdf a document generated with fpdf2¶",
+      "id": "altering-with-pypdf-a-document-generated-with-fpdf2"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "#!/usr/bin/env python3\n# USAGE: ./add_on_page_with_pypdf.py src_file.pdf dest_file.pdf\nimport io, sys\nfrom contextlib import contextmanager\n\n# Before 2.8.2 use: from fpdf.util import get_scale_factor\nfrom fpdf import FPDF, get_scale_factor\nfrom pypdf import PdfReader, PdfWriter\n\nIN_FILEPATH = sys.argv[1]\nOUT_FILEPATH = sys.argv[2]\n\n\n@contextmanager\ndef add_to_page(reader_page, unit=\"mm\"):\n    k = get_scale_factor(unit)\n    format = (reader_page.mediabox[2] / k, reader_page.mediabox[3] / k)\n    pdf = FPDF(format=format, unit=unit)\n    pdf.add_page()\n    yield pdf\n    page_overlay = PdfReader(io.BytesIO(pdf.output())).pages[0]\n    reader_page.merge_page(page2=page_overlay)\n\n\nreader = PdfReader(IN_FILEPATH)\nwith add_to_page(reader.pages[0]) as pdf:\n    pdf.set_font(\"times\", style=\"B\", size=30)\n    pdf.text(50, 150, \"Hello World!\")\n\nwriter = PdfWriter()\nwriter.append_pages_from_reader(reader)\nwriter.write(OUT_FILEPATH)",
+      "language": "python"
+    },
+    {
+      "code": "#!/usr/bin/env python3\n# USAGE: ./add_new_page_with_pypdf.py src_file.pdf dest_file.pdf\nimport io, sys\n\nfrom fpdf import FPDF\nfrom pypdf import PdfReader, PdfWriter\n\nIN_FILEPATH = sys.argv[1]\nOUT_FILEPATH = sys.argv[2]\nON_PAGE_INDEX = 2  # Index at which the page will be inserted (starts at zero)\n\n\ndef build_page():\n    pdf = FPDF()\n    pdf.add_page()\n    pdf.set_font(\"times\", style=\"B\", size=19)\n    pdf.text(50, 10, \"Hello World!\")\n    return io.BytesIO(pdf.output())\n\n\nwriter = PdfWriter(clone_from=IN_FILEPATH)\nnew_page = PdfReader(build_page()).pages[0]\nwriter.insert_page(new_page, index=ON_PAGE_INDEX)\nwriter.write(OUT_FILEPATH)",
+      "language": "python"
+    },
+    {
+      "code": "import io\nfrom fpdf import FPDF\nfrom pypdf import PdfReader\n\npdf = FPDF()\npdf.add_page()\npdf.set_font('times', style='B', size=19)\npdf.text(50, 10, 'Hello World!')\n\nreader = PdfReader(io.BytesIO(pdf.output()))",
+      "language": "swift"
+    }
+  ],
+  "patterns": [
+    {
+      "description": "In this code snippet, new content will be added on top of existing content: #!/usr/bin/env python3 # USAGE: ./add_on_page_with_pypdf.py src_file.pdf dest_file.pdf import io, sys from contextlib import contextmanager # Before 2.8.2 use: from fpdf.util import get_scale_factor from fpdf import FPDF, get_scale_factor from pypdf import PdfReader, PdfWriter IN_FILEPATH = sys.argv[1] OUT_FILEPATH = sys.argv[2] @contextmanager def add_to_page(reader_page, unit=\"mm\"): k = get_scale_factor(unit) format = (reader_page.mediabox[2] / k, reader_page.mediabox[3] / k) pdf = FPDF(format=format, unit=unit) pdf.add_page() yield pdf page_overlay = PdfReader(io.BytesIO(pdf.output())).pages[0] reader_page.merge_page(page2=page_overlay) reader = PdfReader(IN_FILEPATH) with add_to_page(reader.pages[0]) as pdf: pdf.set_font(\"times\", style=\"B\", size=30) pdf.text(50, 150, \"Hello World!\") writer = PdfWriter() writer.append_pages_from_reader(reader) writer.write(OUT_FILEPATH)",
+      "code": "#!/usr/bin/env python3\n# USAGE: ./add_on_page_with_pypdf.py src_file.pdf dest_file.pdf\nimport io, sys\nfrom contextlib import contextmanager\n\n# Before 2.8.2 use: from fpdf.util import get_scale_factor\nfrom fpdf import FPDF, get_scale_factor\nfrom pypdf import PdfReader, PdfWriter\n\nIN_FILEPATH = sys.argv[1]\nOUT_FILEPATH = sys.argv[2]\n\n\n@contextmanager\ndef add_to_page(reader_page, unit=\"mm\"):\n    k = get_scale_factor(unit)\n    format = (reader_page.mediabox[2] / k, reader_page.mediabox[3] / k)\n    pdf = FPDF(format=format, unit=unit)\n    pdf.add_page()\n    yield pdf\n    page_overlay = PdfReader(io.BytesIO(pdf.output())).pages[0]\n    reader_page.merge_page(page2=page_overlay)\n\n\nreader = PdfReader(IN_FILEPATH)\nwith add_to_page(reader.pages[0]) as pdf:\n    pdf.set_font(\"times\", style=\"B\", size=30)\n    pdf.text(50, 150, \"Hello World!\")\n\nwriter = PdfWriter()\nwriter.append_pages_from_reader(reader)\nwriter.write(OUT_FILEPATH)"
+    },
+    {
+      "description": "#!/usr/bin/env python3 # USAGE: ./add_on_page_with_pypdf.py src_file.pdf dest_file.pdf import io, sys from contextlib import contextmanager # Before 2.8.2 use: from fpdf.util import get_scale_factor from fpdf import FPDF, get_scale_factor from pypdf import PdfReader, PdfWriter IN_FILEPATH = sys.argv[1] OUT_FILEPATH = sys.argv[2] @contextmanager def add_to_page(reader_page, unit=\"mm\"): k = get_scale_factor(unit) format = (reader_page.mediabox[2] / k, reader_page.mediabox[3] / k) pdf = FPDF(format=format, unit=unit) pdf.add_page() yield pdf page_overlay = PdfReader(io.BytesIO(pdf.output())).pages[0] reader_page.merge_page(page2=page_overlay) reader = PdfReader(IN_FILEPATH) with add_to_page(reader.pages[0]) as pdf: pdf.set_font(\"times\", style=\"B\", size=30) pdf.text(50, 150, \"Hello World!\") writer = PdfWriter() writer.append_pages_from_reader(reader) writer.write(OUT_FILEPATH)",
+      "code": "#!/usr/bin/env python3\n# USAGE: ./add_on_page_with_pypdf.py src_file.pdf dest_file.pdf\nimport io, sys\nfrom contextlib import contextmanager\n\n# Before 2.8.2 use: from fpdf.util import get_scale_factor\nfrom fpdf import FPDF, get_scale_factor\nfrom pypdf import PdfReader, PdfWriter\n\nIN_FILEPATH = sys.argv[1]\nOUT_FILEPATH = sys.argv[2]\n\n\n@contextmanager\ndef add_to_page(reader_page, unit=\"mm\"):\n    k = get_scale_factor(unit)\n    format = (reader_page.mediabox[2] / k, reader_page.mediabox[3] / k)\n    pdf = FPDF(format=format, unit=unit)\n    pdf.add_page()\n    yield pdf\n    page_overlay = PdfReader(io.BytesIO(pdf.output())).pages[0]\n    reader_page.merge_page(page2=page_overlay)\n\n\nreader = PdfReader(IN_FILEPATH)\nwith add_to_page(reader.pages[0]) as pdf:\n    pdf.set_font(\"times\", style=\"B\", size=30)\n    pdf.text(50, 150, \"Hello World!\")\n\nwriter = PdfWriter()\nwriter.append_pages_from_reader(reader)\nwriter.write(OUT_FILEPATH)"
+    },
+    {
+      "description": "#!/usr/bin/env python3 # USAGE: ./add_new_page_with_pypdf.py src_file.pdf dest_file.pdf import io, sys from fpdf import FPDF from pypdf import PdfReader, PdfWriter IN_FILEPATH = sys.argv[1] OUT_FILEPATH = sys.argv[2] ON_PAGE_INDEX = 2 # Index at which the page will be inserted (starts at zero) def build_page(): pdf = FPDF() pdf.add_page() pdf.set_font(\"times\", style=\"B\", size=19) pdf.text(50, 10, \"Hello World!\") return io.BytesIO(pdf.output()) writer = PdfWriter(clone_from=IN_FILEPATH) new_page = PdfReader(build_page()).pages[0] writer.insert_page(new_page, index=ON_PAGE_INDEX) writer.write(OUT_FILEPATH)",
+      "code": "#!/usr/bin/env python3\n# USAGE: ./add_new_page_with_pypdf.py src_file.pdf dest_file.pdf\nimport io, sys\n\nfrom fpdf import FPDF\nfrom pypdf import PdfReader, PdfWriter\n\nIN_FILEPATH = sys.argv[1]\nOUT_FILEPATH = sys.argv[2]\nON_PAGE_INDEX = 2  # Index at which the page will be inserted (starts at zero)\n\n\ndef build_page():\n    pdf = FPDF()\n    pdf.add_page()\n    pdf.set_font(\"times\", style=\"B\", size=19)\n    pdf.text(50, 10, \"Hello World!\")\n    return io.BytesIO(pdf.output())\n\n\nwriter = PdfWriter(clone_from=IN_FILEPATH)\nnew_page = PdfReader(build_page()).pages[0]\nwriter.insert_page(new_page, index=ON_PAGE_INDEX)\nwriter.write(OUT_FILEPATH)"
+    }
+  ],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html"
+  ]
+}

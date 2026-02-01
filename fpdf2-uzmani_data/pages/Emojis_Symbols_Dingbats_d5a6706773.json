@@ -1,0 +1,127 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+  "title": "Emojis, Symbols & Dingbats¶",
+  "content": "Displaying emojis requires the use of a Unicode font file. Here is an example using the DejaVu font:\n\nThis code produces this PDF file: fonts_emoji_glyph.pdf\n\nAnother font supporting emojis is: twemoji\n\nA wide variety of color fonts are supported - SBIX, CBDT/CBLC, SVG, COLRv0 and COLRv1. If a loaded font provides color glyphs, fpdf2 will render them automatically.\n\nTo always draw emoji as outline/monochrome even if the font includes color glyphs, set: FPDF.render_color_fonts = False\n\nThe Symbol font is one of the built-in fonts in the PDF format. Hence you can include its symbols very easily:\n\nThe following table will help you find which characters map to which symbol: symbol.pdf. For reference, it was built using this script: symbol.py.\n\nThe ZapfDingbats font is one of the built-in fonts in the PDF format. Hence you can include its dingbats very easily:\n\nThe following table will help you find which characters map to which dingbats: zapfdingbats.pdf. For reference, it was built using this script: zapfdingbats.py.\n\nIf you need to mix special characters and emojis within normal text, it is possible to specify alternative fonts for FPDF to use as fallback fonts. See an example of use Here",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Emojis, Symbols & Dingbats¶",
+      "id": "emojis-symbols-dingbats"
+    },
+    {
+      "level": "h2",
+      "text": "Emojis¶",
+      "id": "emojis"
+    },
+    {
+      "level": "h2",
+      "text": "Color fonts and emojis¶",
+      "id": "color-fonts-and-emojis"
+    },
+    {
+      "level": "h2",
+      "text": "Symbols¶",
+      "id": "symbols"
+    },
+    {
+      "level": "h2",
+      "text": "Dingbats¶",
+      "id": "dingbats"
+    },
+    {
+      "level": "h2",
+      "text": "Fallback fonts¶",
+      "id": "fallback-fonts"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "import fpdf\n\npdf = fpdf.FPDF()\npdf.add_font(fname=\"DejaVuSans.ttf\")\npdf.set_font(\"DejaVuSans\", size=64)\npdf.add_page()\npdf.multi_cell(0, text=\"\".join([chr(0x1F600 + x) for x in range(68)]))\npdf.set_font_size(32)\npdf.text(10, 270, \"\".join([chr(0x1F0A0 + x) for x in range(15)]))\npdf.output(\"fonts_emoji_glyph.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "import fpdf\n\npdf = fpdf.FPDF()\npdf.add_page()\npdf.set_font(\"symbol\", size=36)\npdf.cell(h=16, text=\"\\u0022 \\u0068 \\u0024 \\u0065 \\u00ce \\u00c2, \\u0068/\\u0065 \\u0040 \\u00a5\",\n        new_x=\"LMARGIN\", new_y=\"NEXT\")\npdf.cell(h=16, text=\"\\u0044 \\u0046 \\u0053 \\u0057 \\u0059 \\u0061 \\u0062 \\u0063\",\n        new_x=\"LMARGIN\", new_y=\"NEXT\")\npdf.cell(h=16, text=\"\\u00a0 \\u00a7 \\u00a8 \\u00a9 \\u00aa \\u00ab \\u00ac \\u00ad \\u00ae \\u00af \\u00db \\u00dc \\u00de\",\n        new_x=\"LMARGIN\", new_y=\"NEXT\")\npdf.output(\"symbol.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "import fpdf\n\npdf = fpdf.FPDF()\npdf.add_page()\npdf.set_font(\"zapfdingbats\", size=36)\npdf.cell(text=\"+ 3 8 A r \\u00a6 } \\u00a8 \\u00a9 \\u00aa \\u00ab ~\")\npdf.output(\"zapfdingbat.pdf\")",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/symbol.pdf",
+    "https://py-pdf.github.io/fpdf2/symbol.py",
+    "https://py-pdf.github.io/fpdf2/zapfdingbats.pdf",
+    "https://py-pdf.github.io/fpdf2/zapfdingbats.py"
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/TextStyling.html",
+  "title": "Text styling¶",
+  "content": "Setting emphasis on text can be controlled by using .set_font(style=...):\n\nLetters can be combined, for example: style=\"BI\" indicates bold italics\n\nText can be stretched horizontally with this setting, measured in percent. If the argument is less than 100, then all characters are rendered proportionally narrower and the text string will take less space. If it is larger than 100, then the width of all characters will be expanded accordingly.\n\nThe example shows the same text justified to the same width, with stretching values of 100 and 150. pdf = FPDF() pdf.add_page() pdf.set_font(\"Helvetica\", size=8) pdf.set_fill_color(255, 255, 0) pdf.multi_cell(w=50, text=LOREM_IPSUM[:100], new_x=\"LEFT\", fill=True) pdf.ln() pdf.set_stretching(150) pdf.multi_cell(w=50, text=LOREM_IPSUM[:100], new_x=\"LEFT\", fill=True)\n\nThis method changes the distance between individual characters of a test string. Normally, characters are placed at a given distance according the width information in the font file. If spacing is larger than 0, then their distance will be larger, creating a gap in between. If it is less than 0, then their distance will be smaller, possibly resulting in an overlap. The change in distance is given in typographic points (Pica), which makes it easy to adapt it relative to the current font size.\n\nCharacter spacing works best for formatting single line text created by any method, or for highlighting individual words included in a block of text with .write().\n\nLimitations: Spacing will only be changed within a sequence of characters that fpdf2 adds to the PDF in one go. This means that there will be no extra distance eg. between text parts that are placed successively with write(). Also, if you apply different font styles using the Markdown functionality of .cell() and .multi_cell() or by using html_write(), then any parts given different styles will have the original distance between them. This is so because fpdf2 has to add each styled fragment to the PDF file separately.\n\nThe example shows the same text justified to the same width, with char_spacing values of 0 and 10 (font size 8 pt). pdf = FPDF() pdf.add_page() pdf.set_font(\"Helvetica\", size=8) pdf.set_fill_color(255, 255, 0) pdf.multi_cell(w=150, text=LOREM_IPSUM[:200], new_x=\"LEFT\", fill=True) pdf.ln() pdf.set_char_spacing(10) pdf.multi_cell(w=150, text=LOREM_IPSUM[:200], new_x=\"LEFT\", fill=True)\n\nFor a more complete support of Markdown syntax, check out this guide to combine fpdf2 with the mistletoe library: Combine with Markdown.\n\nThe class attribute .char_vpos controls special vertical positioning modes for text:\n\nFor each positioning mode there are two parameters that can be configured. The defaults have been set to result in a decent layout with most fonts, and are given in parens.\n\nThe size multiplier for the font size:\n\nThe lift is given as fraction of the unscaled font size and indicates how much the glyph gets lifted above the base line (negative for below):\n\nLimitations: The individual glyphs will be scaled down as configured. This is not typographically correct, as it will also reduce the stroke width, making them look lighter than the normal text. Unicode fonts may include characters in the subscripts and superscripts range. In a high quality font, those glyphs will be smaller than the normal ones, but have a proportionally stronger stroke width in order to maintain the same visual density. If available in good quality, using Characters from this range is preferred and will look better. Unfortunately, many fonts either don't (fully) cover this range, or the glyphs are of unsatisfactory quality. In those cases, this feature of fpdf2 offers a reliable workaround with suboptimal but consistent output quality.\n\nPractical use is essentially limited to .write() and html_write(). The feature does technically work with .cell() and .multi_cell, but is of limited usefulness there, since you can't change font properties in the middle of a line (there is no markdown support). It currently gets completely ignored by .text().\n\nThe example shows the most common use cases:\n\npdf = fpdf.FPDF() pdf.add_page() pdf.set_font(\"Helvetica\", size=20) pdf.write(text=\"2\") pdf.char_vpos = \"SUP\" pdf.write(text=\"56\") pdf.char_vpos = \"LINE\" pdf.write(text=\" more line text\") pdf.char_vpos = \"SUB\" pdf.write(text=\"(idx)\") pdf.char_vpos = \"LINE\" pdf.write(text=\" end\") pdf.ln() pdf.write(text=\"1234 + \") pdf.char_vpos = \"NOM\" pdf.write(text=\"5\") pdf.char_vpos = \"LINE\" pdf.write(text=\"/\") pdf.char_vpos = \"DENOM\" pdf.write(text=\"16\") pdf.char_vpos = \"LINE\" pdf.write(text=\" + 987 = x\")\n\nThe PDF spec defines several text modes:\n\nThe text mode can be controlled with the .text_mode attribute. With STROKE modes, the line width is induced by .line_width, and its color can be configured with set_draw_color(). With FILL modes, the filling color can be controlled by set_fill_color() or set_text_color().\n\nWith any of the 4 CLIP modes, the letters will be filled by vector drawings made afterwards, as can be seen in this example:\n\nfrom fpdf import FPDF pdf = FPDF(orientation=\"landscape\") pdf.add_page() pdf.set_font(\"Helvetica\", size=100) with pdf.local_context(text_mode=\"STROKE\", line_width=2): pdf.cell(text=\"Hello world\") # Outside the local context, text_mode & line_width are reverted # back to their original default values pdf.ln() with pdf.local_context(text_mode=\"CLIP\"): pdf.cell(text=\"CLIP text mode\") for r in range(0, 250, 2): # drawing concentric circles pdf.circle(x=130-r/2, y=70-r/2, radius=r) pdf.output(\"text-modes.pdf\")\n\nMore examples from test_text_mode.py:\n\nAn optional markdown=True parameter can be passed to the cell() & multi_cell() methods in order to enable basic Markdown-like styling: **bold**, __italics__, --underlined--.\n\nIf the printable text contains a character sequence that would be incorrectly interpreted as a formatting marker, it can be escaped using \\. The escape character works the same way it generally does in Python (see the example below).\n\nBold & italics require using dedicated fonts for each style.\n\nFor the standard fonts (Courier, Helvetica & Times), those dedicated fonts are configured by default:\n\nUsing other fonts means that their variants (bold, italics) must be registered using add_font with style=\"B\" and style=\"I\". Several unit tests in test/text/ demonstrate that:\n\n.write_html() allows to set emphasis on text through the <b>, <i> and <u> tags:",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Text styling¶",
+      "id": "text-styling"
+    },
+    {
+      "level": "h2",
+      "text": ".set_font()¶",
+      "id": "set_font"
+    },
+    {
+      "level": "h2",
+      "text": ".set_stretching(stretching=100)¶",
+      "id": "set_stretchingstretching100"
+    },
+    {
+      "level": "h2",
+      "text": ".set_char_spacing(spacing=0)¶",
+      "id": "set_char_spacingspacing0"
+    },
+    {
+      "level": "h2",
+      "text": "Subscript, Superscript, and Fractional Numbers¶",
+      "id": "subscript-superscript-and-fractional-numbers"
+    },
+    {
+      "level": "h2",
+      "text": ".text_mode¶",
+      "id": "text_mode"
+    },
+    {
+      "level": "h2",
+      "text": "markdown=True¶",
+      "id": "markdowntrue"
+    },
+    {
+      "level": "h2",
+      "text": ".write_html()¶",
+      "id": "write_html"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=36)\npdf.cell(text=\"This\")\npdf.set_font(style=\"B\")\npdf.cell(text=\"is\")\npdf.set_font(style=\"I\")\npdf.cell(text=\"a\")\npdf.set_font(style=\"U\")\npdf.cell(text=\"PDF\")\npdf.output(\"style.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "pdf = FPDF()\npdf.add_page()\npdf.set_font(\"Helvetica\", size=8)\npdf.set_fill_color(255, 255, 0)\npdf.multi_cell(w=50, text=LOREM_IPSUM[:100], new_x=\"LEFT\", fill=True)\npdf.ln()\npdf.set_stretching(150)\npdf.multi_cell(w=50, text=LOREM_IPSUM[:100], new_x=\"LEFT\", fill=True)",
+      "language": "json"
+    },
+    {
+      "code": "pdf = FPDF()\npdf.add_page()\npdf.set_font(\"Helvetica\", size=8)\npdf.set_fill_color(255, 255, 0)\npdf.multi_cell(w=150, text=LOREM_IPSUM[:200], new_x=\"LEFT\", fill=True)\npdf.ln()\npdf.set_char_spacing(10)\npdf.multi_cell(w=150, text=LOREM_IPSUM[:200], new_x=\"LEFT\", fill=True)",
+      "language": "json"
+    },
+    {
+      "code": "pdf = fpdf.FPDF()\n    pdf.add_page()\n    pdf.set_font(\"Helvetica\", size=20)\n    pdf.write(text=\"2\")\n    pdf.char_vpos = \"SUP\"\n    pdf.write(text=\"56\")\n    pdf.char_vpos = \"LINE\"\n    pdf.write(text=\" more line text\")\n    pdf.char_vpos = \"SUB\"\n    pdf.write(text=\"(idx)\")\n    pdf.char_vpos = \"LINE\"\n    pdf.write(text=\" end\")\n    pdf.ln()\n    pdf.write(text=\"1234 + \")\n    pdf.char_vpos = \"NOM\"\n    pdf.write(text=\"5\")\n    pdf.char_vpos = \"LINE\"\n    pdf.write(text=\"/\")\n    pdf.char_vpos = \"DENOM\"\n    pdf.write(text=\"16\")\n    pdf.char_vpos = \"LINE\"\n    pdf.write(text=\" + 987 = x\")",
+      "language": "julia"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF(orientation=\"landscape\")\npdf.add_page()\npdf.set_font(\"Helvetica\", size=100)\n\nwith pdf.local_context(text_mode=\"STROKE\", line_width=2):\n    pdf.cell(text=\"Hello world\")\n# Outside the local context, text_mode & line_width are reverted\n# back to their original default values\npdf.ln()\n\nwith pdf.local_context(text_mode=\"CLIP\"):\n    pdf.cell(text=\"CLIP text mode\")\n    for r in range(0, 250, 2):  # drawing concentric circles\n        pdf.circle(x=130-r/2, y=70-r/2, radius=r)\n\npdf.output(\"text-modes.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=50)\npdf.cell(text=\"**Lorem** __Ipsum__ --dolor--\", markdown=True, new_x='LEFT', new_y='NEXT')\npdf.cell(text=\"\\\\**Lorem\\\\** \\\\\\\\__Ipsum\\\\\\\\__ --dolor--\", markdown=True)\npdf.output(\"markdown-styled.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "pdf.write_html(\"\"\"<B>bold</B>\n                  <I>italic</I>\n                  <U>underlined</U>\n                  <B><I><U>all at once!</U></I></B>\"\"\"\n)",
+      "language": "typescript"
+    }
+  ],
+  "patterns": [
+    {
+      "description": "Letters can be combined, for example: style=\"BI\" indicates bold italics",
+      "code": "style=\"BI\""
+    },
+    {
+      "description": "With any of the 4 CLIP modes, the letters will be filled by vector drawings made afterwards, as can be seen in this example:",
+      "code": "CLIP"
+    }
+  ],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html"
+  ]
+}

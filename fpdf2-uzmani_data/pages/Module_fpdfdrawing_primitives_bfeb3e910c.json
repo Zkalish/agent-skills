@@ -1,0 +1,691 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/drawing_primitives.html",
+  "title": "Module fpdf.drawing_primitives",
+  "content": "Core drawing primitives for fpdf2.\n\nThis module defines the fundamental data structures used throughout the drawing API, including:\n\nThese classes are intentionally lightweight and self-contained so they can be safely imported from any other drawing-related module without creating circular dependencies.\n\nAll higher-level drawing features (paths, patterns, gradients, etc.) build on top of these primitives.\n\nProduce a DeviceCMYK color from the given 8-bit CMYK values.\n\nDeviceCMYK color representation.\n\nParse an RGB color from a css-style 8-bit hexadecimal color string.\n\nof the form #RGB, #RGBA, #RRGGBB, or #RRGGBBAA (case insensitive). Must include the leading octothorp. Forms omitting the alpha field are interpreted as not specifying the opacity, so it will not be explicitly set.\n\nAn alpha value of 00 is fully transparent and FF is fully opaque.\n\nDeviceRGB representation of the color.\n\nParse an RGB color from a css-style rgb(R, G, B, A) color string.\n\nDeviceRGB representation of the color.\n\nProduce a DeviceGray color from the given 8-bit gray value.\n\nDeviceGray color representation.\n\nProduce a DeviceRGB color from the given 8-bit RGB values.\n\nDeviceRGB color representation.\n\nA class representing a PDF DeviceCMYK color.\n\nThe alpha color component (i.e. opacity). Must be None or in the interval [0, 1].\n\nAn alpha value of 0 makes the color fully transparent, and a value of 1 makes it fully opaque. If None, the color will be interpreted as not specifying a particular transparency rather than specifying fully transparent or fully opaque.\n\nThe cyan color component. Must be in the interval [0, 1].\n\nThe color components as a tuple in order (c, m, y, k) with alpha omitted, in range 0-1.\n\nThe black color component. Must be in the interval [0, 1].\n\nThe magenta color component. Must be in the interval [0, 1].\n\nThe PDF drawing operator used to specify this type of color.\n\nThe yellow color component. Must be in the interval [0, 1].\n\nA class representing a PDF DeviceGray color.\n\nThe alpha color component (i.e. opacity). Must be None or in the interval [0, 1].\n\nAn alpha value of 0 makes the color fully transparent, and a value of 1 makes it fully opaque. If None, the color will be interpreted as not specifying a particular transparency rather than specifying fully transparent or fully opaque.\n\nThe color components as a tuple in order (r, g, b) with alpha omitted, in range 0-1.\n\nThe color components as a tuple in order (r, g, b) with alpha omitted, in range 0-255.\n\nThe gray color component. Must be in the interval [0, 1].\n\nA value of 0 represents black and a value of 1 represents white.\n\nThe PDF drawing operator used to specify this type of color.\n\nA class representing a PDF DeviceRGB color.\n\nThe alpha color component (i.e. opacity). Must be None or in the interval [0, 1].\n\nAn alpha value of 0 makes the color fully transparent, and a value of 1 makes it fully opaque. If None, the color will be interpreted as not specifying a particular transparency rather than specifying fully transparent or fully opaque.\n\nThe blue color component. Must be in the interval [0, 1].\n\nThe color components as a tuple in order (r, g, b) with alpha omitted, in range 0-1.\n\nThe color components as a tuple in order (r, g, b) with alpha omitted, in range 0-255.\n\nThe green color component. Must be in the interval [0, 1].\n\nThe PDF drawing operator used to specify this type of color.\n\nThe red color component. Must be in the interval [0, 1].\n\nAn x-y coordinate pair within the two-dimensional coordinate frame.\n\nThe abscissa of the point.\n\nThe ordinate of the point.\n\nProduce the sum of two points.\n\nAdding two points is the same as translating the source point by interpreting the other point's x and y coordinates as distances.\n\nA Point which is the sum of the two source points.\n\nDivide a point by a scalar value using integer division.\n\nBecause division is not commutative, Point // scalar is implemented, but scalar // Point is nonsensical and not implemented.\n\nA Point whose coordinates are the result of the division.\n\nTransform a point with the given transform matrix.\n\nThis operator is only implemented for Transforms. This transform is not commutative, so Point @ Transform is implemented, but Transform @ Point is not implemented (technically speaking, the current implementation is commutative because of the way points and transforms are represented, but if that representation were to change this operation could stop being commutative)\n\nA Point whose coordinates are the result of applying the transform.\n\nMultiply a point by a scalar value.\n\nA Point whose coordinates are the result of the multiplication.\n\nProduce a point by negating this point's coordinates.\n\nA Point whose coordinates are this points coordinates negated.\n\nProduce the difference between two points.\n\nUnlike addition, this is not a commutative operation!\n\nA Point which is the difference of the two source points.\n\nDivide a point by a scalar value.\n\nBecause division is not commutative, Point / scalar is implemented, but scalar / Point is nonsensical and not implemented.\n\nA Point whose coordinates are the result of the division.\n\nCompute the angle between two points (interpreted as vectors from the origin).\n\nThe return value is in the interval (-pi, pi]. Sign is dependent on ordering, with clockwise angle travel considered to be positive due to the orientation of the coordinate frame basis vectors (i.e. the angle between (1, 0) and (0, 1) is +pi/2, the angle between (1, 0) and (0, -1) is -pi/2, and the angle between (0, -1) and (1, 0) is +pi/2).\n\nThe scalar angle between the two points in radians.\n\nCompute the dot product of two points.\n\nThe scalar result of the dot product computation.\n\nCompute the Cartesian distance from this point to the origin\n\nThis is the same as computing the magnitude of the vector represented by this point.\n\nThe scalar result of the distance computation.\n\nRender the point to the string \"x y\" for emitting to a PDF.\n\nA representation of an affine transformation matrix for 2D shapes.\n\nThe actual matrix is:\n\nComplex transformation operations can be composed via a sequence of simple transformations by performing successive matrix multiplication of the simple transformations.\n\nFor example, scaling a set of points around a specific center point can be represented by a translation-scale-translation sequence, where the first translation translates the center to the origin, the scale transform scales the points relative to the origin, and the second translation translates the points back to the specified center point. Transform multiplication is performed using python's dedicated matrix multiplication operator, @\n\nThe semantics of this representation mean composed transformations are specified left-to-right in order of application (some other systems provide transposed representations, in which case the application order is right-to-left).\n\nFor example, to rotate the square (1,1) (1,3) (3,3) (3,1) 45 degrees clockwise about its center point (which is (2,2)) , the translate-rotate-translate process described above may be applied:\n\nInstances of this class provide a chaining API, so the above transform could also be constructed as follows:\n\nOr, because the particular operation of performing some transformations about a specific point is pretty common,\n\nBy convention, this class provides class method constructors following noun-ish naming (translation, scaling, rotation, shearing) and instance method manipulations following verb-ish naming (translate, scale, rotate, shear).\n\nCreate a transform representing the identity transform.\n\nThe identity transform is a no-op.\n\nCreate a transform that performs rotation.\n\nA Transform representing the specified rotation.\n\nCreate a transform that performs rotation in degrees.\n\nA Transform representing the specified rotation.\n\nCreate a transform that performs scaling.\n\nA Transform representing the specified scaling.\n\nCreate a transform that performs shearing (not of sheep).\n\nA Transform representing the specified shearing.\n\nCreate a skew (shear) transform using angles in radians.\n\nA Transform representing the specified skew.\n\nCreate a skew (shear) transform using angles in degrees.\n\nA Transform representing the specified skew.\n\nCreate a transform that performs translation.\n\nA Transform representing the specified translation.\n\nCompose two transforms into a single transform.\n\nA Transform representing the composed transform.\n\nMultiply the individual transform parameters by a scalar value.\n\nA Transform with the modified parameters.\n\nBracket the given transform in a pair of translations to make it appear about a point that isn't the origin.\n\nThis is a useful shorthand for performing a transform like a rotation around the center point of an object that isn't centered at the origin.\n\nTransforms are immutable, so this returns a new transform rather than mutating self.\n\nA Transform representing the composed transform.\n\nProduce a transform that is the inverse of this transform.\n\nA Transform representing the inverse of this transform.\n\nRender the transform to its PDF output representation.\n\nA tuple of (str, last_item). last_item is returned unchanged.\n\nProduce a transform by composing the current transform with a rotation.\n\nTransforms are immutable, so this returns a new transform rather than mutating self.\n\nA Transform representing the composed transform.\n\nProduce a transform by composing the current transform with a rotation in degrees.\n\nTransforms are immutable, so this returns a new transform rather than mutating self.\n\nA Transform representing the composed transform.\n\nReturns (sqrt(a² + c²), sqrt(b² + d²)), i.e. the Euclidean norms of those rows. These values bound how much the transform can stretch geometry along the device X and Y axes, respectively, and are useful for inflating axis-aligned bounding boxes to account for stroke width under the CTM.\n\nProduce a transform by composing the current transform with a scaling.\n\nTransforms are immutable, so this returns a new transform rather than mutating self.\n\nA Transform representing the composed transform.\n\nProduce a transform by composing the current transform with a shearing.\n\nTransforms are immutable, so this returns a new transform rather than mutating self.\n\nA Transform representing the composed transform.\n\nCompose with a skew (radians).\n\nCompose with a skew (degrees).\n\nProduce a transform by composing the current transform with a translation.\n\nTransforms are immutable, so this returns a new transform rather than mutating self.\n\nA Transform representing the composed transform.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.drawing_primitives",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Functions",
+      "id": "header-functions"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Raises",
+      "id": "raises"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Raises",
+      "id": "raises"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Raises",
+      "id": "raises"
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Raises",
+      "id": "raises"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Raises",
+      "id": "raises"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h3",
+      "text": "Static methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Raises",
+      "id": "raises"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Raises",
+      "id": "raises"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h2",
+      "text": "Returns",
+      "id": "returns"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "def check_range(value: Number, minimum: float = 0.0, maximum: float = 1.0) -> Number:\n    if not minimum <= value <= maximum:\n        raise ValueError(f\"{value} not in range [{minimum}, {maximum}]\")\n\n    return value",
+      "language": "python"
+    },
+    {
+      "code": "def cmyk8(\n    c: Number, m: Number, y: Number, k: Number, a: Optional[Number] = None\n) -> DeviceCMYK:\n    \"\"\"\n    Produce a DeviceCMYK color from the given 8-bit CMYK values.\n\n    Args:\n        c (Number): red color component. Must be in the interval [0, 255].\n        m (Number): green color component. Must be in the interval [0, 255].\n        y (Number): blue color component. Must be in the interval [0, 255].\n        k (Number): blue color component. Must be in the interval [0, 255].\n        a (Optional[Number]): alpha component. Must be `None` or in the interval\n            [0, 255]. 0 is fully transparent, 255 is fully opaque\n\n    Returns:\n        DeviceCMYK color representation.\n\n    Raises:\n        ValueError: if any components are not in their valid interval.\n    \"\"\"\n    if a is not None:\n        a = float(a) / 255.0\n\n    return DeviceCMYK(\n        float(c) / 255.0, float(m) / 255.0, float(y) / 255.0, float(k) / 255.0, a\n    )",
+      "language": "python"
+    },
+    {
+      "code": "def color_from_hex_string(hexstr: str) -> DeviceRGB | DeviceGray:\n    \"\"\"\n    Parse an RGB color from a css-style 8-bit hexadecimal color string.\n\n    Args:\n        hexstr (str): of the form `#RGB`, `#RGBA`, `#RRGGBB`, or `#RRGGBBAA` (case\n            insensitive). Must include the leading octothorp. Forms omitting the alpha\n            field are interpreted as not specifying the opacity, so it will not be\n            explicitly set.\n\n            An alpha value of `00` is fully transparent and `FF` is fully opaque.\n\n    Returns:\n        DeviceRGB representation of the color.\n    \"\"\"\n    if not isinstance(hexstr, str):\n        raise TypeError(f\"{hexstr} is not of type str\")\n\n    if not hexstr.startswith(\"#\"):\n        raise ValueError(f\"{hexstr} does not start with #\")\n\n    hlen = len(hexstr)\n\n    if hlen == 4:  # #RGB\n        r = int(hexstr[1] * 2, 16)\n        g = int(hexstr[2] * 2, 16)\n        b = int(hexstr[3] * 2, 16)\n        a = None\n\n    elif hlen == 5:  # #RGBA\n        r = int(hexstr[1] * 2, 16)\n        g = int(hexstr[2] * 2, 16)\n        b = int(hexstr[3] * 2, 16)\n        a = int(hexstr[4] * 2, 16)\n\n    elif hlen == 7:  # #RRGGBB\n        r = int(hexstr[1:3], 16)\n        g = int(hexstr[3:5], 16)\n        b = int(hexstr[5:7], 16)\n        a = None\n\n    elif hlen == 9:  # #RRGGBBAA\n        r = int(hexstr[1:3], 16)\n        g = int(hexstr[3:5], 16)\n        b = int(hexstr[5:7], 16)\n        a = int(hexstr[7:9], 16)\n\n    else:\n        raise ValueError(f\"{hexstr} could not be interpreted as a RGB(A) hex string\")\n\n    return rgb8(r, g, b, a)",
+      "language": "python"
+    },
+    {
+      "code": "def color_from_rgb_string(rgbstr: str) -> DeviceRGB | DeviceGray:\n    \"\"\"\n    Parse an RGB color from a css-style rgb(R, G, B, A) color string.\n\n    Args:\n        rgbstr (str): of the form `rgb(R, G, B)` or `rgb(R, G, B, A)`.\n\n    Returns:\n        DeviceRGB representation of the color.\n    \"\"\"\n    if not isinstance(rgbstr, str):\n        raise TypeError(f\"{rgbstr} is not of type str\")\n\n    rgbstr = rgbstr.replace(\" \", \"\")\n\n    if not rgbstr.startswith(\"rgb(\") or not rgbstr.endswith(\")\"):\n        raise ValueError(f\"{rgbstr} does not follow the expected rgb(...) format\")\n\n    rgbstr = rgbstr[4:-1]\n    colors = rgbstr.split(\",\")\n\n    if len(colors) == 3:\n        r, g, b = (int(c) for c in colors)\n        return rgb8(r, g, b, a=None)\n\n    if len(colors) == 4:\n        return rgb8(*[int(c) for c in colors])\n\n    raise ValueError(f\"{rgbstr} could not be interpreted as a rgb(R, G, B[, A]) color\")",
+      "language": "python"
+    },
+    {
+      "code": "def convert_to_device_color(\n    r: Number | Color | str | Sequence[Number] | DeviceCMYK | DeviceGray | DeviceRGB,\n    g: Number = -1,\n    b: Number = -1,\n) -> DeviceGray | DeviceRGB | DeviceCMYK:\n    if isinstance(r, (DeviceCMYK, DeviceGray, DeviceRGB)):\n        return r\n    if isinstance(r, str):\n        if r.startswith(\"#\"):\n            return color_from_hex_string(r)\n        raise ValueError(f\"Cannot convert string {r} to a color\")\n    if isinstance(r, Sequence):\n        assert not isinstance(r, str)\n        r, g, b = r\n    if (r, g, b) == (0, 0, 0) or g == -1:\n        return DeviceGray(r / 255)\n    return DeviceRGB(r / 255, g / 255, b / 255)",
+      "language": "python"
+    },
+    {
+      "code": "def gray8(g: Number, a: Optional[Number] = None) -> DeviceGray:\n    \"\"\"\n    Produce a DeviceGray color from the given 8-bit gray value.\n\n    Args:\n        g (Number): gray color component. Must be in the interval [0, 255]. 0 is black,\n            255 is white.\n        a (Optional[Number]): alpha component. Must be `None` or in the interval\n            [0, 255]. 0 is fully transparent, 255 is fully opaque\n\n    Returns:\n        DeviceGray color representation.\n\n    Raises:\n        ValueError: if any components are not in their valid interval.\n    \"\"\"\n    if a is not None:\n        a = float(a) / 255.0\n\n    return DeviceGray(float(g) / 255.0, a)",
+      "language": "python"
+    },
+    {
+      "code": "def rgb8(\n    r: Number, g: Number, b: Number, a: Optional[Number] = None\n) -> DeviceGray | DeviceRGB:\n    \"\"\"\n    Produce a DeviceRGB color from the given 8-bit RGB values.\n\n    Args:\n        r (Number): red color component. Must be in the interval [0, 255].\n        g (Number): green color component. Must be in the interval [0, 255].\n        b (Number): blue color component. Must be in the interval [0, 255].\n        a (Optional[Number]): alpha component. Must be `None` or in the interval\n            [0, 255]. 0 is fully transparent, 255 is fully opaque\n\n    Returns:\n        DeviceRGB color representation.\n\n    Raises:\n        ValueError: if any components are not in their valid interval.\n    \"\"\"\n    if a is None:\n        if r == g == b:\n            return DeviceGray(float(r) / 255.0)\n    else:\n        a = float(a) / 255.0\n\n    return DeviceRGB(float(r) / 255.0, float(g) / 255.0, float(b) / 255.0, a)",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True, init=False)\nclass DeviceCMYK:\n    \"\"\"A class representing a PDF DeviceCMYK color.\"\"\"\n\n    c: float\n    m: float\n    y: float\n    k: float\n    a: Optional[float]\n\n    def __init__(\n        self,\n        c: Number,\n        m: Number,\n        y: Number,\n        k: Number,\n        a: Optional[Number] = None,\n    ) -> None:\n        # normalize everything to float for internal storage\n        object.__setattr__(self, \"c\", float(check_range(c)))\n        object.__setattr__(self, \"m\", float(check_range(m)))\n        object.__setattr__(self, \"y\", float(check_range(y)))\n        object.__setattr__(self, \"k\", float(check_range(k)))\n        object.__setattr__(self, \"a\", float(check_range(a)) if a is not None else None)\n\n    @property\n    def operator(self) -> str:\n        \"The PDF drawing operator used to specify this type of color.\"\n        return \"k\"\n\n    @property\n    def colors(self) -> tuple[float, float, float, float]:\n        \"The color components as a tuple in order (c, m, y, k) with alpha omitted, in range 0-1.\"\n        return self.c, self.m, self.y, self.k\n\n    def serialize(self) -> str:\n        return \" \".join(number_to_str(val) for val in self.colors) + f\" {self.operator}\"",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True, init=False)\nclass DeviceCMYK:\n    \"\"\"A class representing a PDF DeviceCMYK color.\"\"\"\n\n    c: float\n    m: float\n    y: float\n    k: float\n    a: Optional[float]\n\n    def __init__(\n        self,\n        c: Number,\n        m: Number,\n        y: Number,\n        k: Number,\n        a: Optional[Number] = None,\n    ) -> None:\n        # normalize everything to float for internal storage\n        object.__setattr__(self, \"c\", float(check_range(c)))\n        object.__setattr__(self, \"m\", float(check_range(m)))\n        object.__setattr__(self, \"y\", float(check_range(y)))\n        object.__setattr__(self, \"k\", float(check_range(k)))\n        object.__setattr__(self, \"a\", float(check_range(a)) if a is not None else None)\n\n    @property\n    def operator(self) -> str:\n        \"The PDF drawing operator used to specify this type of color.\"\n        return \"k\"\n\n    @property\n    def colors(self) -> tuple[float, float, float, float]:\n        \"The color components as a tuple in order (c, m, y, k) with alpha omitted, in range 0-1.\"\n        return self.c, self.m, self.y, self.k\n\n    def serialize(self) -> str:\n        return \" \".join(number_to_str(val) for val in self.colors) + f\" {self.operator}\"",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True, init=False)\nclass DeviceCMYK:\n    \"\"\"A class representing a PDF DeviceCMYK color.\"\"\"\n\n    c: float\n    m: float\n    y: float\n    k: float\n    a: Optional[float]\n\n    def __init__(\n        self,\n        c: Number,\n        m: Number,\n        y: Number,\n        k: Number,\n        a: Optional[Number] = None,\n    ) -> None:\n        # normalize everything to float for internal storage\n        object.__setattr__(self, \"c\", float(check_range(c)))\n        object.__setattr__(self, \"m\", float(check_range(m)))\n        object.__setattr__(self, \"y\", float(check_range(y)))\n        object.__setattr__(self, \"k\", float(check_range(k)))\n        object.__setattr__(self, \"a\", float(check_range(a)) if a is not None else None)\n\n    @property\n    def operator(self) -> str:\n        \"The PDF drawing operator used to specify this type of color.\"\n        return \"k\"\n\n    @property\n    def colors(self) -> tuple[float, float, float, float]:\n        \"The color components as a tuple in order (c, m, y, k) with alpha omitted, in range 0-1.\"\n        return self.c, self.m, self.y, self.k\n\n    def serialize(self) -> str:\n        return \" \".join(number_to_str(val) for val in self.colors) + f\" {self.operator}\"",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef colors(self) -> tuple[float, float, float, float]:\n    \"The color components as a tuple in order (c, m, y, k) with alpha omitted, in range 0-1.\"\n    return self.c, self.m, self.y, self.k",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True, init=False)\nclass DeviceCMYK:\n    \"\"\"A class representing a PDF DeviceCMYK color.\"\"\"\n\n    c: float\n    m: float\n    y: float\n    k: float\n    a: Optional[float]\n\n    def __init__(\n        self,\n        c: Number,\n        m: Number,\n        y: Number,\n        k: Number,\n        a: Optional[Number] = None,\n    ) -> None:\n        # normalize everything to float for internal storage\n        object.__setattr__(self, \"c\", float(check_range(c)))\n        object.__setattr__(self, \"m\", float(check_range(m)))\n        object.__setattr__(self, \"y\", float(check_range(y)))\n        object.__setattr__(self, \"k\", float(check_range(k)))\n        object.__setattr__(self, \"a\", float(check_range(a)) if a is not None else None)\n\n    @property\n    def operator(self) -> str:\n        \"The PDF drawing operator used to specify this type of color.\"\n        return \"k\"\n\n    @property\n    def colors(self) -> tuple[float, float, float, float]:\n        \"The color components as a tuple in order (c, m, y, k) with alpha omitted, in range 0-1.\"\n        return self.c, self.m, self.y, self.k\n\n    def serialize(self) -> str:\n        return \" \".join(number_to_str(val) for val in self.colors) + f\" {self.operator}\"",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True, init=False)\nclass DeviceCMYK:\n    \"\"\"A class representing a PDF DeviceCMYK color.\"\"\"\n\n    c: float\n    m: float\n    y: float\n    k: float\n    a: Optional[float]\n\n    def __init__(\n        self,\n        c: Number,\n        m: Number,\n        y: Number,\n        k: Number,\n        a: Optional[Number] = None,\n    ) -> None:\n        # normalize everything to float for internal storage\n        object.__setattr__(self, \"c\", float(check_range(c)))\n        object.__setattr__(self, \"m\", float(check_range(m)))\n        object.__setattr__(self, \"y\", float(check_range(y)))\n        object.__setattr__(self, \"k\", float(check_range(k)))\n        object.__setattr__(self, \"a\", float(check_range(a)) if a is not None else None)\n\n    @property\n    def operator(self) -> str:\n        \"The PDF drawing operator used to specify this type of color.\"\n        return \"k\"\n\n    @property\n    def colors(self) -> tuple[float, float, float, float]:\n        \"The color components as a tuple in order (c, m, y, k) with alpha omitted, in range 0-1.\"\n        return self.c, self.m, self.y, self.k\n\n    def serialize(self) -> str:\n        return \" \".join(number_to_str(val) for val in self.colors) + f\" {self.operator}\"",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef operator(self) -> str:\n    \"The PDF drawing operator used to specify this type of color.\"\n    return \"k\"",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True, init=False)\nclass DeviceCMYK:\n    \"\"\"A class representing a PDF DeviceCMYK color.\"\"\"\n\n    c: float\n    m: float\n    y: float\n    k: float\n    a: Optional[float]\n\n    def __init__(\n        self,\n        c: Number,\n        m: Number,\n        y: Number,\n        k: Number,\n        a: Optional[Number] = None,\n    ) -> None:\n        # normalize everything to float for internal storage\n        object.__setattr__(self, \"c\", float(check_range(c)))\n        object.__setattr__(self, \"m\", float(check_range(m)))\n        object.__setattr__(self, \"y\", float(check_range(y)))\n        object.__setattr__(self, \"k\", float(check_range(k)))\n        object.__setattr__(self, \"a\", float(check_range(a)) if a is not None else None)\n\n    @property\n    def operator(self) -> str:\n        \"The PDF drawing operator used to specify this type of color.\"\n        return \"k\"\n\n    @property\n    def colors(self) -> tuple[float, float, float, float]:\n        \"The color components as a tuple in order (c, m, y, k) with alpha omitted, in range 0-1.\"\n        return self.c, self.m, self.y, self.k\n\n    def serialize(self) -> str:\n        return \" \".join(number_to_str(val) for val in self.colors) + f\" {self.operator}\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(self) -> str:\n    return \" \".join(number_to_str(val) for val in self.colors) + f\" {self.operator}\"",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True, init=False)\nclass DeviceGray:\n    \"\"\"A class representing a PDF DeviceGray color.\"\"\"\n\n    g: float\n    a: Optional[float]\n\n    def __init__(\n        self,\n        g: Number,\n        a: Optional[Number] = None,\n    ) -> None:\n        # normalize everything to float for internal storage\n        object.__setattr__(self, \"g\", float(check_range(g)))\n        object.__setattr__(self, \"a\", float(check_range(a)) if a is not None else None)\n\n    @property\n    def operator(self) -> str:\n        \"\"\"The PDF drawing operator used to specify this type of color.\"\"\"\n        return \"g\"\n\n    @property\n    def colors(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order (r, g, b) with alpha omitted, in range 0-1.\"\n        return self.g, self.g, self.g\n\n    @property\n    def colors255(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-255.\"\n        return 255 * self.g, 255 * self.g, 255 * self.g\n\n    def serialize(self) -> str:\n        return f\"{number_to_str(self.g)} {self.operator}\"",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True, init=False)\nclass DeviceGray:\n    \"\"\"A class representing a PDF DeviceGray color.\"\"\"\n\n    g: float\n    a: Optional[float]\n\n    def __init__(\n        self,\n        g: Number,\n        a: Optional[Number] = None,\n    ) -> None:\n        # normalize everything to float for internal storage\n        object.__setattr__(self, \"g\", float(check_range(g)))\n        object.__setattr__(self, \"a\", float(check_range(a)) if a is not None else None)\n\n    @property\n    def operator(self) -> str:\n        \"\"\"The PDF drawing operator used to specify this type of color.\"\"\"\n        return \"g\"\n\n    @property\n    def colors(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order (r, g, b) with alpha omitted, in range 0-1.\"\n        return self.g, self.g, self.g\n\n    @property\n    def colors255(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-255.\"\n        return 255 * self.g, 255 * self.g, 255 * self.g\n\n    def serialize(self) -> str:\n        return f\"{number_to_str(self.g)} {self.operator}\"",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef colors(self) -> tuple[float, float, float]:\n    \"The color components as a tuple in order (r, g, b) with alpha omitted, in range 0-1.\"\n    return self.g, self.g, self.g",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef colors255(self) -> tuple[float, float, float]:\n    \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-255.\"\n    return 255 * self.g, 255 * self.g, 255 * self.g",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True, init=False)\nclass DeviceGray:\n    \"\"\"A class representing a PDF DeviceGray color.\"\"\"\n\n    g: float\n    a: Optional[float]\n\n    def __init__(\n        self,\n        g: Number,\n        a: Optional[Number] = None,\n    ) -> None:\n        # normalize everything to float for internal storage\n        object.__setattr__(self, \"g\", float(check_range(g)))\n        object.__setattr__(self, \"a\", float(check_range(a)) if a is not None else None)\n\n    @property\n    def operator(self) -> str:\n        \"\"\"The PDF drawing operator used to specify this type of color.\"\"\"\n        return \"g\"\n\n    @property\n    def colors(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order (r, g, b) with alpha omitted, in range 0-1.\"\n        return self.g, self.g, self.g\n\n    @property\n    def colors255(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-255.\"\n        return 255 * self.g, 255 * self.g, 255 * self.g\n\n    def serialize(self) -> str:\n        return f\"{number_to_str(self.g)} {self.operator}\"",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef operator(self) -> str:\n    \"\"\"The PDF drawing operator used to specify this type of color.\"\"\"\n    return \"g\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(self) -> str:\n    return f\"{number_to_str(self.g)} {self.operator}\"",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True, init=False)\nclass DeviceRGB:\n    \"\"\"A class representing a PDF DeviceRGB color.\"\"\"\n\n    # This follows a common PDF drawing operator convention where the operand is upcased\n    # to apply to stroke and downcased to apply to fill.\n\n    # This could be more manually specified by  `CS`/`cs` to set the color space(e.g. to\n    # `/DeviceRGB`) and `SC`/`sc` to set the color parameters. The documentation isn't\n    # perfectly clear on this front, but it appears that these cannot be set in the\n    # current graphics state dictionary and instead is set in the current page resource\n    # dictionary. fpdf appears to only generate a single resource dictionary for the\n    # entire document, and even if it created one per page, it would still be a lot\n    # clunkier to try to use that.\n\n    # Because PDF hates me, personally, the opacity of the drawing HAS to be specified\n    # in the current graphics state dictionary and does not exist as a standalone\n    # directive.\n\n    r: float\n    g: float\n    b: float\n    a: Optional[float]\n\n    def __init__(\n        self,\n        r: Number,\n        g: Number,\n        b: Number,\n        a: Optional[Number] = None,\n    ) -> None:\n        # normalize everything to float for internal storage\n        object.__setattr__(self, \"r\", float(check_range(r)))\n        object.__setattr__(self, \"g\", float(check_range(g)))\n        object.__setattr__(self, \"b\", float(check_range(b)))\n        object.__setattr__(self, \"a\", float(check_range(a)) if a is not None else None)\n\n    @property\n    def operator(self) -> str:\n        \"The PDF drawing operator used to specify this type of color.\"\n        return \"rg\"\n\n    @property\n    def colors(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-1.\"\n        return (self.r, self.g, self.b)\n\n    @property\n    def colors255(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-255.\"\n        return (255 * self.r, 255 * self.g, 255 * self.b)\n\n    def serialize(self) -> str:\n        return \" \".join(number_to_str(val) for val in self.colors) + f\" {self.operator}\"\n\n    def is_achromatic(self) -> bool:\n        return abs(self.r - self.g) < 1e-9 and abs(self.g - self.b) < 1e-9\n\n    def to_gray(self) -> \"DeviceGray\":\n        # sRGB luminance\n        return DeviceGray(0.2126 * self.r + 0.7152 * self.g + 0.0722 * self.b)",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True, init=False)\nclass DeviceRGB:\n    \"\"\"A class representing a PDF DeviceRGB color.\"\"\"\n\n    # This follows a common PDF drawing operator convention where the operand is upcased\n    # to apply to stroke and downcased to apply to fill.\n\n    # This could be more manually specified by  `CS`/`cs` to set the color space(e.g. to\n    # `/DeviceRGB`) and `SC`/`sc` to set the color parameters. The documentation isn't\n    # perfectly clear on this front, but it appears that these cannot be set in the\n    # current graphics state dictionary and instead is set in the current page resource\n    # dictionary. fpdf appears to only generate a single resource dictionary for the\n    # entire document, and even if it created one per page, it would still be a lot\n    # clunkier to try to use that.\n\n    # Because PDF hates me, personally, the opacity of the drawing HAS to be specified\n    # in the current graphics state dictionary and does not exist as a standalone\n    # directive.\n\n    r: float\n    g: float\n    b: float\n    a: Optional[float]\n\n    def __init__(\n        self,\n        r: Number,\n        g: Number,\n        b: Number,\n        a: Optional[Number] = None,\n    ) -> None:\n        # normalize everything to float for internal storage\n        object.__setattr__(self, \"r\", float(check_range(r)))\n        object.__setattr__(self, \"g\", float(check_range(g)))\n        object.__setattr__(self, \"b\", float(check_range(b)))\n        object.__setattr__(self, \"a\", float(check_range(a)) if a is not None else None)\n\n    @property\n    def operator(self) -> str:\n        \"The PDF drawing operator used to specify this type of color.\"\n        return \"rg\"\n\n    @property\n    def colors(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-1.\"\n        return (self.r, self.g, self.b)\n\n    @property\n    def colors255(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-255.\"\n        return (255 * self.r, 255 * self.g, 255 * self.b)\n\n    def serialize(self) -> str:\n        return \" \".join(number_to_str(val) for val in self.colors) + f\" {self.operator}\"\n\n    def is_achromatic(self) -> bool:\n        return abs(self.r - self.g) < 1e-9 and abs(self.g - self.b) < 1e-9\n\n    def to_gray(self) -> \"DeviceGray\":\n        # sRGB luminance\n        return DeviceGray(0.2126 * self.r + 0.7152 * self.g + 0.0722 * self.b)",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True, init=False)\nclass DeviceRGB:\n    \"\"\"A class representing a PDF DeviceRGB color.\"\"\"\n\n    # This follows a common PDF drawing operator convention where the operand is upcased\n    # to apply to stroke and downcased to apply to fill.\n\n    # This could be more manually specified by  `CS`/`cs` to set the color space(e.g. to\n    # `/DeviceRGB`) and `SC`/`sc` to set the color parameters. The documentation isn't\n    # perfectly clear on this front, but it appears that these cannot be set in the\n    # current graphics state dictionary and instead is set in the current page resource\n    # dictionary. fpdf appears to only generate a single resource dictionary for the\n    # entire document, and even if it created one per page, it would still be a lot\n    # clunkier to try to use that.\n\n    # Because PDF hates me, personally, the opacity of the drawing HAS to be specified\n    # in the current graphics state dictionary and does not exist as a standalone\n    # directive.\n\n    r: float\n    g: float\n    b: float\n    a: Optional[float]\n\n    def __init__(\n        self,\n        r: Number,\n        g: Number,\n        b: Number,\n        a: Optional[Number] = None,\n    ) -> None:\n        # normalize everything to float for internal storage\n        object.__setattr__(self, \"r\", float(check_range(r)))\n        object.__setattr__(self, \"g\", float(check_range(g)))\n        object.__setattr__(self, \"b\", float(check_range(b)))\n        object.__setattr__(self, \"a\", float(check_range(a)) if a is not None else None)\n\n    @property\n    def operator(self) -> str:\n        \"The PDF drawing operator used to specify this type of color.\"\n        return \"rg\"\n\n    @property\n    def colors(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-1.\"\n        return (self.r, self.g, self.b)\n\n    @property\n    def colors255(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-255.\"\n        return (255 * self.r, 255 * self.g, 255 * self.b)\n\n    def serialize(self) -> str:\n        return \" \".join(number_to_str(val) for val in self.colors) + f\" {self.operator}\"\n\n    def is_achromatic(self) -> bool:\n        return abs(self.r - self.g) < 1e-9 and abs(self.g - self.b) < 1e-9\n\n    def to_gray(self) -> \"DeviceGray\":\n        # sRGB luminance\n        return DeviceGray(0.2126 * self.r + 0.7152 * self.g + 0.0722 * self.b)",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef colors(self) -> tuple[float, float, float]:\n    \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-1.\"\n    return (self.r, self.g, self.b)",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef colors255(self) -> tuple[float, float, float]:\n    \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-255.\"\n    return (255 * self.r, 255 * self.g, 255 * self.b)",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True, init=False)\nclass DeviceRGB:\n    \"\"\"A class representing a PDF DeviceRGB color.\"\"\"\n\n    # This follows a common PDF drawing operator convention where the operand is upcased\n    # to apply to stroke and downcased to apply to fill.\n\n    # This could be more manually specified by  `CS`/`cs` to set the color space(e.g. to\n    # `/DeviceRGB`) and `SC`/`sc` to set the color parameters. The documentation isn't\n    # perfectly clear on this front, but it appears that these cannot be set in the\n    # current graphics state dictionary and instead is set in the current page resource\n    # dictionary. fpdf appears to only generate a single resource dictionary for the\n    # entire document, and even if it created one per page, it would still be a lot\n    # clunkier to try to use that.\n\n    # Because PDF hates me, personally, the opacity of the drawing HAS to be specified\n    # in the current graphics state dictionary and does not exist as a standalone\n    # directive.\n\n    r: float\n    g: float\n    b: float\n    a: Optional[float]\n\n    def __init__(\n        self,\n        r: Number,\n        g: Number,\n        b: Number,\n        a: Optional[Number] = None,\n    ) -> None:\n        # normalize everything to float for internal storage\n        object.__setattr__(self, \"r\", float(check_range(r)))\n        object.__setattr__(self, \"g\", float(check_range(g)))\n        object.__setattr__(self, \"b\", float(check_range(b)))\n        object.__setattr__(self, \"a\", float(check_range(a)) if a is not None else None)\n\n    @property\n    def operator(self) -> str:\n        \"The PDF drawing operator used to specify this type of color.\"\n        return \"rg\"\n\n    @property\n    def colors(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-1.\"\n        return (self.r, self.g, self.b)\n\n    @property\n    def colors255(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-255.\"\n        return (255 * self.r, 255 * self.g, 255 * self.b)\n\n    def serialize(self) -> str:\n        return \" \".join(number_to_str(val) for val in self.colors) + f\" {self.operator}\"\n\n    def is_achromatic(self) -> bool:\n        return abs(self.r - self.g) < 1e-9 and abs(self.g - self.b) < 1e-9\n\n    def to_gray(self) -> \"DeviceGray\":\n        # sRGB luminance\n        return DeviceGray(0.2126 * self.r + 0.7152 * self.g + 0.0722 * self.b)",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef operator(self) -> str:\n    \"The PDF drawing operator used to specify this type of color.\"\n    return \"rg\"",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True, init=False)\nclass DeviceRGB:\n    \"\"\"A class representing a PDF DeviceRGB color.\"\"\"\n\n    # This follows a common PDF drawing operator convention where the operand is upcased\n    # to apply to stroke and downcased to apply to fill.\n\n    # This could be more manually specified by  `CS`/`cs` to set the color space(e.g. to\n    # `/DeviceRGB`) and `SC`/`sc` to set the color parameters. The documentation isn't\n    # perfectly clear on this front, but it appears that these cannot be set in the\n    # current graphics state dictionary and instead is set in the current page resource\n    # dictionary. fpdf appears to only generate a single resource dictionary for the\n    # entire document, and even if it created one per page, it would still be a lot\n    # clunkier to try to use that.\n\n    # Because PDF hates me, personally, the opacity of the drawing HAS to be specified\n    # in the current graphics state dictionary and does not exist as a standalone\n    # directive.\n\n    r: float\n    g: float\n    b: float\n    a: Optional[float]\n\n    def __init__(\n        self,\n        r: Number,\n        g: Number,\n        b: Number,\n        a: Optional[Number] = None,\n    ) -> None:\n        # normalize everything to float for internal storage\n        object.__setattr__(self, \"r\", float(check_range(r)))\n        object.__setattr__(self, \"g\", float(check_range(g)))\n        object.__setattr__(self, \"b\", float(check_range(b)))\n        object.__setattr__(self, \"a\", float(check_range(a)) if a is not None else None)\n\n    @property\n    def operator(self) -> str:\n        \"The PDF drawing operator used to specify this type of color.\"\n        return \"rg\"\n\n    @property\n    def colors(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-1.\"\n        return (self.r, self.g, self.b)\n\n    @property\n    def colors255(self) -> tuple[float, float, float]:\n        \"The color components as a tuple in order `(r, g, b)` with alpha omitted, in range 0-255.\"\n        return (255 * self.r, 255 * self.g, 255 * self.b)\n\n    def serialize(self) -> str:\n        return \" \".join(number_to_str(val) for val in self.colors) + f\" {self.operator}\"\n\n    def is_achromatic(self) -> bool:\n        return abs(self.r - self.g) < 1e-9 and abs(self.g - self.b) < 1e-9\n\n    def to_gray(self) -> \"DeviceGray\":\n        # sRGB luminance\n        return DeviceGray(0.2126 * self.r + 0.7152 * self.g + 0.0722 * self.b)",
+      "language": "python"
+    },
+    {
+      "code": "def is_achromatic(self) -> bool:\n    return abs(self.r - self.g) < 1e-9 and abs(self.g - self.b) < 1e-9",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(self) -> str:\n    return \" \".join(number_to_str(val) for val in self.colors) + f\" {self.operator}\"",
+      "language": "python"
+    },
+    {
+      "code": "def to_gray(self) -> \"DeviceGray\":\n    # sRGB luminance\n    return DeviceGray(0.2126 * self.r + 0.7152 * self.g + 0.0722 * self.b)",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True)\nclass Point:\n    \"\"\"\n    An x-y coordinate pair within the two-dimensional coordinate frame.\n    \"\"\"\n\n    x: float\n    \"\"\"The abscissa of the point.\"\"\"\n\n    y: float\n    \"\"\"The ordinate of the point.\"\"\"\n\n    def render(self) -> str:\n        \"\"\"Render the point to the string `\"x y\"` for emitting to a PDF.\"\"\"\n\n        return f\"{number_to_str(self.x)} {number_to_str(self.y)}\"\n\n    def dot(self, other: \"Point\") -> float:\n        \"\"\"\n        Compute the dot product of two points.\n\n        Args:\n            other (Point): the point with which to compute the dot product.\n\n        Returns:\n            The scalar result of the dot product computation.\n\n        Raises:\n            TypeError: if `other` is not a `Point`.\n        \"\"\"\n        if not isinstance(other, Point):\n            raise TypeError(f\"cannot dot with {other!r}\")\n\n        return self.x * other.x + self.y * other.y\n\n    def angle(self, other: \"Point\") -> float:\n        \"\"\"\n        Compute the angle between two points (interpreted as vectors from the origin).\n\n        The return value is in the interval (-pi, pi]. Sign is dependent on ordering,\n        with clockwise angle travel considered to be positive due to the orientation of\n        the coordinate frame basis vectors (i.e. the angle between `(1, 0)` and `(0, 1)`\n        is `+pi/2`, the angle between `(1, 0)` and `(0, -1)` is `-pi/2`, and the angle\n        between `(0, -1)` and `(1, 0)` is `+pi/2`).\n\n        Args:\n            other (Point): the point to compute the angle sweep toward.\n\n        Returns:\n            The scalar angle between the two points **in radians**.\n\n        Raises:\n            TypeError: if `other` is not a `Point`.\n        \"\"\"\n\n        if not isinstance(other, Point):\n            raise TypeError(f\"cannot compute angle with {other!r}\")\n\n        signifier = (self.x * other.y) - (self.y * other.x)\n        sign = (signifier >= 0) - (signifier < 0)\n        if self.mag() * other.mag() == 0:  # Prevent division by 0\n            return 0.0\n        return sign * math.acos(round(self.dot(other) / (self.mag() * other.mag()), 8))\n\n    def mag(self) -> float:\n        \"\"\"\n        Compute the Cartesian distance from this point to the origin\n\n        This is the same as computing the magnitude of the vector represented by this\n        point.\n\n        Returns:\n            The scalar result of the distance computation.\n        \"\"\"\n        return math.hypot(self.x, self.y)\n\n    @force_document\n    def __add__(self, other: \"Point\") -> \"Point\":\n        \"\"\"\n        Produce the sum of two points.\n\n        Adding two points is the same as translating the source point by interpreting\n        the other point's x and y coordinates as distances.\n\n        Args:\n            other (Point): right-hand side of the infix addition operation\n\n        Returns:\n            A Point which is the sum of the two source points.\n        \"\"\"\n        if isinstance(other, Point):\n            return Point(x=self.x + other.x, y=self.y + other.y)\n\n        return NotImplemented\n\n    @force_document\n    def __sub__(self, other: \"Point\") -> \"Point\":\n        \"\"\"\n        Produce the difference between two points.\n\n        Unlike addition, this is not a commutative operation!\n\n        Args:\n            other (Point): right-hand side of the infix subtraction operation\n\n        Returns:\n            A Point which is the difference of the two source points.\n        \"\"\"\n        if isinstance(other, Point):\n            return Point(x=self.x - other.x, y=self.y - other.y)\n\n        return NotImplemented\n\n    @force_document\n    def __neg__(self) -> \"Point\":\n        \"\"\"\n        Produce a point by negating this point's coordinates.\n\n        Returns:\n            A Point whose coordinates are this points coordinates negated.\n        \"\"\"\n        return Point(x=-self.x, y=-self.y)\n\n    @force_document\n    def __mul__(self, other: Number) -> \"Point\":\n        \"\"\"\n        Multiply a point by a scalar value.\n\n        Args:\n            other (Number): the scalar value by which to multiply the point's\n                coordinates.\n\n        Returns:\n            A Point whose coordinates are the result of the multiplication.\n        \"\"\"\n        if isinstance(other, NumberClass):\n            float_other = float(other)\n            return Point(self.x * float_other, self.y * float_other)\n\n        return NotImplemented\n\n    @force_document\n    def __rmul__(self, other: Number) -> \"Point\":\n        return self.__mul__(other)\n\n    @force_document\n    def __truediv__(self, other: Number) -> \"Point\":\n        \"\"\"\n        Divide a point by a scalar value.\n\n        .. note::\n\n            Because division is not commutative, `Point / scalar` is implemented, but\n            `scalar / Point` is nonsensical and not implemented.\n\n        Args:\n            other (Number): the scalar value by which to divide the point's coordinates.\n\n        Returns:\n            A Point whose coordinates are the result of the division.\n        \"\"\"\n        if isinstance(other, NumberClass):\n            return Point(self.x / float(other), self.y / float(other))\n\n        return NotImplemented\n\n    @force_document\n    def __floordiv__(self, other: Number) -> \"Point\":\n        \"\"\"\n        Divide a point by a scalar value using integer division.\n\n        .. note::\n\n            Because division is not commutative, `Point // scalar` is implemented, but\n            `scalar // Point` is nonsensical and not implemented.\n\n        Args:\n            other (Number): the scalar value by which to divide the point's coordinates.\n\n        Returns:\n            A Point whose coordinates are the result of the division.\n        \"\"\"\n        if isinstance(other, NumberClass):\n            return Point(self.x // float(other), self.y // float(other))\n\n        return NotImplemented\n\n    def __iter__(self) -> Iterator[float]:\n        \"\"\"Iterate over point coordinates in (x, y) order.\"\"\"\n        yield self.x\n        yield self.y\n\n    def __len__(self) -> int:\n        \"\"\"Length to mimic tuple-like behaviour for compatibility.\"\"\"\n        return 2\n\n    def __getitem__(self, idx: int) -> float:\n        \"\"\"Indexable access to coordinates in (x, y) order.\"\"\"\n        return (self.x, self.y)[idx]\n\n    # no __r(true|floor)div__ because division is not commutative!\n\n    @force_document\n    def __matmul__(self, other: \"Transform\") -> \"Point\":\n        \"\"\"\n        Transform a point with the given transform matrix.\n\n        .. note::\n            This operator is only implemented for Transforms. This transform is not\n            commutative, so `Point @ Transform` is implemented, but `Transform @ Point`\n            is not implemented (technically speaking, the current implementation is\n            commutative because of the way points and transforms are represented, but\n            if that representation were to change this operation could stop being\n            commutative)\n\n        Args:\n            other (Transform): the transform to apply to the point\n\n        Returns:\n            A Point whose coordinates are the result of applying the transform.\n        \"\"\"\n        if isinstance(other, Transform):\n            return Point(\n                x=other.a * self.x + other.c * self.y + other.e,\n                y=other.b * self.x + other.d * self.y + other.f,\n            )\n\n        return NotImplemented\n\n    def __str__(self) -> str:\n        return f\"(x={number_to_str(self.x)}, y={number_to_str(self.y)})\"",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True)\nclass Point:\n    \"\"\"\n    An x-y coordinate pair within the two-dimensional coordinate frame.\n    \"\"\"\n\n    x: float\n    \"\"\"The abscissa of the point.\"\"\"\n\n    y: float\n    \"\"\"The ordinate of the point.\"\"\"\n\n    def render(self) -> str:\n        \"\"\"Render the point to the string `\"x y\"` for emitting to a PDF.\"\"\"\n\n        return f\"{number_to_str(self.x)} {number_to_str(self.y)}\"\n\n    def dot(self, other: \"Point\") -> float:\n        \"\"\"\n        Compute the dot product of two points.\n\n        Args:\n            other (Point): the point with which to compute the dot product.\n\n        Returns:\n            The scalar result of the dot product computation.\n\n        Raises:\n            TypeError: if `other` is not a `Point`.\n        \"\"\"\n        if not isinstance(other, Point):\n            raise TypeError(f\"cannot dot with {other!r}\")\n\n        return self.x * other.x + self.y * other.y\n\n    def angle(self, other: \"Point\") -> float:\n        \"\"\"\n        Compute the angle between two points (interpreted as vectors from the origin).\n\n        The return value is in the interval (-pi, pi]. Sign is dependent on ordering,\n        with clockwise angle travel considered to be positive due to the orientation of\n        the coordinate frame basis vectors (i.e. the angle between `(1, 0)` and `(0, 1)`\n        is `+pi/2`, the angle between `(1, 0)` and `(0, -1)` is `-pi/2`, and the angle\n        between `(0, -1)` and `(1, 0)` is `+pi/2`).\n\n        Args:\n            other (Point): the point to compute the angle sweep toward.\n\n        Returns:\n            The scalar angle between the two points **in radians**.\n\n        Raises:\n            TypeError: if `other` is not a `Point`.\n        \"\"\"\n\n        if not isinstance(other, Point):\n            raise TypeError(f\"cannot compute angle with {other!r}\")\n\n        signifier = (self.x * other.y) - (self.y * other.x)\n        sign = (signifier >= 0) - (signifier < 0)\n        if self.mag() * other.mag() == 0:  # Prevent division by 0\n            return 0.0\n        return sign * math.acos(round(self.dot(other) / (self.mag() * other.mag()), 8))\n\n    def mag(self) -> float:\n        \"\"\"\n        Compute the Cartesian distance from this point to the origin\n\n        This is the same as computing the magnitude of the vector represented by this\n        point.\n\n        Returns:\n            The scalar result of the distance computation.\n        \"\"\"\n        return math.hypot(self.x, self.y)\n\n    @force_document\n    def __add__(self, other: \"Point\") -> \"Point\":\n        \"\"\"\n        Produce the sum of two points.\n\n        Adding two points is the same as translating the source point by interpreting\n        the other point's x and y coordinates as distances.\n\n        Args:\n            other (Point): right-hand side of the infix addition operation\n\n        Returns:\n            A Point which is the sum of the two source points.\n        \"\"\"\n        if isinstance(other, Point):\n            return Point(x=self.x + other.x, y=self.y + other.y)\n\n        return NotImplemented\n\n    @force_document\n    def __sub__(self, other: \"Point\") -> \"Point\":\n        \"\"\"\n        Produce the difference between two points.\n\n        Unlike addition, this is not a commutative operation!\n\n        Args:\n            other (Point): right-hand side of the infix subtraction operation\n\n        Returns:\n            A Point which is the difference of the two source points.\n        \"\"\"\n        if isinstance(other, Point):\n            return Point(x=self.x - other.x, y=self.y - other.y)\n\n        return NotImplemented\n\n    @force_document\n    def __neg__(self) -> \"Point\":\n        \"\"\"\n        Produce a point by negating this point's coordinates.\n\n        Returns:\n            A Point whose coordinates are this points coordinates negated.\n        \"\"\"\n        return Point(x=-self.x, y=-self.y)\n\n    @force_document\n    def __mul__(self, other: Number) -> \"Point\":\n        \"\"\"\n        Multiply a point by a scalar value.\n\n        Args:\n            other (Number): the scalar value by which to multiply the point's\n                coordinates.\n\n        Returns:\n            A Point whose coordinates are the result of the multiplication.\n        \"\"\"\n        if isinstance(other, NumberClass):\n            float_other = float(other)\n            return Point(self.x * float_other, self.y * float_other)\n\n        return NotImplemented\n\n    @force_document\n    def __rmul__(self, other: Number) -> \"Point\":\n        return self.__mul__(other)\n\n    @force_document\n    def __truediv__(self, other: Number) -> \"Point\":\n        \"\"\"\n        Divide a point by a scalar value.\n\n        .. note::\n\n            Because division is not commutative, `Point / scalar` is implemented, but\n            `scalar / Point` is nonsensical and not implemented.\n\n        Args:\n            other (Number): the scalar value by which to divide the point's coordinates.\n\n        Returns:\n            A Point whose coordinates are the result of the division.\n        \"\"\"\n        if isinstance(other, NumberClass):\n            return Point(self.x / float(other), self.y / float(other))\n\n        return NotImplemented\n\n    @force_document\n    def __floordiv__(self, other: Number) -> \"Point\":\n        \"\"\"\n        Divide a point by a scalar value using integer division.\n\n        .. note::\n\n            Because division is not commutative, `Point // scalar` is implemented, but\n            `scalar // Point` is nonsensical and not implemented.\n\n        Args:\n            other (Number): the scalar value by which to divide the point's coordinates.\n\n        Returns:\n            A Point whose coordinates are the result of the division.\n        \"\"\"\n        if isinstance(other, NumberClass):\n            return Point(self.x // float(other), self.y // float(other))\n\n        return NotImplemented\n\n    def __iter__(self) -> Iterator[float]:\n        \"\"\"Iterate over point coordinates in (x, y) order.\"\"\"\n        yield self.x\n        yield self.y\n\n    def __len__(self) -> int:\n        \"\"\"Length to mimic tuple-like behaviour for compatibility.\"\"\"\n        return 2\n\n    def __getitem__(self, idx: int) -> float:\n        \"\"\"Indexable access to coordinates in (x, y) order.\"\"\"\n        return (self.x, self.y)[idx]\n\n    # no __r(true|floor)div__ because division is not commutative!\n\n    @force_document\n    def __matmul__(self, other: \"Transform\") -> \"Point\":\n        \"\"\"\n        Transform a point with the given transform matrix.\n\n        .. note::\n            This operator is only implemented for Transforms. This transform is not\n            commutative, so `Point @ Transform` is implemented, but `Transform @ Point`\n            is not implemented (technically speaking, the current implementation is\n            commutative because of the way points and transforms are represented, but\n            if that representation were to change this operation could stop being\n            commutative)\n\n        Args:\n            other (Transform): the transform to apply to the point\n\n        Returns:\n            A Point whose coordinates are the result of applying the transform.\n        \"\"\"\n        if isinstance(other, Transform):\n            return Point(\n                x=other.a * self.x + other.c * self.y + other.e,\n                y=other.b * self.x + other.d * self.y + other.f,\n            )\n\n        return NotImplemented\n\n    def __str__(self) -> str:\n        return f\"(x={number_to_str(self.x)}, y={number_to_str(self.y)})\"",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True)\nclass Point:\n    \"\"\"\n    An x-y coordinate pair within the two-dimensional coordinate frame.\n    \"\"\"\n\n    x: float\n    \"\"\"The abscissa of the point.\"\"\"\n\n    y: float\n    \"\"\"The ordinate of the point.\"\"\"\n\n    def render(self) -> str:\n        \"\"\"Render the point to the string `\"x y\"` for emitting to a PDF.\"\"\"\n\n        return f\"{number_to_str(self.x)} {number_to_str(self.y)}\"\n\n    def dot(self, other: \"Point\") -> float:\n        \"\"\"\n        Compute the dot product of two points.\n\n        Args:\n            other (Point): the point with which to compute the dot product.\n\n        Returns:\n            The scalar result of the dot product computation.\n\n        Raises:\n            TypeError: if `other` is not a `Point`.\n        \"\"\"\n        if not isinstance(other, Point):\n            raise TypeError(f\"cannot dot with {other!r}\")\n\n        return self.x * other.x + self.y * other.y\n\n    def angle(self, other: \"Point\") -> float:\n        \"\"\"\n        Compute the angle between two points (interpreted as vectors from the origin).\n\n        The return value is in the interval (-pi, pi]. Sign is dependent on ordering,\n        with clockwise angle travel considered to be positive due to the orientation of\n        the coordinate frame basis vectors (i.e. the angle between `(1, 0)` and `(0, 1)`\n        is `+pi/2`, the angle between `(1, 0)` and `(0, -1)` is `-pi/2`, and the angle\n        between `(0, -1)` and `(1, 0)` is `+pi/2`).\n\n        Args:\n            other (Point): the point to compute the angle sweep toward.\n\n        Returns:\n            The scalar angle between the two points **in radians**.\n\n        Raises:\n            TypeError: if `other` is not a `Point`.\n        \"\"\"\n\n        if not isinstance(other, Point):\n            raise TypeError(f\"cannot compute angle with {other!r}\")\n\n        signifier = (self.x * other.y) - (self.y * other.x)\n        sign = (signifier >= 0) - (signifier < 0)\n        if self.mag() * other.mag() == 0:  # Prevent division by 0\n            return 0.0\n        return sign * math.acos(round(self.dot(other) / (self.mag() * other.mag()), 8))\n\n    def mag(self) -> float:\n        \"\"\"\n        Compute the Cartesian distance from this point to the origin\n\n        This is the same as computing the magnitude of the vector represented by this\n        point.\n\n        Returns:\n            The scalar result of the distance computation.\n        \"\"\"\n        return math.hypot(self.x, self.y)\n\n    @force_document\n    def __add__(self, other: \"Point\") -> \"Point\":\n        \"\"\"\n        Produce the sum of two points.\n\n        Adding two points is the same as translating the source point by interpreting\n        the other point's x and y coordinates as distances.\n\n        Args:\n            other (Point): right-hand side of the infix addition operation\n\n        Returns:\n            A Point which is the sum of the two source points.\n        \"\"\"\n        if isinstance(other, Point):\n            return Point(x=self.x + other.x, y=self.y + other.y)\n\n        return NotImplemented\n\n    @force_document\n    def __sub__(self, other: \"Point\") -> \"Point\":\n        \"\"\"\n        Produce the difference between two points.\n\n        Unlike addition, this is not a commutative operation!\n\n        Args:\n            other (Point): right-hand side of the infix subtraction operation\n\n        Returns:\n            A Point which is the difference of the two source points.\n        \"\"\"\n        if isinstance(other, Point):\n            return Point(x=self.x - other.x, y=self.y - other.y)\n\n        return NotImplemented\n\n    @force_document\n    def __neg__(self) -> \"Point\":\n        \"\"\"\n        Produce a point by negating this point's coordinates.\n\n        Returns:\n            A Point whose coordinates are this points coordinates negated.\n        \"\"\"\n        return Point(x=-self.x, y=-self.y)\n\n    @force_document\n    def __mul__(self, other: Number) -> \"Point\":\n        \"\"\"\n        Multiply a point by a scalar value.\n\n        Args:\n            other (Number): the scalar value by which to multiply the point's\n                coordinates.\n\n        Returns:\n            A Point whose coordinates are the result of the multiplication.\n        \"\"\"\n        if isinstance(other, NumberClass):\n            float_other = float(other)\n            return Point(self.x * float_other, self.y * float_other)\n\n        return NotImplemented\n\n    @force_document\n    def __rmul__(self, other: Number) -> \"Point\":\n        return self.__mul__(other)\n\n    @force_document\n    def __truediv__(self, other: Number) -> \"Point\":\n        \"\"\"\n        Divide a point by a scalar value.\n\n        .. note::\n\n            Because division is not commutative, `Point / scalar` is implemented, but\n            `scalar / Point` is nonsensical and not implemented.\n\n        Args:\n            other (Number): the scalar value by which to divide the point's coordinates.\n\n        Returns:\n            A Point whose coordinates are the result of the division.\n        \"\"\"\n        if isinstance(other, NumberClass):\n            return Point(self.x / float(other), self.y / float(other))\n\n        return NotImplemented\n\n    @force_document\n    def __floordiv__(self, other: Number) -> \"Point\":\n        \"\"\"\n        Divide a point by a scalar value using integer division.\n\n        .. note::\n\n            Because division is not commutative, `Point // scalar` is implemented, but\n            `scalar // Point` is nonsensical and not implemented.\n\n        Args:\n            other (Number): the scalar value by which to divide the point's coordinates.\n\n        Returns:\n            A Point whose coordinates are the result of the division.\n        \"\"\"\n        if isinstance(other, NumberClass):\n            return Point(self.x // float(other), self.y // float(other))\n\n        return NotImplemented\n\n    def __iter__(self) -> Iterator[float]:\n        \"\"\"Iterate over point coordinates in (x, y) order.\"\"\"\n        yield self.x\n        yield self.y\n\n    def __len__(self) -> int:\n        \"\"\"Length to mimic tuple-like behaviour for compatibility.\"\"\"\n        return 2\n\n    def __getitem__(self, idx: int) -> float:\n        \"\"\"Indexable access to coordinates in (x, y) order.\"\"\"\n        return (self.x, self.y)[idx]\n\n    # no __r(true|floor)div__ because division is not commutative!\n\n    @force_document\n    def __matmul__(self, other: \"Transform\") -> \"Point\":\n        \"\"\"\n        Transform a point with the given transform matrix.\n\n        .. note::\n            This operator is only implemented for Transforms. This transform is not\n            commutative, so `Point @ Transform` is implemented, but `Transform @ Point`\n            is not implemented (technically speaking, the current implementation is\n            commutative because of the way points and transforms are represented, but\n            if that representation were to change this operation could stop being\n            commutative)\n\n        Args:\n            other (Transform): the transform to apply to the point\n\n        Returns:\n            A Point whose coordinates are the result of applying the transform.\n        \"\"\"\n        if isinstance(other, Transform):\n            return Point(\n                x=other.a * self.x + other.c * self.y + other.e,\n                y=other.b * self.x + other.d * self.y + other.f,\n            )\n\n        return NotImplemented\n\n    def __str__(self) -> str:\n        return f\"(x={number_to_str(self.x)}, y={number_to_str(self.y)})\"",
+      "language": "python"
+    },
+    {
+      "code": "@force_document\ndef __add__(self, other: \"Point\") -> \"Point\":\n    \"\"\"\n    Produce the sum of two points.\n\n    Adding two points is the same as translating the source point by interpreting\n    the other point's x and y coordinates as distances.\n\n    Args:\n        other (Point): right-hand side of the infix addition operation\n\n    Returns:\n        A Point which is the sum of the two source points.\n    \"\"\"\n    if isinstance(other, Point):\n        return Point(x=self.x + other.x, y=self.y + other.y)\n\n    return NotImplemented",
+      "language": "python"
+    },
+    {
+      "code": "@force_document\ndef __floordiv__(self, other: Number) -> \"Point\":\n    \"\"\"\n    Divide a point by a scalar value using integer division.\n\n    .. note::\n\n        Because division is not commutative, `Point // scalar` is implemented, but\n        `scalar // Point` is nonsensical and not implemented.\n\n    Args:\n        other (Number): the scalar value by which to divide the point's coordinates.\n\n    Returns:\n        A Point whose coordinates are the result of the division.\n    \"\"\"\n    if isinstance(other, NumberClass):\n        return Point(self.x // float(other), self.y // float(other))\n\n    return NotImplemented",
+      "language": "python"
+    },
+    {
+      "code": "@force_document\ndef __matmul__(self, other: \"Transform\") -> \"Point\":\n    \"\"\"\n    Transform a point with the given transform matrix.\n\n    .. note::\n        This operator is only implemented for Transforms. This transform is not\n        commutative, so `Point @ Transform` is implemented, but `Transform @ Point`\n        is not implemented (technically speaking, the current implementation is\n        commutative because of the way points and transforms are represented, but\n        if that representation were to change this operation could stop being\n        commutative)\n\n    Args:\n        other (Transform): the transform to apply to the point\n\n    Returns:\n        A Point whose coordinates are the result of applying the transform.\n    \"\"\"\n    if isinstance(other, Transform):\n        return Point(\n            x=other.a * self.x + other.c * self.y + other.e,\n            y=other.b * self.x + other.d * self.y + other.f,\n        )\n\n    return NotImplemented",
+      "language": "python"
+    },
+    {
+      "code": "@force_document\ndef __mul__(self, other: Number) -> \"Point\":\n    \"\"\"\n    Multiply a point by a scalar value.\n\n    Args:\n        other (Number): the scalar value by which to multiply the point's\n            coordinates.\n\n    Returns:\n        A Point whose coordinates are the result of the multiplication.\n    \"\"\"\n    if isinstance(other, NumberClass):\n        float_other = float(other)\n        return Point(self.x * float_other, self.y * float_other)\n\n    return NotImplemented",
+      "language": "python"
+    },
+    {
+      "code": "@force_document\ndef __neg__(self) -> \"Point\":\n    \"\"\"\n    Produce a point by negating this point's coordinates.\n\n    Returns:\n        A Point whose coordinates are this points coordinates negated.\n    \"\"\"\n    return Point(x=-self.x, y=-self.y)",
+      "language": "python"
+    },
+    {
+      "code": "@force_document\ndef __rmul__(self, other: Number) -> \"Point\":\n    return self.__mul__(other)",
+      "language": "python"
+    },
+    {
+      "code": "@force_document\ndef __sub__(self, other: \"Point\") -> \"Point\":\n    \"\"\"\n    Produce the difference between two points.\n\n    Unlike addition, this is not a commutative operation!\n\n    Args:\n        other (Point): right-hand side of the infix subtraction operation\n\n    Returns:\n        A Point which is the difference of the two source points.\n    \"\"\"\n    if isinstance(other, Point):\n        return Point(x=self.x - other.x, y=self.y - other.y)\n\n    return NotImplemented",
+      "language": "python"
+    },
+    {
+      "code": "@force_document\ndef __truediv__(self, other: Number) -> \"Point\":\n    \"\"\"\n    Divide a point by a scalar value.\n\n    .. note::\n\n        Because division is not commutative, `Point / scalar` is implemented, but\n        `scalar / Point` is nonsensical and not implemented.\n\n    Args:\n        other (Number): the scalar value by which to divide the point's coordinates.\n\n    Returns:\n        A Point whose coordinates are the result of the division.\n    \"\"\"\n    if isinstance(other, NumberClass):\n        return Point(self.x / float(other), self.y / float(other))\n\n    return NotImplemented",
+      "language": "python"
+    },
+    {
+      "code": "def angle(self, other: \"Point\") -> float:\n    \"\"\"\n    Compute the angle between two points (interpreted as vectors from the origin).\n\n    The return value is in the interval (-pi, pi]. Sign is dependent on ordering,\n    with clockwise angle travel considered to be positive due to the orientation of\n    the coordinate frame basis vectors (i.e. the angle between `(1, 0)` and `(0, 1)`\n    is `+pi/2`, the angle between `(1, 0)` and `(0, -1)` is `-pi/2`, and the angle\n    between `(0, -1)` and `(1, 0)` is `+pi/2`).\n\n    Args:\n        other (Point): the point to compute the angle sweep toward.\n\n    Returns:\n        The scalar angle between the two points **in radians**.\n\n    Raises:\n        TypeError: if `other` is not a `Point`.\n    \"\"\"\n\n    if not isinstance(other, Point):\n        raise TypeError(f\"cannot compute angle with {other!r}\")\n\n    signifier = (self.x * other.y) - (self.y * other.x)\n    sign = (signifier >= 0) - (signifier < 0)\n    if self.mag() * other.mag() == 0:  # Prevent division by 0\n        return 0.0\n    return sign * math.acos(round(self.dot(other) / (self.mag() * other.mag()), 8))",
+      "language": "python"
+    },
+    {
+      "code": "def dot(self, other: \"Point\") -> float:\n    \"\"\"\n    Compute the dot product of two points.\n\n    Args:\n        other (Point): the point with which to compute the dot product.\n\n    Returns:\n        The scalar result of the dot product computation.\n\n    Raises:\n        TypeError: if `other` is not a `Point`.\n    \"\"\"\n    if not isinstance(other, Point):\n        raise TypeError(f\"cannot dot with {other!r}\")\n\n    return self.x * other.x + self.y * other.y",
+      "language": "python"
+    },
+    {
+      "code": "def mag(self) -> float:\n    \"\"\"\n    Compute the Cartesian distance from this point to the origin\n\n    This is the same as computing the magnitude of the vector represented by this\n    point.\n\n    Returns:\n        The scalar result of the distance computation.\n    \"\"\"\n    return math.hypot(self.x, self.y)",
+      "language": "python"
+    },
+    {
+      "code": "def render(self) -> str:\n    \"\"\"Render the point to the string `\"x y\"` for emitting to a PDF.\"\"\"\n\n    return f\"{number_to_str(self.x)} {number_to_str(self.y)}\"",
+      "language": "python"
+    },
+    {
+      "code": "@dataclass(frozen=True, slots=True)\nclass Transform:\n    \"\"\"\n    A representation of an affine transformation matrix for 2D shapes.\n\n    The actual matrix is:\n\n    ```\n                        [ a b 0 ]\n    [x' y' 1] = [x y 1] [ c d 0 ]\n                        [ e f 1 ]\n    ```\n\n    Complex transformation operations can be composed via a sequence of simple\n    transformations by performing successive matrix multiplication of the simple\n    transformations.\n\n    For example, scaling a set of points around a specific center point can be\n    represented by a translation-scale-translation sequence, where the first\n    translation translates the center to the origin, the scale transform scales the\n    points relative to the origin, and the second translation translates the points\n    back to the specified center point. Transform multiplication is performed using\n    python's dedicated matrix multiplication operator, `@`\n\n    The semantics of this representation mean composed transformations are specified\n    left-to-right in order of application (some other systems provide transposed\n    representations, in which case the application order is right-to-left).\n\n    For example, to rotate the square `(1,1) (1,3) (3,3) (3,1)` 45 degrees clockwise\n    about its center point (which is `(2,2)`) , the translate-rotate-translate\n    process described above may be applied:\n\n    ```python\n    rotate_centered = (\n        Transform.translation(-2, -2)\n        @ Transform.rotation_d(45)\n        @ Transform.translation(2, 2)\n    )\n    ```\n\n    Instances of this class provide a chaining API, so the above transform could also be\n    constructed as follows:\n\n    ```python\n    rotate_centered = Transform.translation(-2, -2).rotate_d(45).translate(2, 2)\n    ```\n\n    Or, because the particular operation of performing some transformations about a\n    specific point is pretty common,\n\n    ```python\n    rotate_centered = Transform.rotation_d(45).about(2, 2)\n    ```\n\n    By convention, this class provides class method constructors following noun-ish\n    naming (`translation`, `scaling`, `rotation`, `shearing`) and instance method\n    manipulations following verb-ish naming (`translate`, `scale`, `rotate`, `shear`).\n    \"\"\"\n\n    a: float\n    b: float\n    c: float\n    d: float\n    e: float\n    f: float\n\n    # compact representation of an affine transformation matrix for 2D shapes.\n    # The actual matrix is:\n    #                     [ A B 0 ]\n    # [x' y' 1] = [x y 1] [ C D 0 ]\n    #                     [ E F 1 ]\n    # The identity transform is 1 0 0 1 0 0\n\n    def __iter__(self) -> Iterator[float]:\n        \"\"\"Iterate over matrix components in (a, b, c, d, e, f) order.\"\"\"\n        yield self.a\n        yield self.b\n        yield self.c\n        yield self.d\n        yield self.e\n        yield self.f\n\n    def __len__(self) -> int:\n        \"\"\"Length to mimic tuple-like behaviour for compatibility.\"\"\"\n        return 6\n\n    def __getitem__(self, idx: int) -> float:\n        \"\"\"Indexable access to matrix components in (a, b, c, d, e, f) order.\"\"\"\n        return (self.a, self.b, self.c, self.d, self.e, self.f)[idx]\n\n    @classmethod\n    def identity(cls) -> \"Transform\":\n        \"\"\"\n        Create a transform representing the identity transform.\n\n        The identity transform is a no-op.\n        \"\"\"\n        return cls(1, 0, 0, 1, 0, 0)\n\n    @classmethod\n    def translation(cls, x: Number, y: Number) -> \"Transform\":\n        \"\"\"\n        Create a transform that performs translation.\n\n        Args:\n            x (Number): distance to translate points along the x (horizontal) axis.\n            y (Number): distance to translate points along the y (vertical) axis.\n\n        Returns:\n            A Transform representing the specified translation.\n        \"\"\"\n\n        return cls(1, 0, 0, 1, float(x), float(y))\n\n    @classmethod\n    def scaling(cls, x: Number, y: Optional[Number] = None) -> \"Transform\":\n        \"\"\"\n        Create a transform that performs scaling.\n\n        Args:\n            x (Number): scaling ratio in the x (horizontal) axis. A value of 1\n                results in no scale change in the x axis.\n            y (Number): optional scaling ratio in the y (vertical) axis. A value of 1\n                results in no scale change in the y axis. If this value is omitted, it\n                defaults to the value provided to the `x` argument.\n\n        Returns:\n            A Transform representing the specified scaling.\n        \"\"\"\n        if y is None:\n            y = x\n\n        return cls(float(x), 0, 0, float(y), 0, 0)\n\n    @classmethod\n    def rotation(cls, theta: Number) -> \"Transform\":\n        \"\"\"\n        Create a transform that performs rotation.\n\n        Args:\n            theta (Number): the angle **in radians** by which to rotate. Positive\n                values represent clockwise rotations.\n\n        Returns:\n            A Transform representing the specified rotation.\n\n        \"\"\"\n        return cls(\n            math.cos(theta), math.sin(theta), -math.sin(theta), math.cos(theta), 0, 0\n        )\n\n    @classmethod\n    def rotation_d(cls, theta_d: Number) -> \"Transform\":\n        \"\"\"\n        Create a transform that performs rotation **in degrees**.\n\n        Args:\n            theta_d (Number): the angle **in degrees** by which to rotate. Positive\n                values represent clockwise rotations.\n\n        Returns:\n            A Transform representing the specified rotation.\n\n        \"\"\"\n        return cls.rotation(math.radians(theta_d))\n\n    @classmethod\n    def shearing(cls, x: Number, y: Optional[Number] = None) -> \"Transform\":\n        \"\"\"\n        Create a transform that performs shearing (not of sheep).\n\n        Args:\n            x (Number): The amount to shear along the x (horizontal) axis.\n            y (Number): Optional amount to shear along the y (vertical) axis. If omitted,\n                this defaults to the value provided to the `x` argument.\n\n        Returns:\n            A Transform representing the specified shearing.\n\n        \"\"\"\n        if y is None:\n            y = x\n        return cls(1, float(y), float(x), 1, 0, 0)\n\n    @classmethod\n    def skewing(cls, ax: Number = 0, ay: Optional[Number] = None) -> \"Transform\":\n        \"\"\"\n        Create a skew (shear) transform using angles **in radians**.\n\n        Args:\n            ax (Number): skew angle along the X axis (radians).\n                Positive ax produces x' = x + tan(ax) * y\n            ay (Number): optional skew angle along the Y axis (radians).\n                Positive ay produces y' = y + tan(ay) * x\n                If omitted, defaults to the value of `ax`.\n\n        Returns:\n            A Transform representing the specified skew.\n        \"\"\"\n        if ay is None:\n            ay = ax\n        return cls(1, math.tan(float(ay)), math.tan(float(ax)), 1, 0, 0)\n\n    @classmethod\n    def skewing_d(cls, ax_d: Number = 0, ay_d: Optional[Number] = None) -> \"Transform\":\n        \"\"\"\n        Create a skew (shear) transform using angles **in degrees**.\n\n        Args:\n            ax_d (Number): skew angle along X in degrees.\n            ay_d (Number): optional skew angle along Y in degrees. If omitted, defaults to ax_d.\n\n        Returns:\n            A Transform representing the specified skew.\n\n        Raises:\n            ValueError: if an angle is too close to 90° + k·180° (infinite shear).\n        \"\"\"\n        if ay_d is None:\n            ay_d = ax_d\n        ax = math.radians(float(ax_d))\n        ay = math.radians(float(ay_d))\n        # Guard against tan() blow-ups near ±90° (+ k·180°)\n        eps = 1e-12\n        if abs(math.cos(ax)) < eps or abs(math.cos(ay)) < eps:\n            raise ValueError(\"Skew angle produces infinite shear (near 90° + k·180°).\")\n        return cls.skewing(ax, ay)\n\n    def translate(self, x: Number, y: Number) -> \"Transform\":\n        \"\"\"\n        Produce a transform by composing the current transform with a translation.\n\n        .. note::\n            Transforms are immutable, so this returns a new transform rather than\n            mutating self.\n\n        Args:\n            x (Number): distance to translate points along the x (horizontal) axis.\n            y (Number): distance to translate points along the y (vertical) axis.\n\n        Returns:\n            A Transform representing the composed transform.\n        \"\"\"\n        return self @ Transform.translation(x, y)\n\n    def scale(self, x: Number, y: Optional[Number] = None) -> \"Transform\":\n        \"\"\"\n        Produce a transform by composing the current transform with a scaling.\n\n        .. note::\n            Transforms are immutable, so this returns a new transform rather than\n            mutating self.\n\n        Args:\n            x (Number): scaling ratio in the x (horizontal) axis. A value of 1\n                results in no scale change in the x axis.\n            y (Number): optional scaling ratio in the y (vertical) axis. A value of 1\n                results in no scale change in the y axis. If this value is omitted, it\n                defaults to the value provided to the `x` argument.\n\n        Returns:\n            A Transform representing the composed transform.\n        \"\"\"\n        return self @ Transform.scaling(x, y)\n\n    def rotate(self, theta: Number) -> \"Transform\":\n        \"\"\"\n        Produce a transform by composing the current transform with a rotation.\n\n        .. note::\n            Transforms are immutable, so this returns a new transform rather than\n            mutating self.\n\n        Args:\n            theta (Number): the angle **in radians** by which to rotate. Positive\n                values represent clockwise rotations.\n\n        Returns:\n            A Transform representing the composed transform.\n        \"\"\"\n        return self @ Transform.rotation(theta)\n\n    def rotate_d(self, theta_d: Number) -> \"Transform\":\n        \"\"\"\n        Produce a transform by composing the current transform with a rotation\n        **in degrees**.\n\n        .. note::\n            Transforms are immutable, so this returns a new transform rather than\n            mutating self.\n\n        Args:\n            theta_d (Number): the angle **in degrees** by which to rotate. Positive\n                values represent clockwise rotations.\n\n        Returns:\n            A Transform representing the composed transform.\n        \"\"\"\n        return self @ Transform.rotation_d(theta_d)\n\n    def shear(self, x: Number, y: Optional[Number] = None) -> \"Transform\":\n        \"\"\"\n        Produce a transform by composing the current transform with a shearing.\n\n        .. note::\n            Transforms are immutable, so this returns a new transform rather than\n            mutating self.\n\n        Args:\n            x (Number): The amount to shear along the x (horizontal) axis.\n            y (Number): Optional amount to shear along the y (vertical) axis. If omitted,\n                this defaults to the value provided to the `x` argument.\n\n        Returns:\n            A Transform representing the composed transform.\n        \"\"\"\n        return self @ Transform.shearing(x, y)\n\n    def skew(self, ax: Number = 0, ay: Optional[Number] = None) -> \"Transform\":\n        \"\"\"Compose with a skew (radians).\"\"\"\n        return self @ Transform.skewing(ax, ay)\n\n    def skew_d(self, ax_d: Number = 0, ay_d: Optional[Number] = None) -> \"Transform\":\n        \"\"\"Compose with a skew (degrees).\"\"\"\n        return self @ Transform.skewing_d(ax_d, ay_d)\n\n    def about(self, x: Number, y: Number) -> \"Transform\":\n        \"\"\"\n        Bracket the given transform in a pair of translations to make it appear about a\n        point that isn't the origin.\n\n        This is a useful shorthand for performing a transform like a rotation around the\n        center point of an object that isn't centered at the origin.\n\n        .. note::\n            Transforms are immutable, so this returns a new transform rather than\n            mutating self.\n\n        Args:\n            x (Number): the point along the x (horizontal) axis about which to transform.\n            y (Number): the point along the y (vertical) axis about which to transform.\n\n        Returns:\n            A Transform representing the composed transform.\n        \"\"\"\n        return Transform.translation(-x, -y) @ self @ Transform.translation(x, y)\n\n    def inverse(self) -> \"Transform\":\n        \"\"\"\n        Produce a transform that is the inverse of this transform.\n\n        Returns:\n            A Transform representing the inverse of this transform.\n\n        Raises:\n            ValueError: if the transform is not invertible.\n        \"\"\"\n        det = self.a * self.d - self.b * self.c\n        if det == 0:\n            raise ValueError(\"Transform is not invertible\")\n\n        return Transform(\n            a=self.d / det,\n            b=-self.b / det,\n            c=-self.c / det,\n            d=self.a / det,\n            e=(self.c * self.f - self.d * self.e) / det,\n            f=(self.b * self.e - self.a * self.f) / det,\n        )\n\n    @force_document\n    def __mul__(self, other: Number) -> \"Transform\":\n        \"\"\"\n        Multiply the individual transform parameters by a scalar value.\n\n        Args:\n            other (Number): the scalar value by which to multiply the parameters\n\n        Returns:\n            A Transform with the modified parameters.\n        \"\"\"\n        if isinstance(other, NumberClass):\n            other = float(other)\n            return Transform(\n                a=self.a * other,\n                b=self.b * other,\n                c=self.c * other,\n                d=self.d * other,\n                e=self.e * other,\n                f=self.f * other,\n            )\n\n        return NotImplemented\n\n    @force_document\n    def __rmul__(self, other: Number) -> \"Transform\":\n        # scalar multiplication is commutative\n        return self.__mul__(other)\n\n    @force_document\n    def __matmul__(self, other: \"Transform\") -> \"Transform\":\n        \"\"\"\n        Compose two transforms into a single transform.\n\n        Args:\n            other (Transform): the right-hand side transform of the infix operator.\n\n        Returns:\n            A Transform representing the composed transform.\n        \"\"\"\n        if isinstance(other, Transform):\n            return self.__class__(\n                a=self.a * other.a + self.b * other.c,\n                b=self.a * other.b + self.b * other.d,\n                c=self.c * other.a + self.d * other.c,\n                d=self.c * other.b + self.d * other.d,\n                e=self.e * other.a + self.f * other.c + other.e,\n                f=self.e * other.b + self.f * other.d + other.f,\n            )\n\n        return NotImplemented\n\n    def render(self, last_item: \"Renderable\") -> tuple[str, \"Renderable\"]:\n        \"\"\"\n        Render the transform to its PDF output representation.\n\n        Args:\n            last_item: the last path element this transform applies to\n\n        Returns:\n            A tuple of `(str, last_item)`. `last_item` is returned unchanged.\n        \"\"\"\n        return (\n            f\"{number_to_str(self.a)} {number_to_str(self.b)} \"\n            f\"{number_to_str(self.c)} {number_to_str(self.d)} \"\n            f\"{number_to_str(self.e)} {number_to_str(self.f)} cm\",\n            last_item,\n        )\n\n    def __str__(self) -> str:\n        return (\n            f\"transform: [\"\n            f\"{number_to_str(self.a)} {number_to_str(self.b)} 0; \"\n            f\"{number_to_str(self.c)} {number_to_str(self.d)} 0; \"\n            f\"{number_to_str(self.e)} {number_to_str(self.f)} 1]\"\n        )\n\n    def row_norms(self) -> tuple[float, float]:\n        \"\"\"\n        Returns (sqrt(a² + c²), sqrt(b² + d²)), i.e. the Euclidean norms of\n        those rows. These values bound how much the transform can stretch geometry along the\n        device X and Y axes, respectively, and are useful for inflating axis-aligned\n        bounding boxes to account for stroke width under the CTM.\n        \"\"\"\n        return (math.hypot(self.a, self.c), math.hypot(self.b, self.d))",
+      "language": "python"
+    },
+    {
+      "code": "[ a b 0 ]\n[x' y' 1] = [x y 1] [ c d 0 ]\n                    [ e f 1 ]",
+      "language": "json"
+    },
+    {
+      "code": "rotate_centered = (\n    Transform.translation(-2, -2)\n    @ Transform.rotation_d(45)\n    @ Transform.translation(2, 2)\n)",
+      "language": "python"
+    },
+    {
+      "code": "rotate_centered = Transform.translation(-2, -2).rotate_d(45).translate(2, 2)",
+      "language": "python"
+    },
+    {
+      "code": "rotate_centered = Transform.rotation_d(45).about(2, 2)",
+      "language": "python"
+    },
+    {
+      "code": "@force_document\ndef __matmul__(self, other: \"Transform\") -> \"Transform\":\n    \"\"\"\n    Compose two transforms into a single transform.\n\n    Args:\n        other (Transform): the right-hand side transform of the infix operator.\n\n    Returns:\n        A Transform representing the composed transform.\n    \"\"\"\n    if isinstance(other, Transform):\n        return self.__class__(\n            a=self.a * other.a + self.b * other.c,\n            b=self.a * other.b + self.b * other.d,\n            c=self.c * other.a + self.d * other.c,\n            d=self.c * other.b + self.d * other.d,\n            e=self.e * other.a + self.f * other.c + other.e,\n            f=self.e * other.b + self.f * other.d + other.f,\n        )\n\n    return NotImplemented",
+      "language": "python"
+    },
+    {
+      "code": "@force_document\ndef __mul__(self, other: Number) -> \"Transform\":\n    \"\"\"\n    Multiply the individual transform parameters by a scalar value.\n\n    Args:\n        other (Number): the scalar value by which to multiply the parameters\n\n    Returns:\n        A Transform with the modified parameters.\n    \"\"\"\n    if isinstance(other, NumberClass):\n        other = float(other)\n        return Transform(\n            a=self.a * other,\n            b=self.b * other,\n            c=self.c * other,\n            d=self.d * other,\n            e=self.e * other,\n            f=self.f * other,\n        )\n\n    return NotImplemented",
+      "language": "python"
+    },
+    {
+      "code": "@force_document\ndef __rmul__(self, other: Number) -> \"Transform\":\n    # scalar multiplication is commutative\n    return self.__mul__(other)",
+      "language": "python"
+    },
+    {
+      "code": "def about(self, x: Number, y: Number) -> \"Transform\":\n    \"\"\"\n    Bracket the given transform in a pair of translations to make it appear about a\n    point that isn't the origin.\n\n    This is a useful shorthand for performing a transform like a rotation around the\n    center point of an object that isn't centered at the origin.\n\n    .. note::\n        Transforms are immutable, so this returns a new transform rather than\n        mutating self.\n\n    Args:\n        x (Number): the point along the x (horizontal) axis about which to transform.\n        y (Number): the point along the y (vertical) axis about which to transform.\n\n    Returns:\n        A Transform representing the composed transform.\n    \"\"\"\n    return Transform.translation(-x, -y) @ self @ Transform.translation(x, y)",
+      "language": "python"
+    },
+    {
+      "code": "def inverse(self) -> \"Transform\":\n    \"\"\"\n    Produce a transform that is the inverse of this transform.\n\n    Returns:\n        A Transform representing the inverse of this transform.\n\n    Raises:\n        ValueError: if the transform is not invertible.\n    \"\"\"\n    det = self.a * self.d - self.b * self.c\n    if det == 0:\n        raise ValueError(\"Transform is not invertible\")\n\n    return Transform(\n        a=self.d / det,\n        b=-self.b / det,\n        c=-self.c / det,\n        d=self.a / det,\n        e=(self.c * self.f - self.d * self.e) / det,\n        f=(self.b * self.e - self.a * self.f) / det,\n    )",
+      "language": "python"
+    },
+    {
+      "code": "def render(self, last_item: \"Renderable\") -> tuple[str, \"Renderable\"]:\n    \"\"\"\n    Render the transform to its PDF output representation.\n\n    Args:\n        last_item: the last path element this transform applies to\n\n    Returns:\n        A tuple of `(str, last_item)`. `last_item` is returned unchanged.\n    \"\"\"\n    return (\n        f\"{number_to_str(self.a)} {number_to_str(self.b)} \"\n        f\"{number_to_str(self.c)} {number_to_str(self.d)} \"\n        f\"{number_to_str(self.e)} {number_to_str(self.f)} cm\",\n        last_item,\n    )",
+      "language": "python"
+    },
+    {
+      "code": "def rotate(self, theta: Number) -> \"Transform\":\n    \"\"\"\n    Produce a transform by composing the current transform with a rotation.\n\n    .. note::\n        Transforms are immutable, so this returns a new transform rather than\n        mutating self.\n\n    Args:\n        theta (Number): the angle **in radians** by which to rotate. Positive\n            values represent clockwise rotations.\n\n    Returns:\n        A Transform representing the composed transform.\n    \"\"\"\n    return self @ Transform.rotation(theta)",
+      "language": "python"
+    },
+    {
+      "code": "def rotate_d(self, theta_d: Number) -> \"Transform\":\n    \"\"\"\n    Produce a transform by composing the current transform with a rotation\n    **in degrees**.\n\n    .. note::\n        Transforms are immutable, so this returns a new transform rather than\n        mutating self.\n\n    Args:\n        theta_d (Number): the angle **in degrees** by which to rotate. Positive\n            values represent clockwise rotations.\n\n    Returns:\n        A Transform representing the composed transform.\n    \"\"\"\n    return self @ Transform.rotation_d(theta_d)",
+      "language": "python"
+    },
+    {
+      "code": "def row_norms(self) -> tuple[float, float]:\n    \"\"\"\n    Returns (sqrt(a² + c²), sqrt(b² + d²)), i.e. the Euclidean norms of\n    those rows. These values bound how much the transform can stretch geometry along the\n    device X and Y axes, respectively, and are useful for inflating axis-aligned\n    bounding boxes to account for stroke width under the CTM.\n    \"\"\"\n    return (math.hypot(self.a, self.c), math.hypot(self.b, self.d))",
+      "language": "python"
+    },
+    {
+      "code": "def scale(self, x: Number, y: Optional[Number] = None) -> \"Transform\":\n    \"\"\"\n    Produce a transform by composing the current transform with a scaling.\n\n    .. note::\n        Transforms are immutable, so this returns a new transform rather than\n        mutating self.\n\n    Args:\n        x (Number): scaling ratio in the x (horizontal) axis. A value of 1\n            results in no scale change in the x axis.\n        y (Number): optional scaling ratio in the y (vertical) axis. A value of 1\n            results in no scale change in the y axis. If this value is omitted, it\n            defaults to the value provided to the `x` argument.\n\n    Returns:\n        A Transform representing the composed transform.\n    \"\"\"\n    return self @ Transform.scaling(x, y)",
+      "language": "python"
+    },
+    {
+      "code": "def shear(self, x: Number, y: Optional[Number] = None) -> \"Transform\":\n    \"\"\"\n    Produce a transform by composing the current transform with a shearing.\n\n    .. note::\n        Transforms are immutable, so this returns a new transform rather than\n        mutating self.\n\n    Args:\n        x (Number): The amount to shear along the x (horizontal) axis.\n        y (Number): Optional amount to shear along the y (vertical) axis. If omitted,\n            this defaults to the value provided to the `x` argument.\n\n    Returns:\n        A Transform representing the composed transform.\n    \"\"\"\n    return self @ Transform.shearing(x, y)",
+      "language": "python"
+    },
+    {
+      "code": "def skew(self, ax: Number = 0, ay: Optional[Number] = None) -> \"Transform\":\n    \"\"\"Compose with a skew (radians).\"\"\"\n    return self @ Transform.skewing(ax, ay)",
+      "language": "python"
+    },
+    {
+      "code": "def skew_d(self, ax_d: Number = 0, ay_d: Optional[Number] = None) -> \"Transform\":\n    \"\"\"Compose with a skew (degrees).\"\"\"\n    return self @ Transform.skewing_d(ax_d, ay_d)",
+      "language": "python"
+    },
+    {
+      "code": "def translate(self, x: Number, y: Number) -> \"Transform\":\n    \"\"\"\n    Produce a transform by composing the current transform with a translation.\n\n    .. note::\n        Transforms are immutable, so this returns a new transform rather than\n        mutating self.\n\n    Args:\n        x (Number): distance to translate points along the x (horizontal) axis.\n        y (Number): distance to translate points along the y (vertical) axis.\n\n    Returns:\n        A Transform representing the composed transform.\n    \"\"\"\n    return self @ Transform.translation(x, y)",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/fpdf/drawing_primitives.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html"
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Unicode.html",
+  "title": "Fonts and Unicode¶",
+  "content": "Besides the limited set of latin fonts built into the PDF format, fpdf2 offers full support for using and embedding Unicode (TrueType \"ttf\" and OpenType \"otf\") fonts. To keep the output file size small, it only embeds the subset of each font that is actually used in the document. This part of the code has been completely rewritten since the fork from PyFPDF. It uses the fonttools library for parsing the font data, and harfbuzz (via uharfbuzz) for text shaping.\n\nTo make use of that functionality, you have to install at least one Unicode font, either in the system font folder or in some other location accessible to your program. For professional work, many designers prefer commercial fonts, suitable to their specific needs. There are also many sources of free TTF fonts that can be downloaded online and used free of cost (some of them may have restrictions on commercial redistribution, such as server installations or including them in a software project).\n\nFont Library - A collection of fonts for many languages with an open source type license.\n\nGoogle Fonts - A collection of free to use fonts for many languages.\n\nMicrosoft Font Library - A large collection of fonts that are free to use.\n\nGitHub: Fonts - Links to public repositories of open source font projects as well as font related software projects.\n\nGNU FreeFont family: FreeSans, FreeSerif, FreeMono\n\nTo use a Unicode font in your program, use the add_font(), and then the set_font() method calls.\n\nWOFF and WOFF2 are web-optimized, compressed containers for TrueType and OpenType fonts, designed to reduce download size for browsers. fpdf2 supports these formats by decompressing them before embedding the resulting font data into the generated PDF.\n\nThe PDF file format knows a small number of \"standard\" fonts, namely Courier, Helvetica, Times, Symbol, and ZapfDingbats. The first three are available in regular, bold, italic, and bold-italic versions. This gives us a set of fonts known as \"14 Standard PDF fonts\". Any PDF processor (eg. a viewer) must provide those fonts for display. To use them, you don't need to call .add_font(), but only .set_font().\n\n( script used to generate this: tutorial/core_fonts.py )\n\nWhile that may seem convenient, there's a big drawback. Those fonts only support latin characters, or a set of special characters for the last two. If you try to render any Unicode character outside of those ranges, then you'll get an error like: \"Character \"θ\" at index 13 in text is outside the range of characters supported by the font used: \"courier\". Please consider using a Unicode font.\". So if you want to create documents with any characters other than those common in English and a small number of european languages, then you need to add a Unicode font containing the respective glyph as described in this document.\n\nNote that even if you have a font eg. named \"Courier\" installed as a system font on your computer, by default this will not be used. You'll have to explicitly call eg. .add_font(\"Courier2\", fname=r\"C:\\Windows\\Fonts\\cour.ttf\") to make it available. If the name is really the same (ignoring case), then you'll have to use a suitable variation, since trying to overwrite one of the \"standard\" names with .add_font() will result in an error.\n\nBefore using a Unicode font, you need to load it from a font file. Usually you'll have call add_font() for each style of the same font family you want to use. The styles that fpdf2 understands are:\n\nNote that we use the same family name for each of them, but load them from different files. Only when a font has variants (eg. \"narrow\"), or there are more styles than the four standard ones (eg. \"black\" or \"extra light\"), you'll have to add those with a different family name. If the font files are not located in the current directory, you'll have to provide a file name with a relative or absolute path. If the font is not found elsewhere, then fpdf2 will look for it in a subdirectory named \"font\".\n\nTo actually use the loaded font, or to use one of the standard built-in fonts, you'll have to set the current font before calling any text generating method. .set_font() uses the same combinations of family name and style as arguments, plus the font size in typographic points. In addition to the previously mentioned styles, the letter u may be included for creating underlined text, and s for creating strikethrough text. If the family or size are omitted, the already set values will be retained. If the style is omitted, it defaults to regular.\n\nMany non-latin writing systems have complex ways to combine characters, ligatures, and possibly multiple diacritic symbols together, change the shape of characters depending on its location in a word, or use a different writing direction. A small number of examples are:\n\nTo make sure those scripts to be rendered correctly, text shaping must be enabled with .set_text_shaping(True).\n\nWhen text shaping is enabled, fpdf2 will apply the Unicode Bidirectional Algorithm to render correctly any text, including bidirectional (mix of right-to-left and left-to-right scripts).\n\nThis example uses several free fonts to display some Unicode strings. Be sure to install the fonts in the font directory first.\n\nView the result here: unicode.pdf\n\nFor your convenience, the author of the original PyFPDF has collected 96 TTF files in an optional \"Free Unicode TrueType Font Pack for FPDF\", with useful fonts commonly distributed with GNU/Linux operating systems. Note that this collection is from 2015, so it will not contain any newer fonts or possible updates.\n\nThe method set_fallback_fonts() allows you to specify a list of fonts to be used if any character is not available on the font currently set. When a character doesn’t exist on the current font, fpdf2 will look if it’s available on the fallback fonts, on the same order the list was provided.\n\nCommon scenarios are use of special characters like emojis within your text, greek characters in formulas or citations mixing different languages.\n\nExample: import fpdf pdf = fpdf.FPDF() pdf.add_page() pdf.add_font(fname=\"Roboto.ttf\") # twitter emoji font: https://github.com/13rac1/twemoji-color-font/releases pdf.add_font(fname=\"TwitterEmoji.ttf\") pdf.set_font(\"Roboto\", size=15) pdf.set_fallback_fonts([\"TwitterEmoji\"]) pdf.write(text=\"text with an emoji 🌭\") pdf.output(\"text_with_emoji.pdf\")\n\nWhen a glyph cannot be rendered uing the current font, fpdf2 will look for a fallback font matching the current character emphasis (bold/italics). By default, if it does not find such matching font, the character will not be rendered using any fallback font. This behaviour can be relaxed by passing exact_match=False to set_fallback_fonts().\n\nMoreover, for more control over font fallback election logic, the get_fallback_font() can be overridden. An example of this can be found in test/fonts/test_font_fallback.py.\n\nThe unicode_range parameter in add_font() allows you to restrict which Unicode characters a font will handle, similar to CSS @font-face unicode-range rules. This gives you fine-grained control over font priority on a per-character basis.\n\nThis is particularly useful when you want fallback fonts to take priority for specific character ranges, even when the main font technically supports those characters. A common scenario is preferring colorful emoji fonts over monochrome glyphs that exist in regular fonts.\n\nSupported Formats for unicode_range param\n\nWhen you specify a unicode_range, the font's internal character map (cmap) is trimmed to only include codepoints within the specified ranges. This ensures that:\n\nFor more information on fallback fonts, see the Fallback fonts section.\n\nA variable font allows users to use a single font file containing many variations of a typeface, such as weight, width, optical size, and slant. Each such variable which modifies the typeface is called an axis. These variables have specific tags which are used to specify their values, such as \"wdth\" for modifying width, and \"wght\" for modifying weight. For a full list of tags, please check the documentation of your variable font.\n\nThe variations parameter in add_font allows you to specify the value of one or more axes, thus creating a static font from the variable font.\n\nThe following examples assume that the provided font is a variable font.\n\nThe above examples provide the axes dictionary to specify the styles. If an axis is not mentioned, the default width will be used, and the axis will be dropped as shown below.\n\nIt is also possible to specify more than 1 style in the variations dictionary. If a separate axes dictionary is specified for each style, then the style parameter is ignored as shown below.\n\npdf.add_font( \"Roboto Variable\", style=\"\", # ignored fname=\"Roboto-Variable.ttf\", variations={\"\": {\"wght\": 300}, \"B\": {\"wght\": 700}}, ) A TypeError will be raised if variations is not a dictionary, and an AttributeError will be raised if variations is used but the font is not a variable font.\n\nSome color fonts (COLRv0, COLRv1, CBDT, SBIX, SVG) contain multiple predefined color palettes. The palette parameter in add_font() allows you to select which palette to use when rendering the font.\n\nThis is useful when you want to use different color schemes from the same font file without having to embed the font multiple times.\n\nIf you specify a palette index that is out of range, fpdf2 will log a warning and fall back to palette 0. You can check the number of available palettes in your color font's documentation or by inspecting the font file.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Fonts and Unicode¶",
+      "id": "fonts-and-unicode"
+    },
+    {
+      "level": "h3",
+      "text": "Web fonts (WOFF and WOFF2)¶",
+      "id": "web-fonts-woff-and-woff2"
+    },
+    {
+      "level": "h3",
+      "text": "Built-in Fonts vs. Unicode Fonts¶",
+      "id": "built-in-fonts-vs-unicode-fonts"
+    },
+    {
+      "level": "h3",
+      "text": "Adding and Using Fonts¶",
+      "id": "adding-and-using-fonts"
+    },
+    {
+      "level": "h3",
+      "text": "Note on non-latin languages¶",
+      "id": "note-on-non-latin-languages"
+    },
+    {
+      "level": "h3",
+      "text": "Right-to-Left scripts¶",
+      "id": "right-to-left-scripts"
+    },
+    {
+      "level": "h2",
+      "text": "Example¶",
+      "id": "example"
+    },
+    {
+      "level": "h2",
+      "text": "Free Font Pack¶",
+      "id": "free-font-pack"
+    },
+    {
+      "level": "h2",
+      "text": "Fallback fonts¶",
+      "id": "fallback-fonts"
+    },
+    {
+      "level": "h2",
+      "text": "Unicode range limits¶",
+      "id": "unicode-range-limits"
+    },
+    {
+      "level": "h2",
+      "text": "Variable Fonts¶",
+      "id": "variable-fonts"
+    },
+    {
+      "level": "h2",
+      "text": "Color Font Palette Selection¶",
+      "id": "color-font-palette-selection"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\n# Different styles of the same font family.\npdf.add_font(\"dejavu-sans\", style=\"\", fname=\"DejaVuSans.ttf\")\npdf.add_font(\"dejavu-sans\", style=\"b\", fname=\"DejaVuSans-Bold.ttf\")\npdf.add_font(\"dejavu-sans\", style=\"i\", fname=\"DejaVuSans-Oblique.ttf\")\npdf.add_font(\"dejavu-sans\", style=\"bi\", fname=\"DejaVuSans-BoldOblique.ttf\")\n# Different type of the same font design.\npdf.add_font(\"dejavu-sans-narrow\", style=\"\", fname=\"DejaVuSansCondensed.ttf\")\npdf.add_font(\"dejavu-sans-narrow\", style=\"i\", fname=\"DejaVuSansCondensed-Oblique.ttf\")",
+      "language": "python"
+    },
+    {
+      "code": "# Set and use first family in regular style.\npdf.set_font(family=\"dejavu-sans\", style=\"\", size=12)\npdf.cell(text=\"Hello\")\n# Set and use the same family in bold style.\npdf.set_font(style=\"b\", size=18)  # still uses the same dejavu-sans font family.\npdf.cell(text=\"Fat World\")\n# Set and use a variant in italic and underlined.\npdf.set_font(family=\"dejavu-sans-narrow\", style=\"iu\", size=12)\npdf.cell(text=\"lean on me\")",
+      "language": "markdown"
+    },
+    {
+      "code": "#!/usr/bin/env python\n# -*- coding: utf8 -*-\n\nfrom fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\npdf.set_text_shaping(True)\n\n# Add a DejaVu Unicode font (uses UTF-8)\n# Supports more than 200 languages. For a coverage status see:\n# http://dejavu.svn.sourceforge.net/viewvc/dejavu/trunk/dejavu-fonts/langcover.txt\npdf.add_font(fname='DejaVuSansCondensed.ttf')\npdf.set_font('DejaVuSansCondensed', size=14)\n\ntext = u\"\"\"\nEnglish: Hello World\nGreek: Γειά σου κόσμος\nPolish: Witaj świecie\nPortuguese: Olá mundo\nRussian: Здравствуй, Мир\nVietnamese: Xin chào thế giới\nArabic: مرحبا العالم\nHebrew: שלום עולם\n\"\"\"\n\nfor txt in text.split('\\n'):\n    pdf.write(8, txt)\n    pdf.ln(8)\n\n# Add a Indic Unicode font (uses UTF-8)\n# Supports: Bengali, Devanagari, Gujarati, \n#           Gurmukhi (including the variants for Punjabi) \n#           Kannada, Malayalam, Oriya, Tamil, Telugu, Tibetan\npdf.add_font(fname='gargi.ttf')\npdf.set_font('gargi', size=14)\npdf.write(8, u'Hindi: नमस्ते दुनिया')\npdf.ln(20)\n\n# Add a AR PL New Sung Unicode font (uses UTF-8)\n# The Open Source Chinese Font (also supports other east Asian languages)\npdf.add_font(fname='fireflysung.ttf')\npdf.set_font('fireflysung', size=14)\npdf.write(8, u'Chinese: 你好世界\\n')\npdf.write(8, u'Japanese: こんにちは世界\\n')\npdf.ln(10)\n\n# Add a Alee Unicode font (uses UTF-8)\n# General purpose Hangul truetype fonts that contain Korean syllable \n# and Latin9 (iso8859-15) characters.\npdf.add_font(fname='Eunjin.ttf')\npdf.set_font('Eunjin', size=14)\npdf.write(8, u'Korean: 안녕하세요')\npdf.ln(20)\n\n# Add a Fonts-TLWG (formerly ThaiFonts-Scalable) (uses UTF-8)\npdf.add_font(fname='Waree.ttf')\npdf.set_font('Waree', size=14)\npdf.write(8, u'Thai: สวัสดีชาวโลก')\npdf.ln(20)\n\n# Select a standard font (uses windows-1252)\npdf.set_font('helvetica', size=14)\npdf.ln(10)\npdf.write(5, 'This is standard built-in font')\n\npdf.output(\"unicode.pdf\")",
+      "language": "sql"
+    },
+    {
+      "code": "import fpdf\n\npdf = fpdf.FPDF()\npdf.add_page()\npdf.add_font(fname=\"Roboto.ttf\")\n# twitter emoji font: https://github.com/13rac1/twemoji-color-font/releases\npdf.add_font(fname=\"TwitterEmoji.ttf\")\npdf.set_font(\"Roboto\", size=15)\npdf.set_fallback_fonts([\"TwitterEmoji\"])\npdf.write(text=\"text with an emoji 🌭\")\npdf.output(\"text_with_emoji.pdf\")",
+      "language": "markdown"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\n\n# Main font for text\npdf.add_font(family=\"DejaVu\", fname=\"DejaVuSans.ttf\", unicode_range=\"U+0020-007E\")\n\n# Emoji font restricted to emoticons range only\npdf.add_font(\n    family=\"NotoEmoji\",\n    fname=\"colrv1-NotoColorEmoji.ttf\",\n    unicode_range=\"U+1F600-1F64F\",  # Emoticons\n)\n\npdf.set_font(\"DejaVu\", size=24)\npdf.set_fallback_fonts([\"NotoEmoji\"])\n\n# Emojis in the specified range render from NotoEmoji (colorful)\npdf.write(text=\"Hello World! 😀 😊 😎\")\npdf.output(\"emoji_with_unicode_range.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "# CSS-style string with comma-separated ranges\npdf.add_font(fname=\"font.ttf\", unicode_range=\"U+1F600-1F64F, U+2600-26FF, U+2615\")\n\n# List of strings\npdf.add_font(fname=\"font.ttf\", unicode_range=[\"U+1F600-1F64F\", \"U+2600\", \"U+26FF\"])\n\n# List of tuples (start, end)\npdf.add_font(fname=\"font.ttf\", unicode_range=[(0x1F600, 0x1F64F), (0x2600, 0x26FF)])\n\n# List of integers (individual codepoints)\npdf.add_font(fname=\"font.ttf\", unicode_range=[0x1F600, 0x2600, 128512])",
+      "language": "markdown"
+    },
+    {
+      "code": "# Specify width and weight in regular style.\npdf.add_font(\n    \"Roboto Variable\", \"\", \"Roboto-Variable.ttf\", variations={\"wdth\": 75, \"wght\": 300}\n)\n\n# Specify weight for bold style.\npdf.add_font(\"Roboto Variable\", \"B\", \"Roboto-Variable.ttf\", variations={\"wght\": 600})",
+      "language": "json"
+    },
+    {
+      "code": "# Creating an italic version of the variable font.\n# If an axis is set to None, or if the axis is unspecified,\n# it will not be variable in the created font.\npdf.add_font(\n    \"Roboto Variable\",\n    \"B\",\n    \"Roboto-Variable.ttf\",\n    variations={\"wght\": 800, \"wdth\": None},\n)",
+      "language": "json"
+    },
+    {
+      "code": "pdf.add_font(\n    \"Roboto Variable\",\n    style=\"\", # ignored\n    fname=\"Roboto-Variable.ttf\",\n    variations={\"\": {\"wght\": 300}, \"B\": {\"wght\": 700}},\n)",
+      "language": "json"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\n\n# Add the same color font with different palettes using different family names\npdf.add_font(\n    family=\"Nabla-Default\",\n    fname=\"Nabla-Regular-COLRv1.ttf\",\n    palette=0  # Use palette 0 (default)\n)\n\npdf.add_font(\n    family=\"Nabla-Blue\",\n    fname=\"Nabla-Regular-COLRv1.ttf\",\n    palette=1  # Use palette 1\n)\n\npdf.add_font(\n    family=\"Nabla-Grey\",\n    fname=\"Nabla-Regular-COLRv1.ttf\",\n    palette=2  # Use palette 2\n)\n\n# Use the fonts with different palettes\npdf.set_font(\"Nabla-Default\", size=24)\npdf.cell(text=\"Text with Palette 0\", new_x=\"lmargin\", new_y=\"next\")\n\npdf.set_font(\"Nabla-Blue\", size=24)\npdf.cell(text=\"Text with Palette 1\", new_x=\"lmargin\", new_y=\"next\")\n\npdf.set_font(\"Nabla-Grey\", size=24)\npdf.cell(text=\"Text with Palette 2\", new_x=\"lmargin\", new_y=\"next\")\n\npdf.output(\"color_font_palettes.pdf\")",
+      "language": "python"
+    }
+  ],
+  "patterns": [
+    {
+      "description": "Example: import fpdf pdf = fpdf.FPDF() pdf.add_page() pdf.add_font(fname=\"Roboto.ttf\") # twitter emoji font: https://github.com/13rac1/twemoji-color-font/releases pdf.add_font(fname=\"TwitterEmoji.ttf\") pdf.set_font(\"Roboto\", size=15) pdf.set_fallback_fonts([\"TwitterEmoji\"]) pdf.write(text=\"text with an emoji 🌭\") pdf.output(\"text_with_emoji.pdf\")",
+      "code": "import fpdf\n\npdf = fpdf.FPDF()\npdf.add_page()\npdf.add_font(fname=\"Roboto.ttf\")\n# twitter emoji font: https://github.com/13rac1/twemoji-color-font/releases\npdf.add_font(fname=\"TwitterEmoji.ttf\")\npdf.set_font(\"Roboto\", size=15)\npdf.set_fallback_fonts([\"TwitterEmoji\"])\npdf.write(text=\"text with an emoji 🌭\")\npdf.output(\"text_with_emoji.pdf\")"
+    },
+    {
+      "description": "Example:",
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\n\n# Main font for text\npdf.add_font(family=\"DejaVu\", fname=\"DejaVuSans.ttf\", unicode_range=\"U+0020-007E\")\n\n# Emoji font restricted to emoticons range only\npdf.add_font(\n    family=\"NotoEmoji\",\n    fname=\"colrv1-NotoColorEmoji.ttf\",\n    unicode_range=\"U+1F600-1F64F\",  # Emoticons\n)\n\npdf.set_font(\"DejaVu\", size=24)\npdf.set_fallback_fonts([\"NotoEmoji\"])\n\n# Emojis in the specified range render from NotoEmoji (colorful)\npdf.write(text=\"Hello World! 😀 😊 😎\")\npdf.output(\"emoji_with_unicode_range.pdf\")"
+    },
+    {
+      "description": "Example:",
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.add_page()\n\n# Add the same color font with different palettes using different family names\npdf.add_font(\n    family=\"Nabla-Default\",\n    fname=\"Nabla-Regular-COLRv1.ttf\",\n    palette=0  # Use palette 0 (default)\n)\n\npdf.add_font(\n    family=\"Nabla-Blue\",\n    fname=\"Nabla-Regular-COLRv1.ttf\",\n    palette=1  # Use palette 1\n)\n\npdf.add_font(\n    family=\"Nabla-Grey\",\n    fname=\"Nabla-Regular-COLRv1.ttf\",\n    palette=2  # Use palette 2\n)\n\n# Use the fonts with different palettes\npdf.set_font(\"Nabla-Default\", size=24)\npdf.cell(text=\"Text with Palette 0\", new_x=\"lmargin\", new_y=\"next\")\n\npdf.set_font(\"Nabla-Blue\", size=24)\npdf.cell(text=\"Text with Palette 1\", new_x=\"lmargin\", new_y=\"next\")\n\npdf.set_font(\"Nabla-Grey\", size=24)\npdf.cell(text=\"Text with Palette 2\", new_x=\"lmargin\", new_y=\"next\")\n\npdf.output(\"color_font_palettes.pdf\")"
+    }
+  ],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html"
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/actions.html",
+  "title": "Module fpdf.actions",
+  "content": "Helper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nAs of 2022, this does not seem honored by neither Adobe Acrobat nor Sumatra readers.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.actions",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Subclasses",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Args",
+      "id": "args"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "class Action(ABC):\n    def __init__(self, next_action: Optional[\"Action\"] = None) -> None:\n        \"\"\"\n        Args:\n            next (PDFObject | str): optional reference to another Action to trigger after this one\n        \"\"\"\n        self.next = next_action\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        raise NotImplementedError\n\n    def _serialize(\n        self,\n        key_values: Optional[dict[str, object]] = None,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        if key_values is None:\n            key_values = {}\n        if self.next:\n            key_values[\"Next\"] = self.next\n        obj_dict = build_obj_dict(key_values, _security_handler, _obj_id)\n        return create_dictionary_string(obj_dict, field_join=\" \")",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    raise NotImplementedError",
+      "language": "python"
+    },
+    {
+      "code": "class GoToAction(Action):\n    def __init__(\n        self, dest: Union[str, \"Destination\"], next_action: Optional[Action] = None\n    ) -> None:\n        super().__init__(next_action)\n        if isinstance(dest, str) and dest.startswith(\"#\"):\n            dest = PDFString(dest[1:], encrypt=True)\n        self.dest = dest\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return super()._serialize(\n            {\"s\": \"/GoTo\", \"d\": self.dest},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return super()._serialize(\n        {\"s\": \"/GoTo\", \"d\": self.dest},\n        _security_handler=_security_handler,\n        _obj_id=_obj_id,\n    )",
+      "language": "python"
+    },
+    {
+      "code": "class GoToRemoteAction(Action):\n    def __init__(\n        self, file: str, dest: \"Destination\", next_action: Optional[Action] = None\n    ) -> None:\n        super().__init__(next_action)\n        self.file = file\n        self.dest = dest\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return super()._serialize(\n            {\"s\": \"/GoToR\", \"f\": PDFString(self.file, encrypt=True), \"d\": self.dest},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return super()._serialize(\n        {\"s\": \"/GoToR\", \"f\": PDFString(self.file, encrypt=True), \"d\": self.dest},\n        _security_handler=_security_handler,\n        _obj_id=_obj_id,\n    )",
+      "language": "python"
+    },
+    {
+      "code": "class LaunchAction(Action):\n    \"As of 2022, this does not seem honored by neither Adobe Acrobat nor Sumatra readers.\"\n\n    def __init__(self, file: str, next_action: Optional[Action] = None) -> None:\n        super().__init__(next_action)\n        self.file = file\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return super()._serialize(\n            {\"s\": \"/Launch\", \"f\": PDFString(self.file, encrypt=True)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return super()._serialize(\n        {\"s\": \"/Launch\", \"f\": PDFString(self.file, encrypt=True)},\n        _security_handler=_security_handler,\n        _obj_id=_obj_id,\n    )",
+      "language": "python"
+    },
+    {
+      "code": "class NamedAction(Action):\n    def __init__(self, action_name: str, next_action: Optional[Action] = None) -> None:\n        super().__init__(next_action)\n        if action_name not in (\"NextPage\", \"PrevPage\", \"FirstPage\", \"LastPage\"):\n            warnings.warn(\"Non-standard named action added\")\n        self.action_name = action_name\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return super()._serialize(\n            {\"s\": \"/Named\", \"n\": f\"/{self.action_name}\"},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return super()._serialize(\n        {\"s\": \"/Named\", \"n\": f\"/{self.action_name}\"},\n        _security_handler=_security_handler,\n        _obj_id=_obj_id,\n    )",
+      "language": "python"
+    },
+    {
+      "code": "class URIAction(Action):\n    def __init__(self, uri: str, next_action: Optional[Action] = None) -> None:\n        super().__init__(next_action)\n        self.uri = uri\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return super()._serialize(\n            {\"s\": \"/URI\", \"u_r_i\": PDFString(self.uri, encrypt=True)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return super()._serialize(\n        {\"s\": \"/URI\", \"u_r_i\": PDFString(self.uri, encrypt=True)},\n        _security_handler=_security_handler,\n        _obj_id=_obj_id,\n    )",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/fpdf/actions.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html"
+  ]
+}

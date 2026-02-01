@@ -1,0 +1,76 @@
+# Bloomberg-Style Deep Analysis Prompt
+
+## Input Format
+```
+<company_or_asset>ISGSY</company_or_asset>
+<market>Public</market>
+<time_horizon>Medium</time_horizon>
+<investor_type>Growth</investor_type>
+<region_optional>Turkey</region_optional>
+```
+
+## Operating Rules
+1. No generic advice
+2. No hype language
+3. Flag uncertainty explicitly
+4. Separate facts from assumptions
+5. Write like capital is at risk
+
+## Output Sections
+1. Executive Snapshot (1 paragraph)
+2. Business & Market Model
+3. Financial Model (Base/Bull/Bear)
+4. Narrative Map
+5. Risk Register (Severity/Likelihood/Detectability)
+6. Competitive Matrix
+7. Investor Decision Frame
+8. Final Verdict (Buy/Watch/Avoid + Confidence)
+
+## Example Output Structure
+
+### SECTION_1: EXECUTIVE SNAPSHOT
+[1 paragraph summary]
+
+### SECTION_2: BUSINESS AND MARKET MODEL
+- Revenue model
+- Key drivers
+- Cost structure
+- TAM/SAM/SOM
+
+### SECTION_3: FINANCIAL MODEL
+| Scenario | Revenue Growth | Margin | Multiple |
+|----------|---------------|--------|----------|
+| Base | x% | y% | zx |
+| Bull | x+x% | y+y% | z+zx |
+| Bear | x-x% | y-y% | z-zx |
+
+### SECTION_4: NARRATIVE MAP
+| Case | Scenario | Probability |
+|------|----------|-------------|
+| Bull | [story] | xx% |
+| Base | [story] | xx% |
+| Bear | [story] | xx% |
+
+### SECTION_5: RISK REGISTER
+| Risk | Severity | Likelihood | Detectability |
+|------|----------|------------|---------------|
+| [Risk 1] | H/M/L | H/M/L | H/M/L |
+| [Risk 2] | H/M/L | H/M/L | H/M/L |
+
+### SECTION_6: COMPETITIVE MATRIX
+| Factor | [Stock] | [Competitor 1] | [Competitor 2] |
+|--------|---------|----------------|----------------|
+| Valuation | x | y | z |
+| Growth | x% | y% | z% |
+| ROE | x% | y% | z% |
+
+### SECTION_7: INVESTOR DECISION FRAME
+- **Investable if:** [conditions]
+- **Trap indicators:** [red flags]
+- **Decision change signal:** [what would flip the view]
+- **Key metric:** [the number that matters most]
+
+### SECTION_8: FINAL VERDICT
+| Stance | Watch |
+| Confidence | Medium |
+| Stronger if: | [catalysts needed] |

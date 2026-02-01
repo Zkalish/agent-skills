@@ -1,0 +1,117 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Internals.html",
+  "title": "fpdf2 internals¶",
+  "content": "FPDF is designed to add content progressively to the document generated, page by page.\n\nEach page is an entry in the .pages attribute of FPDF instances. Indices start at 1 (the first page) and values are PDFPage instances.\n\nPDFPage instances have a .contents attribute that is a bytearray and contains the Content Stream for this page (bytearray makes things a lot faster).\n\nGoing back to a previously generated page to add content is possible, using the .page attribute, but may result in unexpected behavior, because .add_page() takes special care to ensure the page's content stream matches FPDF's instance attributes.\n\nThe syntax.py package contains classes representing core elements of the PDF syntax.\n\nClasses inherit from the PDFObject class, that has the following properties:\n\nOther notable core classes are:\n\nThis mixin class, inherited by the FPDF class, allows to manage a stack of graphics state variables:\n\nThe main methods of this API are:\n\nEach stack entry is a GraphicsState dataclass, and _get_current_graphics_state() returns a copy used by fragments or temporary contexts.\n\nThanks to this mixin, we can use the following semantics: from fpdf.graphics_state import GraphicsStateMixin f = GraphicsStateMixin() # Push initial state in stack: gs0 gs0 = f._push_local_stack() # Step 1 - set some graphic styles: gs1 f.font_size_pt = 16 f.underline = True gs1 = f._get_current_graphics_state() # Step 2 - restore gs0 f._pop_local_stack() print(f\"{f.font_size_pt=} {f.underline=}\") # -> f.font_size_pt=0 f.underline=False\n\nThe graphics states used in the code above can be depicted by this diagram:\n\nIn fpdf2, the FPDF class is used to store the document definition, its state as it is progressively built. Most attributes and internal data is mutable.\n\nOnce it's done, when the FPDF.output() method is called, the actual PDF file creation is delegated to the OutputProducer class.\n\nIt performs the serialization of the PDF document, including the generation of the cross-reference table & file trailer. This class uses the FPDF instance as immutable input: it does not perform any modification on it.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "fpdf2 internals¶",
+      "id": "fpdf2-internals"
+    },
+    {
+      "level": "h2",
+      "text": "FPDF.pages¶",
+      "id": "fpdfpages"
+    },
+    {
+      "level": "h2",
+      "text": "syntax.py & objects serialization¶",
+      "id": "syntaxpy-objects-serialization"
+    },
+    {
+      "level": "h2",
+      "text": "GraphicsStateMixin¶",
+      "id": "graphicsstatemixin"
+    },
+    {
+      "level": "h2",
+      "text": "OutputProducer¶",
+      "id": "outputproducer"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf.graphics_state import GraphicsStateMixin\n\nf = GraphicsStateMixin()\n# Push initial state in stack: gs0\ngs0 = f._push_local_stack()\n# Step 1 - set some graphic styles: gs1\nf.font_size_pt = 16\nf.underline = True\ngs1 = f._get_current_graphics_state()\n# Step 2 - restore gs0\nf._pop_local_stack()\nprint(f\"{f.font_size_pt=} {f.underline=}\")\n# -> f.font_size_pt=0 f.underline=False",
+      "language": "swift"
+    },
+    {
+      "code": "stateDiagram-v2\n  direction LR\n  state gs0 {\n    initial1 : Base state\n  }\n  state gs1 {\n    initial2 : Base state\n    font_size_pt2 : font_size_pt=16\n    underline2 : underline=True\n    font_size_pt2 --> initial2\n    underline2 --> font_size_pt2\n  }\n  gs0 --> gs1: Step 1\n  state \"gs0\" as stack2 {\n    initial3 : Base state\n  }\n  gs1 --> stack2: Step 2",
+      "language": "typescript"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/output.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/graphics_state.html"
+  ]
+}

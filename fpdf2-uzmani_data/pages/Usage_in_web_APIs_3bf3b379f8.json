@@ -1,0 +1,226 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+  "title": "Usage in web APIs¶",
+  "content": "Note that FPDF instance objects are not designed to be reusable: content cannot be added once output() has been called.\n\nHence, even if the FPDF class should be thread-safe, we recommend that you either create an instance for every request, or if you want to use a global / shared object, to only store the bytes returned from output().\n\na high-level Python web framework that encourages rapid development and clean, pragmatic design\n\nThere is how you can return a PDF document from a Django view:\n\nThe following code can be placed in a fpdf2_app.py to make a WSGI application\n\nThis script can then be served as a HTTP application using either:\n\nFlask is a micro web framework written in Python.\n\nThe following code can be placed in a app.py file and launched using flask run:\n\nBottle is a fast, simple and lightweight WSGI micro web-framework for Python. It is distributed as a single file module and has no dependencies other than the Python Standard Library.\n\nThe following code can be placed in a app.py file and launched using python3 app.py\n\na pythonic, object-oriented web framework, allowing developers to build web applications in much the same way they would build any other object-oriented Python program.\n\nThe following code can be placed in a app.py file and launched using python3 app.py\n\nThe following code demonstrates some minimal AWS lambda handler function that returns a PDF file as binary output: from base64 import b64encode from fpdf import FPDF def handler(event, context): pdf = FPDF() pdf.add_page() pdf.set_font(\"Helvetica\", size=24) pdf.cell(text=\"hello world\") return { 'statusCode': 200, 'headers': { 'Content-Type': 'application/json', }, 'body': b64encode(pdf.output()).decode('utf-8'), 'isBase64Encoded': True }\n\nThis AWS lambda function can then be linked to a HTTP endpoint using API Gateway, or simply exposed as a Lambda Function URL. More information on those pages:\n\nFor reference, the test lambda function was initiated using the following AWS CLI commands:\n\nThose commands do not cover the creation of the lambda-fpdf2-role role, nor configuring the lambda access permissions, for example with a FunctionURLAllowPublicAccess resource-based policy.\n\na Python library that makes it easy to create and share custom web apps for data science\n\nThe following code demonstrates how to display a PDF and add a button allowing to download it:\n\na modern, fast (high-performance), web framework for building APIs with Python 3.7+ based on standard Python type hints.\n\nThe following code shows how to generate a PDF file via a POST endpoint that receives a JSON object. The JSON object can be used to write into the PDF file. The generated PDF file will be returned back to the user/frontend as the response.\n\na powerful open source Content Management System built on Python and the Zope application server\n\nPlone is widely used for building secure and scalable web applications. Here's how to generate and serve PDF documents with fpdf2 in Plone.\n\nThe most common approach is to create a browser view that generates and returns a PDF:\n\nRegister the view in your package's configure.zcml:\n\nThe PDF can then be accessed at: http://yoursite.com/path/to/content/@@pdf-report\n\nFor a custom Dexterity content type, you can add a method that generates PDFs:\n\nThen create a view to serve it:\n\nRegister this view in configure.zcml:\n\nGenerate PDFs from catalog search results:\n\nCheck tutorial/notebook.ipynb\n\nUsage of the original PyFPDF library with web2py is described here: https://github.com/reingart/pyfpdf/blob/master/docs/Web2Py.md\n\nv1.7.2 of PyFPDF is included in web2py since release 1.85.2: https://github.com/web2py/web2py/tree/master/gluon/contrib/fpdf",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Usage in web APIs¶",
+      "id": "usage-in-web-apis"
+    },
+    {
+      "level": "h2",
+      "text": "Django¶",
+      "id": "django"
+    },
+    {
+      "level": "h2",
+      "text": "WSGI applications¶",
+      "id": "wsgi-applications"
+    },
+    {
+      "level": "h3",
+      "text": "Flask¶",
+      "id": "flask"
+    },
+    {
+      "level": "h3",
+      "text": "Bottle¶",
+      "id": "bottle"
+    },
+    {
+      "level": "h3",
+      "text": "CherryPy¶",
+      "id": "cherrypy"
+    },
+    {
+      "level": "h2",
+      "text": "AWS lambda¶",
+      "id": "aws-lambda"
+    },
+    {
+      "level": "h2",
+      "text": "streamlit¶",
+      "id": "streamlit"
+    },
+    {
+      "level": "h2",
+      "text": "FastAPI¶",
+      "id": "fastapi"
+    },
+    {
+      "level": "h2",
+      "text": "Plone¶",
+      "id": "plone"
+    },
+    {
+      "level": "h3",
+      "text": "As a Browser View¶",
+      "id": "as-a-browser-view"
+    },
+    {
+      "level": "h3",
+      "text": "As a Custom Content Type Method¶",
+      "id": "as-a-custom-content-type-method"
+    },
+    {
+      "level": "h3",
+      "text": "With Catalog Queries¶",
+      "id": "with-catalog-queries"
+    },
+    {
+      "level": "h3",
+      "text": "Notes for Plone Developers¶",
+      "id": "notes-for-plone-developers"
+    },
+    {
+      "level": "h2",
+      "text": "Jupyter¶",
+      "id": "jupyter"
+    },
+    {
+      "level": "h2",
+      "text": "web2py¶",
+      "id": "web2py"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from django.http import HttpResponse\nfrom fpdf import FPDF\n\ndef report(request):\n    pdf = FPDF()\n    pdf.add_page()\n    pdf.set_font(\"Helvetica\", size=24)\n    pdf.cell(text=\"hello world\")\n    return HttpResponse(bytes(pdf.output()), content_type=\"application/pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\ndef app(environ, start_response):\n    pdf = FPDF()\n    pdf.add_page()\n    pdf.set_font(\"Helvetica\", size=12)\n    pdf.cell(text=\"Hello world!\")\n    data = bytes(pdf.output())\n    start_response(\"200 OK\", [\n        (\"Content-Type\", \"application/pdf\"),\n        (\"Content-Length\", str(len(data)))\n    ])\n    return iter([data])",
+      "language": "python"
+    },
+    {
+      "code": "from flask import Flask, make_response\nfrom fpdf import FPDF\n\napp = Flask(__name__)\n\n@app.route(\"/\")\ndef hello_world():\n    pdf = FPDF()\n    pdf.add_page()\n    pdf.set_font(\"Helvetica\", size=24)\n    pdf.cell(text=\"hello world\")\n    response = make_response(bytes(pdf.output()))\n    response.headers[\"Content-Type\"] = \"application/pdf\"\n    return response",
+      "language": "python"
+    },
+    {
+      "code": "from bottle import route, run, response\nfrom fpdf import FPDF\n\n@route('/')\ndef hello():\n    pdf = FPDF()\n    pdf.add_page()\n    pdf.set_font(\"Helvetica\", size=24)\n    pdf.cell(text=\"hello world\")\n    pdf_bytes = bytes(pdf.output())\n\n    response.set_header('Content-Type', 'application/pdf')\n    response.status = 200\n    response.content_length = len(pdf_bytes)\n\n    return pdf_bytes\n\nif __name__ == '__main__':\n    run(host='localhost', port=8080, debug=True)",
+      "language": "python"
+    },
+    {
+      "code": "import cherrypy\nfrom fpdf import FPDF\n\nclass HelloWorld(object):\n    @cherrypy.expose\n    def index(self):\n        pdf = FPDF()\n        pdf.add_page()\n        pdf.set_font(\"Helvetica\", size=24)\n        pdf.cell(text=\"hello world\")\n        pdf_bytes = bytes(pdf.output())\n\n        cherrypy.response.headers['content-type'] = 'application/pdf'\n        cherrypy.response.status = 200\n\n        return pdf_bytes\n\n\nif __name__ == \"__main__\":\n    cherrypy.quickstart(HelloWorld())",
+      "language": "python"
+    },
+    {
+      "code": "from base64 import b64encode\nfrom fpdf import FPDF\n\ndef handler(event, context):\n    pdf = FPDF()\n    pdf.add_page()\n    pdf.set_font(\"Helvetica\", size=24)\n    pdf.cell(text=\"hello world\")\n    return {\n        'statusCode': 200,\n        'headers': {\n            'Content-Type': 'application/json',\n        },\n        'body': b64encode(pdf.output()).decode('utf-8'),\n        'isBase64Encoded': True\n    }",
+      "language": "python"
+    },
+    {
+      "code": "pyv=3.8\npip${pyv} install fpdf2 -t python/lib/python${pyv}/site-packages/\n# We use a distinct layer for Pillow:\nrm -r python/lib/python${pyv}/site-packages/{PIL,Pillow}*\nzip -r fpdf2-deps.zip python > /dev/null\naws lambda publish-layer-version --layer-name fpdf2-deps \\\n    --description \"Dependencies for fpdf2 lambda\" \\\n    --zip-file fileb://fpdf2-deps.zip --compatible-runtimes python${pyv}",
+      "language": "markdown"
+    },
+    {
+      "code": "AWS_ACCOUNT_ID=...\nAWS_REGION=eu-west-3\nzip -r fpdf2-test.zip lambda.py\naws lambda create-function --function-name fpdf2-test --runtime python${pyv} \\\n    --zip-file fileb://fpdf2-test.zip --handler lambda.handler \\\n    --role arn:aws:iam::${AWS_ACCOUNT_ID}:role/lambda-fpdf2-role \\\n    --layers arn:aws:lambda:${AWS_REGION}:770693421928:layer:Klayers-python${pyv/./}-Pillow:15 \\\n             arn:aws:lambda:${AWS_REGION}:${AWS_ACCOUNT_ID}:layer:fpdf2-deps:1\naws lambda create-function-url-config --function-name fpdf2-test --auth-type NONE",
+      "language": "rust"
+    },
+    {
+      "code": "from base64 import b64encode\nfrom fpdf import FPDF\nimport streamlit as st\n\nst.title(\"Demo of fpdf2 usage with streamlit\")\n\n@st.cache\ndef gen_pdf():\n    pdf = FPDF()\n    pdf.add_page()\n    pdf.set_font(\"Helvetica\", size=24)\n    pdf.cell(text=\"hello world\")\n    return bytes(pdf.output())\n\n# Embed PDF to display it:\nbase64_pdf = b64encode(gen_pdf()).decode(\"utf-8\")\npdf_display = f'<embed src=\"data:application/pdf;base64,{base64_pdf}\" width=\"700\" height=\"400\" type=\"application/pdf\">'\nst.markdown(pdf_display, unsafe_allow_html=True)\n\n# Add a download button:\nst.download_button(\n    label=\"Download PDF\",\n    data=gen_pdf(),\n    file_name=\"file_name.pdf\",\n    mime=\"application/pdf\",\n)",
+      "language": "python"
+    },
+    {
+      "code": "from fastapi import FastAPI, Request, Response, HTTPException, status\nfrom fpdf import FPDF\n\n\napp = FastAPI()\n\n\n@app.post(\"/send_data\", status_code=status.HTTP_200_OK)\nasync def create_pdf(request: Request):\n    \"\"\" \n    POST endpoint that accepts a JSON object\n    This endpoint returns a PDF file as the response\n    \"\"\"\n    try:\n        # data will read the JSON object and can be accessed like a Python Dictionary \n        # The contents of the JSON object can be used to write into the PDF file (if needed)\n        data = await request.json()\n\n\n        # Create a sample PDF file\n        pdf = FPDF()\n        pdf.add_page()\n        pdf.set_font(\"Helvetica\", size=24)\n        pdf.cell(text=\"hello world\")\n        # pdf.cell(text=data[\"content\"])  # Using the contents of the JSON object to write into the PDF file\n        # Use str(data[\"content\"]) if the content is non-string type\n\n\n        # Prepare the filename and headers\n        filename = \"<file_name_here>.pdf\"\n        headers = {\n            \"Content-Disposition\": f\"attachment; filename={filename}\"\n        }\n\n\n        # Return the file as a response\n        return Response(content=bytes(pdf.output()), media_type=\"application/pdf\", headers=headers)\n\n\n    except Exception as e:\n        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))",
+      "language": "python"
+    },
+    {
+      "code": "from Products.Five import BrowserView\nfrom fpdf import FPDF\n\nclass PDFReportView(BrowserView):\n    \"\"\"Generate and serve a PDF report\"\"\"\n\n    def __call__(self):\n        # Create PDF\n        pdf = FPDF()\n        pdf.add_page()\n        pdf.set_font(\"Helvetica\", size=24)\n        pdf.cell(text=\"Hello from Plone!\")\n\n        # Add content from the context\n        pdf.ln(10)\n        pdf.set_font(\"Helvetica\", size=12)\n        pdf.cell(text=f\"Title: {self.context.Title()}\")\n\n        # Generate PDF bytes\n        pdf_bytes = bytes(pdf.output())\n\n        # Set response headers\n        self.request.response.setHeader('Content-Type', 'application/pdf')\n        self.request.response.setHeader(\n            'Content-Disposition',\n            'attachment; filename=\"report.pdf\"'\n        )\n        self.request.response.setHeader('Content-Length', len(pdf_bytes))\n\n        return pdf_bytes",
+      "language": "python"
+    },
+    {
+      "code": "<browser:page\n    name=\"pdf-report\"\n    for=\"*\"\n    class=\".views.PDFReportView\"\n    permission=\"zope2.View\"\n    />",
+      "language": "unknown"
+    },
+    {
+      "code": "from plone.dexterity.content import Container\nfrom fpdf import FPDF\n\nclass Report(Container):\n    \"\"\"Custom content type that can generate PDF reports\"\"\"\n\n    def generate_pdf(self):\n        \"\"\"Generate PDF from content type data\"\"\"\n        pdf = FPDF()\n        pdf.add_page()\n        pdf.set_font(\"Helvetica\", \"B\", 16)\n        pdf.cell(text=self.title)\n\n        pdf.ln(10)\n        pdf.set_font(\"Helvetica\", size=12)\n        if self.description:\n            pdf.multi_cell(0, 5, text=self.description)\n\n        return bytes(pdf.output())",
+      "language": "python"
+    },
+    {
+      "code": "from Products.Five import BrowserView\n\nclass DownloadPDFView(BrowserView):\n    \"\"\"Download PDF for Report content type\"\"\"\n\n    def __call__(self):\n        pdf_bytes = self.context.generate_pdf()\n\n        self.request.response.setHeader('Content-Type', 'application/pdf')\n        self.request.response.setHeader(\n            'Content-Disposition',\n            f'attachment; filename=\"{self.context.getId()}.pdf\"'\n        )\n\n        return pdf_bytes",
+      "language": "swift"
+    },
+    {
+      "code": "<browser:page\n    name=\"download-pdf\"\n    for=\".interfaces.IReport\"\n    class=\".views.DownloadPDFView\"\n    permission=\"zope2.View\"\n    />",
+      "language": "unknown"
+    },
+    {
+      "code": "from Products.Five import BrowserView\nfrom fpdf import FPDF\n\nclass CatalogReportView(BrowserView):\n    \"\"\"Generate PDF report from catalog query\"\"\"\n\n    def __call__(self):\n        catalog = self.context.portal_catalog\n        results = catalog(portal_type='Document',\n                         review_state='published')\n\n        pdf = FPDF()\n        pdf.add_page()\n        pdf.set_font(\"Helvetica\", \"B\", 16)\n        pdf.cell(text=\"Published Documents Report\")\n\n        pdf.ln(10)\n        pdf.set_font(\"Helvetica\", size=10)\n\n        for brain in results:\n            pdf.cell(text=brain.Title)\n            pdf.ln()\n\n        pdf_bytes = bytes(pdf.output())\n\n        self.request.response.setHeader('Content-Type', 'application/pdf')\n        self.request.response.setHeader(\n            'Content-Disposition',\n            'attachment; filename=\"catalog-report.pdf\"'\n        )\n\n        return pdf_bytes",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html"
+  ]
+}

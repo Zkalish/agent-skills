@@ -1,0 +1,199 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/annotations.html",
+  "title": "Module fpdf.annotations",
+  "content": "Usage documentation at: https://py-pdf.github.io/fpdf2/Annotations.html\n\nA PDF annotation that get serialized as an inline <>\n\nInherited from: PDFObject.content_stream\n\nSubclasses can override this method to indicate the presence of a content stream\n\nInherited from: PDFObject.serialize\n\nSerialize the PDF object as an obj<</>>endobj text block\n\nA PDF annotation that get serialized as an obj<</>>endobj block\n\nInherited from: PDFObject.content_stream\n\nSubclasses can override this method to indicate the presence of a content stream\n\nInherited from: PDFObject.serialize\n\nSerialize the PDF object as an obj<</>>endobj text block\n\nInherited from: PDFContentStream.content_stream\n\nSubclasses can override this method to indicate the presence of a content stream\n\nInherited from: PDFContentStream.serialize\n\nSerialize the PDF object as an obj<</>>endobj text block",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.annotations",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Subclasses",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Instance variables",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationDict(AnnotationMixin):\n    \"A PDF annotation that get serialized as an inline <<dictionary>>\"\n\n    __slots__ = (  # RAM usage optimization\n        \"type\",\n        \"subtype\",\n        \"rect\",\n        \"border\",\n        \"f_t\",\n        \"v\",\n        \"f\",\n        \"contents\",\n        \"a\",\n        \"dest\",\n        \"c\",\n        \"t\",\n        \"quad_points\",\n        \"p\",\n        \"name\",\n        \"ink_list\",\n        \"f_s\",\n        \"d_a\",\n    )\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        obj_dict = build_obj_dict(\n            {key: getattr(self, key) for key in dir(self)},\n            _security_handler=_security_handler,\n            _obj_id=_obj_id,\n        )\n        return pdf_dict(obj_dict)\n\n    def __repr__(self) -> str:\n        keys = [key for key in dir(self) if not key.startswith(\"__\")]\n        d = {key: getattr(self, key) for key in keys}\n        d = {key: value for key, value in d.items() if not callable(value)}\n        return f\"AnnotationDict(**{d})\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    obj_dict = build_obj_dict(\n        {key: getattr(self, key) for key in dir(self)},\n        _security_handler=_security_handler,\n        _obj_id=_obj_id,\n    )\n    return pdf_dict(obj_dict)",
+      "language": "python"
+    },
+    {
+      "code": "class AnnotationMixin:\n    def __init__(\n        self,\n        subtype: str,\n        x: float,\n        y: float,\n        width: float,\n        height: float,\n        flags: tuple[AnnotationFlag | str, ...] = DEFAULT_ANNOT_FLAGS,\n        contents: Optional[str] = None,\n        dest: Optional[Destination | PDFString] = None,\n        action: Optional[Action] = None,\n        color: Optional[tuple[float, float, float]] = None,\n        modification_time: Optional[datetime] = None,\n        title: Optional[str] = None,\n        quad_points: Optional[Sequence[float]] = None,\n        border_width: float = 0,  # PDF readers support: displayed by Acrobat but not Sumatra\n        name: Union[AnnotationName, FileAttachmentAnnotationName, None] = None,\n        ink_list: Optional[tuple[float, ...]] = None,  # for ink annotations\n        file_spec: Optional[Union[\"FileSpec\", str]] = None,\n        field_type: Optional[str] = None,\n        value: Optional[str] = None,\n        default_appearance: Optional[str] = None,  # for free text annotations\n    ) -> None:\n        self.type = Name(\"Annot\")\n        self.subtype = Name(subtype)\n        self.rect = f\"[{x:.2f} {y - height:.2f} {x + width:.2f} {y:.2f}]\"\n        self.border = f\"[0 0 {border_width}]\"\n        self.f_t = Name(field_type) if field_type else None\n        self.v = value\n        self.f = sum(tuple(AnnotationFlag.coerce(flag) for flag in flags))\n        self.contents = PDFString(contents, encrypt=True) if contents else None\n        self.a = action\n        self.dest = dest\n        self.c = f\"[{color[0]} {color[1]} {color[2]}]\" if color else None\n        self.t = PDFString(title, encrypt=True) if title else None\n        self.m = PDFDate(modification_time, encrypt=True) if modification_time else None\n        self.quad_points = (\n            pdf_list([f\"{quad_point:.2f}\" for quad_point in quad_points])\n            if quad_points\n            else None\n        )\n        self.p = None  # must always be set before calling .serialize()\n        self.name = name\n        self.ink_list = (\n            (\"[\" + pdf_list([f\"{coord:.2f}\" for coord in ink_list]) + \"]\")\n            if ink_list\n            else None\n        )\n        self.f_s = file_spec\n        self.d_a = default_appearance",
+      "language": "python"
+    },
+    {
+      "code": "class FileSpec(PDFObject):\n\n    def __init__(\n        self,\n        embedded_file: PDFEmbeddedFile,\n        basename: str,\n        desc: Optional[str] = None,\n        af_relationship: Optional[AssociatedFileRelationship] = None,\n    ):\n        super().__init__()\n        self.type = Name(\"Filespec\")\n        self.f = PDFString(basename)\n        self.u_f = PDFString(basename)\n        if desc:\n            self.desc = PDFString(desc)\n        if af_relationship:\n            self.a_f_relationship = Name(af_relationship.value)\n        self._embedded_file = embedded_file\n\n    @property\n    def e_f(self) -> str:\n        return pdf_dict({\"/F\": pdf_ref(self._embedded_file.id)})",
+      "language": "python"
+    },
+    {
+      "code": "@property\ndef e_f(self) -> str:\n    return pdf_dict({\"/F\": pdf_ref(self._embedded_file.id)})",
+      "language": "python"
+    },
+    {
+      "code": "class PDFAnnotation(AnnotationMixin, PDFObject):\n    \"A PDF annotation that get serialized as an obj<</>>endobj block\"\n\n    def __init__(self, *args: Any, **kwargs: Any) -> None:\n        super().__init__(*args, **kwargs)",
+      "language": "python"
+    },
+    {
+      "code": "class PDFEmbeddedFile(PDFContentStream):\n    def __init__(\n        self,\n        basename: str,\n        contents: bytes,\n        desc: str = \"\",\n        creation_date: Optional[datetime] = None,\n        modification_date: Optional[datetime] = None,\n        mime_type: Optional[str] = None,\n        af_relationship: Optional[AssociatedFileRelationship] = None,\n        compress: bool = False,\n        checksum: bool = False,\n    ):\n        super().__init__(contents=contents, compress=compress)\n        self.type = Name(\"EmbeddedFile\")\n        params: dict[str, object] = {\"/Size\": len(contents)}\n        if creation_date:\n            params[\"/CreationDate\"] = PDFDate(creation_date, with_tz=True).serialize()\n        if modification_date:\n            params[\"/ModDate\"] = PDFDate(modification_date, with_tz=True).serialize()\n        if checksum:\n            file_hash = hashlib.new(\"md5\", usedforsecurity=False)\n            file_hash.update(self._contents)\n            hash_hex = file_hash.hexdigest()\n            params[\"/CheckSum\"] = f\"<{hash_hex}>\"\n        if mime_type:\n            self.subtype = Name(mime_type)\n        self.params = pdf_dict(params)\n        self._basename: str = basename  # private so that it does not get serialized\n        self._desc: str = desc  # private so that it does not get serialized\n        self._globally_enclosed: bool = True\n        self._af_relationship: Optional[AssociatedFileRelationship] = af_relationship\n        self._file_spec: Optional[FileSpec] = None\n\n    def globally_enclosed(self) -> bool:\n        return self._globally_enclosed\n\n    def set_globally_enclosed(self, value: bool) -> None:\n        self._globally_enclosed = value\n\n    def basename(self) -> str:\n        return self._basename\n\n    def file_spec(self) -> \"FileSpec\":\n        if not self._file_spec:\n            self._file_spec = FileSpec(\n                self, self._basename, self._desc, self._af_relationship\n            )\n        return self._file_spec",
+      "language": "python"
+    },
+    {
+      "code": "def basename(self) -> str:\n    return self._basename",
+      "language": "python"
+    },
+    {
+      "code": "def file_spec(self) -> \"FileSpec\":\n    if not self._file_spec:\n        self._file_spec = FileSpec(\n            self, self._basename, self._desc, self._af_relationship\n        )\n    return self._file_spec",
+      "language": "python"
+    },
+    {
+      "code": "def globally_enclosed(self) -> bool:\n    return self._globally_enclosed",
+      "language": "python"
+    },
+    {
+      "code": "def set_globally_enclosed(self, value: bool) -> None:\n    self._globally_enclosed = value",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/enums.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/syntax.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/actions.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/annotations.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html"
+  ]
+}

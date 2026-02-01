@@ -1,0 +1,50 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/deprecation.html",
+  "title": "Module fpdf.deprecation",
+  "content": "Utilities to manage deprecation errors & warnings.\n\nThe contents of this module are internal to fpdf2, and not part of the public API. They may change at any time without prior warning or any deprecation period, in non-backward-compatible ways.\n\nDecorator removing deprecated keyword arguments from a function call.\n\nGet the first place in the call stack that is not inside fpdf2\n\nDecorator converting txt= arguments into text= arguments\n\nCreate a module object.\n\nThe name must be a string; the optional doc argument can have any type.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.deprecation",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Functions",
+      "id": "header-functions"
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "def deprecated_parameter(\n    parameters: Iterable[tuple[str, str]],\n) -> Callable[[Callable[P, R]], Callable[P, R]]:\n    \"\"\"Decorator removing deprecated keyword arguments from a function call.\"\"\"\n\n    deprecated_info = tuple(parameters)\n    _sentinel = object()\n\n    def decorator(fn: Callable[P, R]) -> Callable[P, R]:\n        @wraps(fn)\n        def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:\n            for name, version in deprecated_info:\n                if kwargs.pop(name, _sentinel) is not _sentinel:\n                    warnings.warn(\n                        f'\"{name}\" parameter is deprecated since v{version} and will be removed in a future release',\n                        DeprecationWarning,\n                        stacklevel=get_stack_level(),\n                    )\n            return fn(*args, **kwargs)\n\n        return wrapper\n\n    return decorator",
+      "language": "python"
+    },
+    {
+      "code": "def get_stack_level() -> int:\n    \"\"\"Get the first place in the call stack that is not inside fpdf2\"\"\"\n\n    # pylint: disable=import-outside-toplevel\n    import fpdf  # pylint: disable=cyclic-import\n\n    pkg_dir = os.path.dirname(fpdf.__file__)\n    contextlib_dir = os.path.dirname(contextlib.__file__)\n\n    frame = inspect.currentframe()\n    n = 0\n    while frame is not None:\n        fname = inspect.getfile(frame)\n        if fname.startswith(pkg_dir) or fname.startswith(contextlib_dir):\n            frame = frame.f_back\n            n += 1\n        else:\n            break\n    return n",
+      "language": "python"
+    },
+    {
+      "code": "def support_deprecated_txt_arg(fn: Callable[P, R]) -> Callable[P, R]:\n    \"\"\"Decorator converting `txt=` arguments into `text=` arguments\"\"\"\n\n    @wraps(fn)\n    def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:\n        txt_value = kwargs.pop(\"txt\", None)\n        if txt_value is not None:\n            if \"text\" in kwargs:\n                raise ValueError(\"Both txt= & text= arguments cannot be provided\")\n            kwargs[\"text\"] = txt_value\n            warnings.warn(\n                'The parameter \"txt\" has been renamed to \"text\" in 2.7.6',\n                DeprecationWarning,\n                stacklevel=get_stack_level(),\n            )\n        return fn(*args, **kwargs)\n\n    return wrapper",
+      "language": "python"
+    },
+    {
+      "code": "class WarnOnDeprecatedModuleAttributes(ModuleType):\n    def __call__(self) -> None:\n        raise TypeError(\n            \"You tried to instantied the fpdf module.\"\n            \" You probably want to import the FPDF class instead:\"\n            \" from fpdf import FPDF\"\n        )\n\n    def __getattr__(self, name: str) -> Any:\n        if name in (\"FPDF_CACHE_DIR\", \"FPDF_CACHE_MODE\"):\n            warnings.warn(\n                (\n                    \"fpdf.FPDF_CACHE_DIR & fpdf.FPDF_CACHE_MODE\"\n                    \" have been deprecated in favour of\"\n                    \" FPDF(font_cache_dir=...)\"\n                ),\n                DeprecationWarning,\n                stacklevel=get_stack_level(),\n            )\n            return None\n        return super().__getattribute__(name)\n\n    def __setattr__(self, name: str, value: Any) -> None:\n        if name in (\"FPDF_CACHE_DIR\", \"FPDF_CACHE_MODE\"):\n            warnings.warn(\n                (\n                    \"fpdf.FPDF_CACHE_DIR & fpdf.FPDF_CACHE_MODE\"\n                    \" have been deprecated in favour of\"\n                    \" FPDF(font_cache_dir=...)\"\n                ),\n                DeprecationWarning,\n                stacklevel=get_stack_level(),\n            )\n            return\n        super().__setattr__(name, value)",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/deprecation.html"
+  ]
+}

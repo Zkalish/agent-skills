@@ -1,0 +1,130 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Transformations.html",
+  "title": "Transformations¶",
+  "content": "The rotation() context-manager will apply a rotation to all objects inserted in its indented block: from fpdf import FPDF pdf = FPDF(format=(40, 40)) pdf.add_page() x, y = 15, 15 with pdf.rotation(60, x=x, y=y): pdf.circle(x=x, y=y+15, radius=5) # Inserting a small base64-encoded image: pdf.image(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAMFBMVEU0OkArMjhobHEoPUPFEBIuO0L+AAC2FBZ2JyuNICOfGx7xAwTjCAlCNTvVDA1aLzQ3COjMAAAAVUlEQVQI12NgwAaCDSA0888GCItjn0szWGBJTVoGSCjWs8TleQCQYV95evdxkFT8Kpe0PLDi5WfKd4LUsN5zS1sKFolt8bwAZrCaGqNYJAgFDEpQAAAzmxafI4vZWwAAAABJRU5ErkJggg==\", x=x, y=y) pdf.rect(x=x-10, y=y+10, w=25, h=15) pdf.output(\"rotations.pdf\")\n\nskew creates a skewing transformation of magnitude ax in the horizontal axis and ay in the vertical axis. The transformation originates from x, y and will use a default origin unless specified otherwise:\n\nwith pdf.skew(ax=0, ay=10): pdf.cell(text=\"text skewed on the y-axis\")\n\nwith pdf.skew(ax=10, ay=0): pdf.cell(text=\"text skewed on the x-axis\")\n\npdf.set_line_width(2) pdf.set_draw_color(240) pdf.set_fill_color(r=230, g=30, b=180) with pdf.skew(ax=-45, ay=0, x=100, y=170): pdf.circle(x=100, y=170, radius=10, style=\"FD\")\n\nThe mirror context-manager applies a mirror transformation to all objects inserted in its indented block over a given mirror line by specifying starting co-ordinate and angle.\n\nx, y = 100, 100 pdf.text(x, y, text=\"mirror this text\") with pdf.mirror((x, y), \"EAST\"): pdf.set_text_color(r=255, g=128, b=0) pdf.text(x, y, text=\"mirror this text\")\n\npdf.text(x, y, text=\"mirror this text\") with pdf.mirror((x, y), \"NORTH\"): pdf.set_text_color(r=255, g=128, b=0) pdf.text(x, y, text=\"mirror this text\")\n\nprev_x, prev_y = pdf.x, pdf.y pdf.multi_cell(w=50, text=LOREM_IPSUM) with pdf.mirror((pdf.x, pdf.y), \"NORTHEAST\"): # Reset cursor to mirror original multi-cell pdf.x = prev_x pdf.y = prev_y pdf.multi_cell(w=50, text=LOREM_IPSUM, fill=True)",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Transformations¶",
+      "id": "transformations"
+    },
+    {
+      "level": "h2",
+      "text": "Rotation¶",
+      "id": "rotation"
+    },
+    {
+      "level": "h2",
+      "text": "Skew¶",
+      "id": "skew"
+    },
+    {
+      "level": "h2",
+      "text": "Mirror¶",
+      "id": "mirror"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF(format=(40, 40))\npdf.add_page()\nx, y = 15, 15\nwith pdf.rotation(60, x=x, y=y):\n    pdf.circle(x=x, y=y+15, radius=5)\n    # Inserting a small base64-encoded image:\n    pdf.image(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAMFBMVEU0OkArMjhobHEoPUPFEBIuO0L+AAC2FBZ2JyuNICOfGx7xAwTjCAlCNTvVDA1aLzQ3COjMAAAAVUlEQVQI12NgwAaCDSA0888GCItjn0szWGBJTVoGSCjWs8TleQCQYV95evdxkFT8Kpe0PLDi5WfKd4LUsN5zS1sKFolt8bwAZrCaGqNYJAgFDEpQAAAzmxafI4vZWwAAAABJRU5ErkJggg==\", x=x, y=y)\n    pdf.rect(x=x-10, y=y+10, w=25, h=15)\npdf.output(\"rotations.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "with pdf.skew(ax=0, ay=10):\n    pdf.cell(text=\"text skewed on the y-axis\")",
+      "language": "unknown"
+    },
+    {
+      "code": "with pdf.skew(ax=10, ay=0):\n    pdf.cell(text=\"text skewed on the x-axis\")",
+      "language": "unknown"
+    },
+    {
+      "code": "pdf.set_line_width(2)\npdf.set_draw_color(240)\npdf.set_fill_color(r=230, g=30, b=180)\nwith pdf.skew(ax=-45, ay=0, x=100, y=170):\n    pdf.circle(x=100, y=170, radius=10, style=\"FD\")",
+      "language": "unknown"
+    },
+    {
+      "code": "x, y = 100, 100\npdf.text(x, y, text=\"mirror this text\")\nwith pdf.mirror((x, y), \"EAST\"):\n    pdf.set_text_color(r=255, g=128, b=0)\n    pdf.text(x, y, text=\"mirror this text\")",
+      "language": "swift"
+    },
+    {
+      "code": "pdf.text(x, y, text=\"mirror this text\")\nwith pdf.mirror((x, y), \"NORTH\"):\n    pdf.set_text_color(r=255, g=128, b=0)\n    pdf.text(x, y, text=\"mirror this text\")",
+      "language": "swift"
+    },
+    {
+      "code": "prev_x, prev_y = pdf.x, pdf.y\npdf.multi_cell(w=50, text=LOREM_IPSUM)\nwith pdf.mirror((pdf.x, pdf.y), \"NORTHEAST\"):\n    # Reset cursor to mirror original multi-cell\n    pdf.x = prev_x\n    pdf.y = prev_y\n    pdf.multi_cell(w=50, text=LOREM_IPSUM, fill=True)",
+      "language": "unknown"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html"
+  ]
+}

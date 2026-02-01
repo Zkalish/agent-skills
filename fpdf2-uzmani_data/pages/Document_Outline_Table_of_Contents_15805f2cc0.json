@@ -1,0 +1,144 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+  "title": "Document Outline & Table of Contents¶",
+  "content": "This document explains how to implement and customize the Document Outline (also known as Bookmarks) and Table of Contents (ToC) features in fpdf2.\n\nDocument outlines allow users to navigate quickly through sections in the PDF by creating a hierarchical structure of clickable links.\n\nQuoting the 6th edition of the PDF format reference (v1.7 - 2006) :\n\nA PDF document may optionally display a document outline on the screen, allowing the user to navigate interactively from one part of the document to another. The outline consists of a tree-structured hierarchy of outline items (sometimes called bookmarks), which serve as a visual table of contents to display the document’s structure to the user.\n\nFor example, there is how a document outline looks like in Sumatra PDF Reader:\n\nSince fpdf2.3.3, you can use the start_section method to add entries in the internal \"outline\" table, which is used to render both the outline and ToC.\n\nNote that by default, calling start_section only records the current position in the PDF and renders nothing. However, you can configure global title styles by calling set_section_title_styles, after which calls to start_section will render titles visually using the styles defined.\n\nTo provide a document outline to the PDF you generate, you just have to call the start_section method for every hierarchical section you want to define.\n\nOutlines can be nested by specifying different levels. Higher-level outlines (e.g., level 0) appear at the top, while sub-levels (e.g., level 1, level 2) are indented.\n\nQuoting Wikipedia, a table of contents is:\n\na list, usually found on a page before the start of a written work, of its chapter or section titles or brief descriptions with their commencing page numbers.\n\nUse the insert_toc_placeholder method to define a placeholder for the ToC. A page break is triggered after inserting the ToC.\n\nNote: Enabling allow_extra_pages may affect page numbering for headers or footers. Since extra ToC pages are added after the document content, they might cause page numbers to appear out of sequence. To maintain consistent numbering, use (Page Labels)[PageLabels.md] to assign a specific numbering style to the ToC pages. When using Page Labels, any extra ToC pages will follow the numbering style of the first ToC page.\n\nThe fpdf.outline.TableOfContents class provides a reference implementation of the ToC, which can be used as-is or subclassed.\n\nWhen using FPDF.write_html, a document outline is automatically generated, and a ToC can be added with the <toc> tag.\n\nTo customize ToC styling, override the render_toc method in a subclass:\n\nThe regression tests are a good place to find code samples.\n\nFor example, the test_simple_outline test function generates the PDF document simple_outline.pdf.\n\nSimilarly, test_html_toc generates test_html_toc.pdf.\n\n⚠️ Setting pdf.page manually may result in unexpected behavior. pdf.add_page() takes special care to ensure the page's content stream matches fpdf's instance attributes. Manually setting the page does not.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Document Outline & Table of Contents¶",
+      "id": "document-outline-table-of-contents"
+    },
+    {
+      "level": "h2",
+      "text": "Overview¶",
+      "id": "overview"
+    },
+    {
+      "level": "h2",
+      "text": "Document Outline (Bookmarks)¶",
+      "id": "document-outline-bookmarks"
+    },
+    {
+      "level": "h3",
+      "text": "Nested outlines¶",
+      "id": "nested-outlines"
+    },
+    {
+      "level": "h2",
+      "text": "Table of Contents¶",
+      "id": "table-of-contents"
+    },
+    {
+      "level": "h3",
+      "text": "Inserting a Table of Contents¶",
+      "id": "inserting-a-table-of-contents"
+    },
+    {
+      "level": "h3",
+      "text": "Reference Implementation¶",
+      "id": "reference-implementation"
+    },
+    {
+      "level": "h2",
+      "text": "Using Outlines and ToC with HTML¶",
+      "id": "using-outlines-and-toc-with-html"
+    },
+    {
+      "level": "h2",
+      "text": "Additional Code Samples¶",
+      "id": "additional-code-samples"
+    },
+    {
+      "level": "h2",
+      "text": "Manually Adjusting pdf.page¶",
+      "id": "manually-adjusting-pdfpage"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "pdf.start_section(name=\"Chapter 1: Introduction\", level=0)\npdf.start_section(name=\"Section 1.1: Background\", level=1)",
+      "language": "unknown"
+    },
+    {
+      "code": "from fpdf import FPDF\nfrom fpdf.outline import TableOfContents\n\npdf = FPDF()\npdf.add_page()\ntoc = TableOfContents()\npdf.insert_toc_placeholder(toc.render_toc, allow_extra_pages=True)",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF, HTML2FPDF\n\nclass CustomHTML2FPDF(HTML2FPDF):\n    def render_toc(self, pdf, outline):\n        pdf.cell(text='Table of contents:', new_x=\"LMARGIN\", new_y=\"NEXT\")\n        for section in outline:\n            pdf.cell(text=f'* {section.name} (page {section.page_number})', new_x=\"LMARGIN\", new_y=\"NEXT\")\n\nclass PDF(FPDF):\n    HTML2FPDF_CLASS = CustomHTML2FPDF\n\npdf = PDF()\npdf.add_page()\npdf.write_html(\"\"\"<toc></toc>\n    <h1>Level 1</h1>\n    <h2>Level 2</h2>\n    <h3>Level 3</h3>\n    <h4>Level 4</h4>\n    <h5>Level 5</h5>\n    <h6>Level 6</h6>\n    <p>paragraph<p>\"\"\")\npdf.output(\"html_toc.pdf\")",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html"
+  ]
+}

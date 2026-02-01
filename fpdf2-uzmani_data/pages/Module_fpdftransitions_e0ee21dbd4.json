@@ -1,0 +1,246 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/fpdf/transitions.html",
+  "title": "Module fpdf.transitions",
+  "content": "Usage documentation at: https://py-pdf.github.io/fpdf2/Presentations.html#transitions\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.\n\nHelper class that provides a standard way to create an ABC using inheritance.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Module fpdf.transitions",
+      "id": ""
+    },
+    {
+      "level": "h2",
+      "text": "Classes",
+      "id": "header-classes"
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Subclasses",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Ancestors",
+      "id": ""
+    },
+    {
+      "level": "h3",
+      "text": "Methods",
+      "id": ""
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "class BlindsTransition(Transition):\n    def __init__(self, dimension: str) -> None:\n        if dimension not in (\"H\", \"V\"):\n            raise ValueError(\n                f\"Unsupported dimension '{dimension}', must be H(horizontal) or V(ertical)\"\n            )\n        self.dimension = dimension\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return f\"<</Type /Trans /S /Blinds /DM /{self.dimension}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return f\"<</Type /Trans /S /Blinds /DM /{self.dimension}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "class BoxTransition(Transition):\n    def __init__(self, direction: str) -> None:\n        if direction not in (\"I\", \"O\"):\n            raise ValueError(\n                f\"Unsupported direction '{direction}', must be I(nward) or O(utward)\"\n            )\n        self.direction = direction\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return f\"<</Type /Trans /S /Blinds /M /{self.direction}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return f\"<</Type /Trans /S /Blinds /M /{self.direction}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "class CoverTransition(Transition):\n    def __init__(self, direction: int) -> None:\n        if direction not in (0, 270):\n            raise ValueError(f\"Unsupported direction '{direction}', must 0 or 270\")\n        self.direction = direction\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return f\"<</Type /Trans /S /Cover /Di /{self.direction}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return f\"<</Type /Trans /S /Cover /Di /{self.direction}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "class DissolveTransition(Transition):\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return \"<</Type /Trans /S /Dissolve>>\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return \"<</Type /Trans /S /Dissolve>>\"",
+      "language": "python"
+    },
+    {
+      "code": "class FadeTransition(Transition):\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return \"<</Type /Fade /S /Dissolve>>\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return \"<</Type /Fade /S /Dissolve>>\"",
+      "language": "python"
+    },
+    {
+      "code": "class FlyTransition(Transition):\n    def __init__(self, dimension: str, direction: Optional[int] = None) -> None:\n        if dimension not in (\"H\", \"V\"):\n            raise ValueError(\n                f\"Unsupported dimension '{dimension}', must be H(horizontal) or V(ertical)\"\n            )\n        self.dimension = dimension\n        if direction not in (0, 270, None):\n            raise ValueError(\n                f\"Unsupported direction '{direction}', must 0, 270 or None\"\n            )\n        self.direction = direction\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return (\n            f\"<</Type /Trans /S /Glitter /M /{self.dimension} /Di /{self.direction}>>\"\n        )",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return (\n        f\"<</Type /Trans /S /Glitter /M /{self.dimension} /Di /{self.direction}>>\"\n    )",
+      "language": "python"
+    },
+    {
+      "code": "class GlitterTransition(Transition):\n    def __init__(self, direction: int) -> None:\n        if direction not in (0, 270, 315):\n            raise ValueError(f\"Unsupported direction '{direction}', must 0, 270 or 315\")\n        self.direction = direction\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return f\"<</Type /Trans /S /Glitter /Di /{self.direction}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return f\"<</Type /Trans /S /Glitter /Di /{self.direction}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "class PushTransition(Transition):\n    def __init__(self, direction: int) -> None:\n        if direction not in (0, 270):\n            raise ValueError(f\"Unsupported direction '{direction}', must 0 or 270\")\n        self.direction = direction\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return f\"<</Type /Trans /S /Push /Di /{self.direction}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return f\"<</Type /Trans /S /Push /Di /{self.direction}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "class SplitTransition(Transition):\n    def __init__(self, dimension: str, direction: str) -> None:\n        if dimension not in (\"H\", \"V\"):\n            raise ValueError(\n                f\"Unsupported dimension '{dimension}', must be H(horizontal) or V(ertical)\"\n            )\n        self.dimension = dimension\n        if direction not in (\"I\", \"O\"):\n            raise ValueError(\n                f\"Unsupported direction '{direction}', must be I(nward) or O(utward)\"\n            )\n        self.direction = direction\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return f\"<</Type /Trans /S /Split /DM /{self.dimension} /M /{self.direction}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return f\"<</Type /Trans /S /Split /DM /{self.dimension} /M /{self.direction}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "class Transition(ABC):\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        raise NotImplementedError",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    raise NotImplementedError",
+      "language": "python"
+    },
+    {
+      "code": "class UncoverTransition(Transition):\n    def __init__(self, direction: int) -> None:\n        if direction not in (0, 270):\n            raise ValueError(f\"Unsupported direction '{direction}', must 0 or 270\")\n        self.direction = direction\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return f\"<</Type /Trans /S /Uncover /Di /{self.direction}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return f\"<</Type /Trans /S /Uncover /Di /{self.direction}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "class WipeTransition(Transition):\n    def __init__(self, direction: int) -> None:\n        if direction not in (0, 90, 180, 270):\n            raise ValueError(\n                f\"Unsupported direction '{direction}', must 0, 90, 180 or 270\"\n            )\n        self.direction = direction\n\n    def serialize(\n        self,\n        _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n        _obj_id: Optional[int] = None,\n    ) -> str:\n        return f\"<</Type /Trans /S /Wipe /Di /{self.direction}>>\"",
+      "language": "python"
+    },
+    {
+      "code": "def serialize(\n    self,\n    _security_handler: Optional[\"StandardSecurityHandler\"] = None,\n    _obj_id: Optional[int] = None,\n) -> str:\n    return f\"<</Type /Trans /S /Wipe /Di /{self.direction}>>\"",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/transitions.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/index.html"
+  ]
+}

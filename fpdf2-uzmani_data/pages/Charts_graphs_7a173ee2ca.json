@@ -1,0 +1,204 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/Maths.html",
+  "title": "Charts & graphs¶",
+  "content": "Before running this example, please install the required dependencies using the command below: pip install fpdf2 matplotlib Example taken from Matplotlib artist tutorial:\n\nYou can also embed a figure as SVG (but there may be some limitations):\n\nThe dependencies required for the following examples can be installed using this command: pip install fpdf2 matplotlib pandas\n\nCreate a plot using pandas.DataFrame.plot:\n\nCreate a table with pandas DataFrame:\n\nThe Ibis library provides a unified interface for analytical workflows across different backends (such as DuckDB, BigQuery, pandas, and more). Ibis table expressions are lazy and backend-agnostic; to retrieve the actual data, you need to execute the expression, which typically returns a pandas DataFrame.\n\nThis makes it straightforward to use Ibis with fpdf2: simply execute your Ibis table expression to get a DataFrame, then render it as a table in your PDF using the same approach as with pandas.\n\nBefore running the following example, please install the required dependencies: pip install \"ibis-framework[duckdb]\" fpdf2 pandas\n\nExample: Render an Ibis table as a table in a PDF document:\n\nThis approach works with any Ibis backend (DuckDB, pandas, BigQuery, etc.)—just use .execute() to get a DataFrame, then render as shown above.\n\nBefore running this example, please install the required dependencies using the command below:\n\nkaleido is a cross-platform library for generating static images that is used by plotly.\n\nExample taken from Plotly static image export tutorial:\n\nWhile you can also embed a figure as SVG, this is not recommended as text data - such as the x and y axis bars - might not be displayed, because plotly places this data in a SVG text tag which is currently not supported by fpdf2.\n\nBefore running this example, please install the required dependencies:\n\nPygal is a Python graph plotting library. You can install it using: pip install pygal\n\nfpdf2 can embed graphs and charts generated using Pygal library. However, they cannot be embedded as SVG directly, because Pygal inserts <style> & <script> tags in the images it produces (cf. pygal/svg.py), which is currently not supported by fpdf2. The full list of supported & unsupported SVG features can be found there: SVG page.\n\nYou can find documentation on how to convert vector images (SVG) to raster images (PNG, JPG), with a practical example of embedding PyGal charts, there: SVG page > Converting vector graphics to raster graphics.\n\nfpdf2 can only insert mathematical formula in the form of images. The following sections will explain how to generate and embed such images.\n\nOfficial documentation: Google Charts Infographics - Mathematical Formulas.\n\nMatplotlib can render LaTeX: Text rendering With LaTeX.\n\nIf you have trouble with the SVG export, you can also render the matplotlib figure as pixels:",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Charts & graphs¶",
+      "id": "charts-graphs"
+    },
+    {
+      "level": "h2",
+      "text": "Charts¶",
+      "id": "charts"
+    },
+    {
+      "level": "h3",
+      "text": "Using Matplotlib¶",
+      "id": "using-matplotlib"
+    },
+    {
+      "level": "h3",
+      "text": "Using Pandas¶",
+      "id": "using-pandas"
+    },
+    {
+      "level": "h3",
+      "text": "Using Ibis¶",
+      "id": "using-ibis"
+    },
+    {
+      "level": "h3",
+      "text": "Using Plotly¶",
+      "id": "using-plotly"
+    },
+    {
+      "level": "h3",
+      "text": "Using Pygal¶",
+      "id": "using-pygal"
+    },
+    {
+      "level": "h2",
+      "text": "Mathematical formulas¶",
+      "id": "mathematical-formulas"
+    },
+    {
+      "level": "h3",
+      "text": "Using Google Charts API¶",
+      "id": "using-google-charts-api"
+    },
+    {
+      "level": "h3",
+      "text": "Using LaTeX & Matplotlib¶",
+      "id": "using-latex-matplotlib"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "pip install fpdf2 matplotlib",
+      "language": "unknown"
+    },
+    {
+      "code": "from fpdf import FPDF\nfrom matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas\nfrom matplotlib.figure import Figure\nimport numpy as np\nfrom PIL import Image\n\nfig = Figure(figsize=(6, 4), dpi=300)\nfig.subplots_adjust(top=0.8)\nax1 = fig.add_subplot(211)\nax1.set_ylabel(\"volts\")\nax1.set_title(\"a sine wave\")\n\nt = np.arange(0.0, 1.0, 0.01)\ns = np.sin(2 * np.pi * t)\n(line,) = ax1.plot(t, s, color=\"blue\", lw=2)\n\n# Fixing random state for reproducibility\nnp.random.seed(19680801)\n\nax2 = fig.add_axes([0.15, 0.1, 0.7, 0.3])\nn, bins, patches = ax2.hist(\n    np.random.randn(1000), 50, facecolor=\"yellow\", edgecolor=\"yellow\"\n)\nax2.set_xlabel(\"time (s)\")\n\n# Converting Figure to an image:\ncanvas = FigureCanvas(fig)\ncanvas.draw()\nimg = Image.fromarray(np.asarray(canvas.buffer_rgba()))\n\npdf = FPDF()\npdf.add_page()\npdf.image(img, w=pdf.epw)  # Make the image full width\npdf.output(\"matplotlib.pdf\")",
+      "language": "typescript"
+    },
+    {
+      "code": "from fpdf import FPDF\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nplt.figure(figsize=[2, 2])\nx = np.arange(0, 10, 0.00001)\ny = x*np.sin(2* np.pi * x)\nplt.plot(y)\nplt.savefig(\"figure.svg\", format=\"svg\")\n\npdf = FPDF()\npdf.add_page()\npdf.image(\"figure.svg\")\npdf.output(\"doc-with-figure.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "pip install fpdf2 matplotlib pandas",
+      "language": "unknown"
+    },
+    {
+      "code": "from io import BytesIO\nfrom fpdf import FPDF\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport io\n\nDATA = {\n    \"Unemployment_Rate\": [6.1, 5.8, 5.7, 5.7, 5.8, 5.6, 5.5, 5.3, 5.2, 5.2],\n    \"Stock_Index_Price\": [1500, 1520, 1525, 1523, 1515, 1540, 1545, 1560, 1555, 1565],\n}\nCOLUMNS = tuple(DATA.keys())\n\nplt.figure()  # Create a new figure object\ndf = pd.DataFrame(DATA, columns=COLUMNS)\ndf.plot(x=COLUMNS[0], y=COLUMNS[1], kind=\"scatter\")\n\n# Converting Figure to an image:\nimg_buf = BytesIO()  # Create image object\nplt.savefig(img_buf, dpi=200)  # Save the image\n\npdf = FPDF()\npdf.add_page()\npdf.image(img_buf, w=pdf.epw)  # Make the image full width\npdf.output(\"matplotlib_pandas.pdf\")\nimg_buf.close()",
+      "language": "typescript"
+    },
+    {
+      "code": "from fpdf import FPDF\nimport pandas as pd\n\nDF = pd.DataFrame(\n    {\n        \"First name\": [\"Jules\", \"Mary\", \"Carlson\", \"Lucas\"],\n        \"Last name\": [\"Smith\", \"Ramos\", \"Banks\", \"Cimon\"],\n        \"Age\": [34, 45, 19, 31],\n        \"City\": [\"San Juan\", \"Orlando\", \"Los Angeles\", \"Saint-Mathurin-sur-Loire\"],\n    }\n    # Convert all data inside dataframe into string type:\n).applymap(str)\n\nCOLUMNS = [list(DF)]  # Get list of dataframe columns\nROWS = DF.values.tolist()  # Get list of dataframe rows\nDATA = COLUMNS + ROWS  # Combine columns and rows in one list\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=10)\nwith pdf.table(\n    borders_layout=\"MINIMAL\",\n    cell_fill_color=200,  # grey\n    cell_fill_mode=\"ROWS\",\n    line_height=pdf.font_size * 2.5,\n    text_align=\"CENTER\",\n    width=160,\n) as table:\n    for data_row in DATA:\n        row = table.row()\n        for datum in data_row:\n            row.cell(datum)\npdf.output(\"table_from_pandas.pdf\")",
+      "language": "json"
+    },
+    {
+      "code": "pip install \"ibis-framework[duckdb]\" fpdf2 pandas",
+      "language": "unknown"
+    },
+    {
+      "code": "from fpdf import FPDF\nimport ibis\nimport pandas as pd\n\n# Connect to a DuckDB in-memory database (as an example backend)\ncon = ibis.duckdb.connect()\n\n# Create a sample table in DuckDB with a SQL INSERT command:\ncon.raw_sql(\"\"\"\nCREATE TABLE people (\n    first_name VARCHAR,\n    last_name VARCHAR,\n    age INTEGER,\n    city VARCHAR\n);\nINSERT INTO people VALUES\n    ('Jules', 'Smith', 34, 'San Juan'),\n    ('Mary', 'Ramos', 45, 'Orlando'),\n    ('Carlson', 'Banks', 19, 'Los Angeles'),\n    ('Lucas', 'Cimon', 31, 'Angers');\n\"\"\")\n\n# Get an Ibis table expression\nt = con.table(\"people\")\n\n# (Optional) Apply Ibis expressions, e.g., filtering or selecting columns\nexpr = t  # or: t.filter(t.age > 30)\n\n# Execute the Ibis expression to get a pandas DataFrame\ndf = expr.execute()\n\n# Extract column headers and row data for PDF rendering\nCOLUMNS = [list(df)]  # column headers\nROWS = df.values.tolist()  # data rows\nDATA = COLUMNS + ROWS\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=10)\nwith pdf.table(\n    borders_layout=\"MINIMAL\",\n    cell_fill_color=200,  # grey\n    cell_fill_mode=\"ROWS\",\n    line_height=pdf.font_size * 2.5,\n    text_align=\"CENTER\",\n    width=160,\n) as table:\n    for data_row in DATA:\n        row = table.row()\n        for datum in data_row:\n            row.cell(datum)\npdf.output(\"table_from_ibis.pdf\")",
+      "language": "sql"
+    },
+    {
+      "code": "pip install fpdf2 plotly kaleido numpy",
+      "language": "unknown"
+    },
+    {
+      "code": "import io\nimport plotly.graph_objects as go\nimport numpy as np\nfrom fpdf import FPDF\n\nnp.random.seed(1)\n\nN = 100\nx = np.random.rand(N)\ny = np.random.rand(N)\ncolors = np.random.rand(N)\nsz = np.random.rand(N) * 30\n\nfig = go.Figure()\nfig.add_trace(\n    go.Scatter(\n        x=x,\n        y=y,\n        mode=\"markers\",\n        marker=go.scatter.Marker(\n            size=sz, color=colors, opacity=0.6, colorscale=\"Viridis\"\n        ),\n    )\n)\n\n# Convert the figure to png using kaleido\nimage_data = fig.to_image(format=\"png\", engine=\"kaleido\")\n\n# Create an io.BytesIO object which can be used by FPDF2\nimage = io.BytesIO(image_data)\npdf = FPDF()\npdf.add_page()\npdf.image(image, w=pdf.epw)  # Width of the image is equal to the width of the page\npdf.output(\"plotly_demo.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "pip install fpdf2 plotly kaleido pandas",
+      "language": "unknown"
+    },
+    {
+      "code": "from fpdf import FPDF\nimport plotly.express as px\n\nfig = px.bar(x=[\"a\", \"b\", \"c\"], y=[1, 3, 2])\nfig.write_image(\"figure.svg\")\n\npdf = FPDF()\npdf.add_page()\npdf.image(\"figure.svg\", w=pdf.epw)\npdf.output(\"plotly.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from io import BytesIO\nfrom urllib.parse import quote\nfrom urllib.request import urlopen\nfrom fpdf import FPDF\n\nformula = \"x^n + y^n = a/b\"\nheight = 170\nurl = f\"https://chart.googleapis.com/chart?cht=tx&chs={height}&chl={quote(formula)}\"\nwith urlopen(url) as img_file:  # nosec B310\n    img = BytesIO(img_file.read())\n\npdf = FPDF()\npdf.add_page()\npdf.image(img, w=30)\npdf.output(\"equation_google_charts.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from io import BytesIO\nfrom fpdf import FPDF\nfrom matplotlib.figure import Figure\n\nfig = Figure(figsize=(6, 2))\ngca = fig.gca()\ngca.text(0, 0.5, r\"$x^n + y^n = \\frac{a}{b}$\", fontsize=60)\ngca.axis(\"off\")\n\n# Converting Figure to a SVG image:\nimg = BytesIO()\nfig.savefig(img, format=\"svg\")\n\npdf = FPDF()\npdf.add_page()\npdf.image(img, w=100)\npdf.output(\"equation_matplotlib.pdf\")",
+      "language": "swift"
+    },
+    {
+      "code": "from fpdf import FPDF\nfrom matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas\nfrom matplotlib.figure import Figure\nimport numpy as np\nfrom PIL import Image\n\nfig = Figure(figsize=(6, 2), dpi=300)\ngca = fig.gca()\ngca.text(0, 0.5, r\"$x^n + y^n = \\frac{a}{b}$\", fontsize=60)\ngca.axis(\"off\")\n\ncanvas = FigureCanvas(fig)\ncanvas.draw()\nimg = Image.fromarray(np.asarray(canvas.buffer_rgba()))\n\npdf = FPDF()\npdf.add_page()\npdf.image(img, w=100)\npdf.output(\"equation_matplotlib_raster.pdf\")",
+      "language": "swift"
+    }
+  ],
+  "patterns": [
+    {
+      "description": "Example: Render an Ibis table as a table in a PDF document:",
+      "code": "from fpdf import FPDF\nimport ibis\nimport pandas as pd\n\n# Connect to a DuckDB in-memory database (as an example backend)\ncon = ibis.duckdb.connect()\n\n# Create a sample table in DuckDB with a SQL INSERT command:\ncon.raw_sql(\"\"\"\nCREATE TABLE people (\n    first_name VARCHAR,\n    last_name VARCHAR,\n    age INTEGER,\n    city VARCHAR\n);\nINSERT INTO people VALUES\n    ('Jules', 'Smith', 34, 'San Juan'),\n    ('Mary', 'Ramos', 45, 'Orlando'),\n    ('Carlson', 'Banks', 19, 'Los Angeles'),\n    ('Lucas', 'Cimon', 31, 'Angers');\n\"\"\")\n\n# Get an Ibis table expression\nt = con.table(\"people\")\n\n# (Optional) Apply Ibis expressions, e.g., filtering or selecting columns\nexpr = t  # or: t.filter(t.age > 30)\n\n# Execute the Ibis expression to get a pandas DataFrame\ndf = expr.execute()\n\n# Extract column headers and row data for PDF rendering\nCOLUMNS = [list(df)]  # column headers\nROWS = df.values.tolist()  # data rows\nDATA = COLUMNS + ROWS\n\npdf = FPDF()\npdf.add_page()\npdf.set_font(\"Times\", size=10)\nwith pdf.table(\n    borders_layout=\"MINIMAL\",\n    cell_fill_color=200,  # grey\n    cell_fill_mode=\"ROWS\",\n    line_height=pdf.font_size * 2.5,\n    text_align=\"CENTER\",\n    width=160,\n) as table:\n    for data_row in DATA:\n        row = table.row()\n        for datum in data_row:\n            row.cell(datum)\npdf.output(\"table_from_ibis.pdf\")"
+    },
+    {
+      "description": "Example:",
+      "code": "from io import BytesIO\nfrom urllib.parse import quote\nfrom urllib.request import urlopen\nfrom fpdf import FPDF\n\nformula = \"x^n + y^n = a/b\"\nheight = 170\nurl = f\"https://chart.googleapis.com/chart?cht=tx&chs={height}&chl={quote(formula)}\"\nwith urlopen(url) as img_file:  # nosec B310\n    img = BytesIO(img_file.read())\n\npdf = FPDF()\npdf.add_page()\npdf.image(img, w=30)\npdf.output(\"equation_google_charts.pdf\")"
+    },
+    {
+      "description": "Example:",
+      "code": "from io import BytesIO\nfrom fpdf import FPDF\nfrom matplotlib.figure import Figure\n\nfig = Figure(figsize=(6, 2))\ngca = fig.gca()\ngca.text(0, 0.5, r\"$x^n + y^n = \\frac{a}{b}$\", fontsize=60)\ngca.axis(\"off\")\n\n# Converting Figure to a SVG image:\nimg = BytesIO()\nfig.savefig(img, format=\"svg\")\n\npdf = FPDF()\npdf.add_page()\npdf.image(img, w=100)\npdf.output(\"equation_matplotlib.pdf\")"
+    }
+  ],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html"
+  ]
+}

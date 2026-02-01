@@ -1,0 +1,127 @@
+{
+  "url": "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+  "title": "Page format and orientation¶",
+  "content": "By default, a FPDF document has a A4 format with portrait orientation.\n\nOther formats & orientation can be specified to FPDF constructor:\n\nCurrently supported formats are a3, a4, a5, letter, legal or a tuple (width, height). Additional standard formats are welcome and can be suggested through pull requests.\n\n.set_page_background() lets you set a background for all pages following this call until the background is removed. The value must be of type str, io.BytesIO, PIL.Image.Image, drawing.DeviceRGB, tuple or None\n\nThe following code snippet illustrates how to configure different page formats for specific pages as well as setting different backgrounds and then removing it:\n\nSimilarly, an orientation parameter can be provided to the add_page method.\n\nset_display_mode() allows to set the zoom level: pages can be displayed entirely on screen, occupy the full width of the window, use the real size, be scaled by a specific zooming factor or use the viewer default (configured in its Preferences menu).\n\nThe page layout can also be specified: single page at a time, continuous display, two columns or viewer default.\n\nThose settings are detailed in the official PDF format specification, but may not be honored by PDF viewers. If a setting seems ignored, this is probably not a bug with fpdf2, but a choice or a missing feature from your PDF renderer software.",
+  "headings": [
+    {
+      "level": "h1",
+      "text": "Page format and orientation¶",
+      "id": "page-format-and-orientation"
+    },
+    {
+      "level": "h2",
+      "text": "Per-page format, orientation and background¶",
+      "id": "per-page-format-orientation-and-background"
+    },
+    {
+      "level": "h2",
+      "text": "Page layout & zoom level¶",
+      "id": "page-layout-zoom-level"
+    },
+    {
+      "level": "h2",
+      "text": "Viewer preferences¶",
+      "id": "viewer-preferences"
+    },
+    {
+      "level": "h2",
+      "text": "Full screen¶",
+      "id": "full-screen"
+    }
+  ],
+  "code_samples": [
+    {
+      "code": "pdf = fpdf.FPDF(orientation=\"landscape\", format=\"A5\")",
+      "language": "unknown"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.set_font(\"Helvetica\")\npdf.set_page_background((252,212,255))\nfor i in range(9):\n    if i == 6:\n        pdf.set_page_background('image_path.png')\n    pdf.add_page(format=(210 * (1 - i/10), 297 * (1 - i/10)))\n    pdf.cell(text=str(i))\npdf.set_page_background(None)\npdf.add_page(same=True)\npdf.cell(text=\"9\")\npdf.output(\"varying_format.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.set_display_mode(zoom=\"default\", layout=\"TWO_COLUMN_LEFT\")\npdf.set_font(\"helvetica\", size=30)\npdf.add_page()\npdf.cell(text=\"page 1\")\npdf.add_page()\npdf.cell(text=\"page 2\")\npdf.output(\"two-column.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF, ViewerPreferences\n\npdf = FPDF()\npdf.viewer_preferences = ViewerPreferences(\n    hide_toolbar=True,\n    hide_menubar=True,\n    hide_window_u_i=True,\n    fit_window=True,\n    center_window=True,\n    display_doc_title=True,\n    non_full_screen_page_mode=\"USE_OUTLINES\",\n)\npdf.set_font(\"helvetica\", size=30)\npdf.add_page()\npdf.cell(text=\"page 1\")\npdf.add_page()\npdf.cell(text=\"page 2\")\npdf.output(\"viewer-prefs.pdf\")",
+      "language": "python"
+    },
+    {
+      "code": "from fpdf import FPDF\n\npdf = FPDF()\npdf.page_mode = \"FULL_SCREEN\"\npdf.output(\"full-screen.pdf\")",
+      "language": "python"
+    }
+  ],
+  "patterns": [],
+  "links": [
+    "https://py-pdf.github.io/fpdf2/PageFormatAndOrientation.html",
+    "https://py-pdf.github.io/fpdf2/index.html",
+    "https://py-pdf.github.io/fpdf2/notebook.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-bn.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-de.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-es.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-fr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-gr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-he.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-hi.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-id.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-it.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ja.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-km.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-nl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pl.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-pt.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-ru.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-tr.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-zh.html",
+    "https://py-pdf.github.io/fpdf2/Tutorial-sl.html",
+    "https://py-pdf.github.io/fpdf2/Margins.html",
+    "https://py-pdf.github.io/fpdf2/Templates.html",
+    "https://py-pdf.github.io/fpdf2/TextRegion.html",
+    "https://py-pdf.github.io/fpdf2/TextColumns.html",
+    "https://py-pdf.github.io/fpdf2/Tables.html",
+    "https://py-pdf.github.io/fpdf2/Text.html",
+    "https://py-pdf.github.io/fpdf2/LineBreaks.html",
+    "https://py-pdf.github.io/fpdf2/PageBreaks.html",
+    "https://py-pdf.github.io/fpdf2/TextStyling.html",
+    "https://py-pdf.github.io/fpdf2/Unicode.html",
+    "https://py-pdf.github.io/fpdf2/TextShaping.html",
+    "https://py-pdf.github.io/fpdf2/EmojisSymbolsDingbats.html",
+    "https://py-pdf.github.io/fpdf2/HTML.html",
+    "https://py-pdf.github.io/fpdf2/Images.html",
+    "https://py-pdf.github.io/fpdf2/Shapes.html",
+    "https://py-pdf.github.io/fpdf2/Transformations.html",
+    "https://py-pdf.github.io/fpdf2/Transparency.html",
+    "https://py-pdf.github.io/fpdf2/Patterns.html",
+    "https://py-pdf.github.io/fpdf2/Barcodes.html",
+    "https://py-pdf.github.io/fpdf2/Drawing.html",
+    "https://py-pdf.github.io/fpdf2/SVG.html",
+    "https://py-pdf.github.io/fpdf2/Maths.html",
+    "https://py-pdf.github.io/fpdf2/Links.html",
+    "https://py-pdf.github.io/fpdf2/Metadata.html",
+    "https://py-pdf.github.io/fpdf2/Annotations.html",
+    "https://py-pdf.github.io/fpdf2/Presentations.html",
+    "https://py-pdf.github.io/fpdf2/DocumentOutlineAndTableOfContents.html",
+    "https://py-pdf.github.io/fpdf2/PageLabels.html",
+    "https://py-pdf.github.io/fpdf2/Encryption.html",
+    "https://py-pdf.github.io/fpdf2/Signing.html",
+    "https://py-pdf.github.io/fpdf2/FileAttachments.html",
+    "https://py-pdf.github.io/fpdf2/pdfa.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPypdf.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithMarkdown.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithLivereload.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithBorb.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithPdfrw.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithChartingLibs.html",
+    "https://py-pdf.github.io/fpdf2/UsageInWebAPI.html",
+    "https://py-pdf.github.io/fpdf2/RenderingSpreadsheetsAsPDFTables.html",
+    "https://py-pdf.github.io/fpdf2/TemplatingWithJinja.html",
+    "https://py-pdf.github.io/fpdf2/CombineWithRoughJS.html",
+    "https://py-pdf.github.io/fpdf2/Development.html",
+    "https://py-pdf.github.io/fpdf2/Logging.html",
+    "https://py-pdf.github.io/fpdf2/Internals.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/",
+    "https://py-pdf.github.io/fpdf2/History.html",
+    "https://py-pdf.github.io/fpdf2/fpdf/fpdf.html"
+  ]
+}
