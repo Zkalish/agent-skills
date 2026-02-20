@@ -1,78 +1,89 @@
 ---
 name: hisse-analiz-uzmani
-description: BIST hisselerini analiz eder. Önce /root/Job/Bistdata klasöründeki yerel verileri kullanır, eksik verileri Yahoo Finance'dan çeker. Temel analiz, teknik analiz, portföy yönetimi destekler.
-homepage: https://finance.yahoo.com
-metadata: {"clawdbot":{"emoji":"📊","requires":{"bins":["python3"],"env":[]},"install":[]}}
+description: BIST hisselerini analiz eder. Önce /root/Job/Bistdata yerel verileri kullanır, eksikleri borsapy ve Yahoo Finance'dan çeker. Temel analiz, teknik analiz, portföy yönetimi destekler.
+homepage: https://saidsurucu.github.io/borsapy/
+metadata: {"clawdbot":{"emoji":"📊","requires":{"bins":["python3"],"env":[]},"install":["pip install borsapy"]}}
 ---
 
-# Hisse Analiz Uzmanı v2.0
+# Hisse Analiz Uzmanı v3.0
 
-BIST hisselerini analiz etmek için kapsamlı araç. **Önce yerel verileri kullanır**, eksik verileri tamamlar.
+BIST hisselerini analiz etmek için kapsamlı araç. **borsapy** ve yerel verileri birlikte kullanır.
 
-## Önemli: Veri Kullanım Sırası
+## Veri Kaynakları (Öncelik Sırası)
 
-1. **Önce** `/root/Job/Bistdata/daily/` klasöründeki yerel CSV verilerini kullan
-2. Yerel veri yoksa veya eksikse Yahoo Finance'dan çek
-3. Analizi yerel verilerle yap
+1. **Yerel CSV** - `/root/Job/Bistdata/daily/` (en hızlı)
+2. **borsapy** - Güncel BIST verileri, bilanço, temel analiz
+3. **Yahoo Finance** - Eksik veriler için yedek
+
+## Kurulum
+
+```bash
+pip install borsapy
+```
 
 ## Kullanım
 
 ```bash
-# Tek hisse analizi (yerel veri öncelikli)
-python3 scripts/analyze_local.py THYAO
+# Yerel veri ile analiz
+python3 scripts/analyze_local.py THYAO GARAN
 
-# Birden fazla hisse
-python3 scripts/analyze_local.py THYAO GARAN ASELS
-
-# JSON çıktısı
-python3 scripts/analyze_local.py THYAO --output json
+# borsapy ile güncel fiyat
+python3 scripts/analyze_borsapy.py THYAO GARAN AKBNK
 ```
 
-## Yerel Veri Yapısı
+## borsapy Kullanımı
 
-```
-/root/Job/Bistdata/
-├── daily/     # Günlük veriler (252 hisse)
-├── h4/        # 4 saatlik veriler
-└── h1/        # Saatlik veriler
+```python
+import borsapy as bp
+
+# Hisse verisi
+hisse = bp.Ticker("THYAO")
+print(hisse.fast_info.last_price)   # Güncel fiyat
+print(hisse.fast_info.volume)       # Hacim
+print(hisse.fast_info.pe_ratio)     # F/K
+print(hisse.balance_sheet)          # Bilanço
+
+# Çoklu hisse
+data = bp.download(["THYAO", "GARAN"], period="1ay")
+
+# Döviz
+usd = bp.FX("USD")
+print(usd.current)
+
+# Enflasyon
+enf = bp.Inflation()
+print(enf.latest())
 ```
 
-CSV Format:
-```csv
-Date,Open,High,Low,Close,Volume,Dividends,Stock Splits
-2024-02-19,277.43,280.60,271.08,272.06,42626672,0.0,0.0
+## CLI Komutları
+
+```bash
+borsapy price THYAO GARAN          # Fiyat sorgula
+borsapy history THYAO --period 1y  # Geçmiş veri
+borsapy signals THYAO               # Teknik sinyaller
+borsapy scan "rsi < 30"            # Tarama
 ```
 
 ## Analiz Metodolojisi
 
 ### Teknik Analiz
 - RSI (14) - 30-70 arası ideal
-- MACD histogram yönü
-- Fiyat vs 50/200 hareketli ortalamalar
+- MACD, Hareketli ortalamalar
 - 52-haftalık pozisyon
-- Volatilite (yıllık %)
+- Volatilite
 
-### Temel Analiz
-- F/K oranı (sektör ortalaması karşılaştırması)
-- FD/FAVÖK
-- ROE, Kar marjı
-- Borç/Öz Sermaye
-
-### Risk Kriterleri
-- Günlük volatilite < %3
-- Likidite (hacim)
-- 52-haftalık aralıkta pozisyon
-
-## Örnek Çıktı
-
-| Hisse | Fiyat | RSI | Teknik | Temel | Risk | Toplam |
-|-------|-------|-----|--------|-------|------|--------|
-| THYAO | 316 | 55 | 70 | 80 | 75 | 225 |
-| GARAN | 156 | 46 | 75 | 85 | 78 | 238 |
+### Temel Analiz (borsapy)
+- F/K, FD/FAVÖK
+- Bilanço, Kar/Zarar
+- ROE, Borç/Öz Sermaye
 
 ## Önemli Notlar
 
-- **Yerel veri öncelikli** - hızlı ve güvenilir
-- Eksik veriler otomatik tamamlanır
+- **borsapy**: BIST için optimize edilmiş (saidsurucu/borsapy)
+- Yerel veri öncelikli
 - Tüm sonuçlar "yatırım tavsiyesi değildir"
-- Veriler: `/root/Job/Bistdata/daily/`
+
+## Kaynaklar
+
+- borsapy: https://github.com/saidsurucu/borsapy
+- Dokümantasyon: https://saidsurucu.github.io/borsapy/
