@@ -79,7 +79,23 @@ python3 Stratejiler/MACD_0_altinda_AL_verenler.py
 
 ## Veri Kaynağı
 
-Stratejiler `/root/Job/Bistdata/daily/` klasöründeki yerel verileri kullanır.
+### Veri Yükleyici
+Stratejiler ortak veri yükleyiciyi kullanır: `veri_yukleyici.py`
+
+Özellikler:
+- `/root/Job/Bistdata/daily/` klasöründen veri okur
+- 30 günden eski verileri otomatik günceller
+- Eksik hisseleri borsapy'den tamamlar
+
+### Kullanım
+
+```bash
+# Veri durumunu kontrol et
+python3 Stratejiler/veri_yukleyici.py
+
+# Tüm eksik verileri güncelle
+python3 -c "from veri_yukleyici import update_all_stocks; update_all_stocks(max_per_run=100)"
+```
 
 ## Not
 
