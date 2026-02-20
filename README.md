@@ -8,7 +8,6 @@ Bu repo, Moltbot veya Claude AI asistanları için oluşturulmuş skill paketler
 |-------|----------|-------|
 | [pinescript-v6-uzmani](pinescript-v6-uzmani/) | Pine Script V6 Tam Referans | 72 KB |
 | [chart-patterns-uzmani](chart-patterns-uzmani/) | Chart Patterns (Grafik Formasyonları) | 20 KB |
-| [bist-hisse-uzmani](bist-hisse-uzmani/) | BIST Hisse Analizi | - |
 | [price-action-uzmani](price-action-uzmani/) | Price Action Trading | - |
 | [fpdf2-uzmani](fpdf2-uzmani/) | FPDF2 PDF Kütüphanesi | 3+ MB |
 | [matriks-iq-uzmani](matriks-iq-uzmani/) | Matriks IQ Programlama | - |
