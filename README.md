@@ -15,6 +15,8 @@ Bu repo, Moltbot veya Claude AI asistanları için oluşturulmuş skill paketler
 | [deep-analysis-mode](deep-analysis-mode/) | Derin Analiz Modu | - |
 | [hisse-analiz-uzmani](hisse-analiz-uzmani/) | Genel Hisse Analizi | - |
 | [pdf-uzmani](pdf-uzmani/) | Genel PDF Araçları | - |
+| [matriks-system-tester](matriks-system-tester/) | Matriks System Tester & İndikatörler | - |
+| [skill-seekers](skill-seekers/) | Skill Oluşturma Aracı | - |
 
 ## 🚀 Kullanım
 
