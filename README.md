@@ -1,42 +1,32 @@
-# 🤖 Agent Skills for Moltbot/Claude AI
+# 🤖 Agent Skills for Claude AI
 
-Bu repo, Moltbot veya Claude AI asistanları için oluşturulmuş skill paketlerini içerir.
+Bu repo, Claude AI asistanları için oluşturulmuş skill paketlerini içerir.
 
 ## 📦 Mevcut Skill'ler
 
-| Skill | Açıklama | Boyut |
-|-------|----------|-------|
-| [pinescript-v6-uzmani](pinescript-v6-uzmani/) | Pine Script V6 Tam Referans | 72 KB |
-| [chart-patterns-uzmani](chart-patterns-uzmani/) | Chart Patterns (Grafik Formasyonları) | 20 KB |
-| [price-action-uzmani](price-action-uzmani/) | Price Action Trading | - |
-| [fpdf2-uzmani](fpdf2-uzmani/) | FPDF2 PDF Kütüphanesi | 3+ MB |
-| [matriks-iq-uzmani](matriks-iq-uzmani/) | Matriks IQ Programlama | - |
-| [deep-analysis-mode](deep-analysis-mode/) | Derin Analiz Modu | - |
-| [hisse-analiz-uzmani](hisse-analiz-uzmani/) | Genel Hisse Analizi | - |
-| [pdf-uzmani](pdf-uzmani/) | Genel PDF Araçları | - |
-| [matriks-system-tester](matriks-system-tester/) | Matriks System Tester & İndikatörler | - |
-| [skill-seekers](skill-seekers/) | Skill Oluşturma Aracı | - |
+| Skill | Açıklama |
+|-------|----------|
+| [pinescript-v6-uzmani](pinescript-v6-uzmani/) | Pine Script V6 Tam Referans |
+| [chart-patterns-uzmani](chart-patterns-uzmani/) | Chart Patterns (Grafik Formasyonları) |
+| [price-action-uzmani](price-action-uzmani/) | Price Action & SMC Trading |
+| [matriks-iq-uzmani](matriks-iq-uzmani/) | Matriks IQ Programlama |
+| [matriks-system-tester](matriks-system-tester/) | Matriks System Tester & İndikatörler |
+| [hisse-analiz-uzmani](hisse-analiz-uzmani/) | BIST Hisse Analizi (borsapy) |
+| [pdf-uzmani](pdf-uzmani/) | PDF İşlemleri (FPDF2, PyMuPDF) |
+| [deep-analysis-mode](deep-analysis-mode/) | Derin Analiz Modu |
+| [skill-seekers](skill-seekers/) | Skill Oluşturma Aracı |
+| [reprompter](reprompter/) | Prompt Optimizasyonu |
 
-## 🚀 Kullanım
+## 🚀 Kurulum
 
-### Moltbot/MCP ile
+### Claude Code
 
 ```bash
-# Skill'i MCP'ye ekle
-cd /root/Skill_Seekers
-source venv/bin/activate
-python3 scripts/auto_inject_skill.py /path/to/skill skill-name
+# ~/.claude/skills/ klasörüne kopyala
+cp -r skill-name ~/.claude/skills/
 ```
 
-### Manuel Kurulum
-
-1. İstediğin skill klasörünü indir
-2. MCP config dosyasına ekle
-3. Moltbot'u restart et
-
 ## 📚 Skill Yapısı
-
-Her skill şu yapıyı takip eder:
 
 ```
 skill-name/
@@ -44,16 +34,8 @@ skill-name/
 ├── README.md             # Genel bilgi
 ├── references/           # Detaylı dokümanlar
 ├── scripts/              # Python scriptleri
-└── assets/               # Görseller, dosyalar
+└── assets/              # Görseller, dosyalar
 ```
-
-## 🤝 Katkıda Bulun
-
-Yeni skill eklemek için:
-
-1. Skill klasörü oluştur
-2. SKILL.md dosyası ekle
-3. Pull request gönder
 
 ## 📄 Lisans
 
