@@ -1,131 +1,78 @@
 ---
 name: hisse-analiz-uzmani
-description: BIST hisseleri ve kripto paraları analiz eder. Temel analiz, teknik analiz, portföy yönetimi ve periyodik raporlama destekler. 8 analiz boyutu: Kazanç sürprizi, temeller, piyasa duyarlılığı, tarihsel desenler, piyasa bağlamı, sektör performansı, momentum ve haber analizi. Sadece BIST hisseleri için değil, kripto ve ABD hisseleri için de kullanılabilir.
+description: BIST hisselerini analiz eder. Önce /root/Job/Bistdata klasöründeki yerel verileri kullanır, eksik verileri Yahoo Finance'dan çeker. Temel analiz, teknik analiz, portföy yönetimi destekler.
 homepage: https://finance.yahoo.com
-metadata: {"clawdbot":{"emoji":"📊","requires":{"bins":["uv"],"env":[]},"install":[{"id":"uv-brew","kind":"brew","formula":"uv","bins":["uv"],"label":"Install uv (brew)"}]}}
+metadata: {"clawdbot":{"emoji":"📊","requires":{"bins":["python3"],"env":[]},"install":[]}}
 ---
 
-# Hisse Analiz Uzmanı (v1.0)
+# Hisse Analiz Uzmanı v2.0
 
-BIST hisseleri, ABD hisseleri ve kripto paraları analiz etmek için kapsamlı bir araç. Temel analiz, teknik analiz, portföy yönetimi ve risk değerlendirmesi içerir.
+BIST hisselerini analiz etmek için kapsamlı araç. **Önce yerel verileri kullanır**, eksik verileri tamamlar.
 
-## Hızlı Başlangıç
+## Önemli: Veri Kullanım Sırası
 
-**ÖNEMLİ:** Sadece hisse sembolünü veya kripto ticker'ını argüman olarak verin.
+1. **Önce** `/root/Job/Bistdata/daily/` klasöründeki yerel CSV verilerini kullan
+2. Yerel veri yoksa veya eksikse Yahoo Finance'dan çek
+3. Analizi yerel verilerle yap
 
-```bash
-# BIST hissesi analiz et (örnek: THYAO)
-uv run {baseDir}/scripts/analyze_stock.py THYAO
-
-# JSON çıktısı için
-uv run {baseDir}/scripts/analyze_stock.py THYAO --output json
-
-# Birden fazla hissede karşılaştırma
-uv run {baseDir}/scripts/analyze_stock.py THYAO ASELS EREGL
-```
-
-## Analiz Boyutları
-
-Script sekiz ana boyutu değerlendirir:
-
-1. **Kazanç Sürprizi (%20 ağırlık)**: Beklenen vs gerçekleşen EPS, gelir beklentileri
-2. **Temel Analiz (%20 ağırlık)**: F/K oranı, kar marjları, gelir büyümesi, borç seviyeleri
-3. **Piyasa Duyarlılığı (%15 ağırlık)**: Analist yorumları, hedef fiyat vs güncel fiyat
-4. **Tarihsel Desenler (%10 ağırlık)**: Geçmiş kazanç tepkileri, volatilite
-5. **Piyasa Bağlamı (%10 ağırlık)**: BIST 100 trendleri, genel piyasa rejimi
-6. **Sektör Performansı (%10 ağırlık)**: Hisse vs sektör karşılaştırması
-7. **Momentum (%20 ağırlık)**: RSI, 52-haftalık aralık, hacim, göreceli güç
-8. **Haber Analizi (%15 ağırlık)**: KAP haberleri, şirket duyuruları, sektör haberleri
-
-## BIST Hisse Sorgulama Örnekleri
+## Kullanım
 
 ```bash
-# Tek hisse
-uv run {baseDir}/scripts/analyze_stock.py GARAN
+# Tek hisse analizi (yerel veri öncelikli)
+python3 scripts/analyze_local.py THYAO
 
-# Birden fazla karşılaştırma
-uv run {baseDir}/scripts/analyze_stock.py SISE PETKM
+# Birden fazla hisse
+python3 scripts/analyze_local.py THYAO GARAN ASELS
 
-# Sektör analizi
-uv run {baseDir}/scripts/analyze_stock.py THYAO PGSUS Aker
+# JSON çıktısı
+python3 scripts/analyze_local.py THYAO --output json
 ```
 
-## Kripto Para Analizi
+## Yerel Veri Yapısı
 
-Top 20 kripto para piyasa değerine göre:
-
-```bash
-# Bitcoin analiz
-uv run {baseDir}/scripts/analyze_stock.py BTC-USD
-
-# Ethereum ve Solana
-uv run {baseDir}/scripts/analyze_stock.py ETH-USD SOL-USD
-
-# Desteklenen Kriptolar:
-# BTC-USD, ETH-USD, BNB-USD, SOL-USD, XRP-USD, ADA-USD, 
-# DOGE-USD, AVAX-USD, DOT-USD, MATIC-USD, LINK-USD, 
-# ATOM-USD, UNI-USD, LTC-USD, BCH-USD, XLM-USD
+```
+/root/Job/Bistdata/
+├── daily/     # Günlük veriler (252 hisse)
+├── h4/        # 4 saatlik veriler
+└── h1/        # Saatlik veriler
 ```
 
-## Portföy Yönetimi
-
-```bash
-# Portföy oluştur
-uv run {baseDir}/scripts/portfolio.py create "My Portfolio"
-
-# Varlık ekle
-uv run {baseDir}/scripts/portfolio.py add THYAO --quantity 1000 --cost 45.50
-uv run {baseDir}/scripts/portfolio.py add BTC-USD --quantity 0.1 --cost 50000
-
-# Mevcut durumu görüntüle
-uv run {baseDir}/scripts/portfolio.py show
-
-# Portföy analizi
-uv run {baseDir}/scripts/analyze_stock.py --portfolio "My Portfolio"
-
-# Periyodik getiri ile
-uv run {baseDir}/scripts/analyze_stock.py --portfolio "My Portfolio" --period weekly
+CSV Format:
+```csv
+Date,Open,High,Low,Close,Volume,Dividends,Stock Splits
+2024-02-19,277.43,280.60,271.08,272.06,42626672,0.0,0.0
 ```
 
-## Risk ve Uyarılar
+## Analiz Metodolojisi
 
-### Kazanç Dönemi
-- **Kazanç öncesi**: < 14 gün varsa, AL önerileri BEKLE'ye dönüşür
-- **Kazanç sonrası spike**: >%15 yükseliş 5 gün içinde = "kazanımlar fiyatlara yansımış olabilir"
+### Teknik Analiz
+- RSI (14) - 30-70 arası ideal
+- MACD histogram yönü
+- Fiyat vs 50/200 hareketli ortalamalar
+- 52-haftalık pozisyon
+- Volatilite (yıllık %)
 
-### Teknik Risk
-- **Aşırı alım**: RSI > 70 + 52-haftalık zirve yakınında = yüksek risk
-- **Düşük likidite**: Günlük hacim < 1M TL = giriş/çıkış zorluğu
+### Temel Analiz
+- F/K oranı (sektör ortalaması karşılaştırması)
+- FD/FAVÖK
+- ROE, Kar marjı
+- Borç/Öz Sermaye
 
-### Piyasa Riskleri
-- **Yüksek Volatilite**: BIST 30 VIX > 30 = AL güveni düşük
-- **Risk-Off Modu**: Altın, tahvil ve USD birlikte yükseliyorsa, AL güveni %30 düşürülür
+### Risk Kriterleri
+- Günlük volatilite < %3
+- Likidite (hacim)
+- 52-haftalık aralıkta pozisyon
 
-### Sektör Riskleri
-- **Sektör Zayıflığı**: Hisse iyi görünebilir ama sektör çıkıyor olabilir
+## Örnek Çıktı
 
-### Haber Riskleri
-- **KAP Haberleri**: Önemli gelişmeler varsa otomatik uyarı
-- **Sektör Haberleri**: Düzenleme, rekabet, tedarik zinciri sorunları
+| Hisse | Fiyat | RSI | Teknik | Temel | Risk | Toplam |
+|-------|-------|-----|--------|-------|------|--------|
+| THYAO | 316 | 55 | 70 | 80 | 75 | 225 |
+| GARAN | 156 | 46 | 75 | 85 | 78 | 238 |
 
-## Çıktı Formatı
+## Önemli Notlar
 
-**Varsayılan (metin)**: Özet AL/BEKLE/SAT sinyali + 3-5 madde + uyarılar
-
-**JSON**: Yapılandırılmış veri, skorlar ve detaylı metrikler
-
-## Sınırlamalar
-
-- **Veri tazelik**: Yahoo Finance 15-20 dakika gecikmeli olabilir
-- **KAP veri gecikmesi**: Bazı veriler 1-2 gün gecikebilir
-- **Analist kapsamı**: Tüm BIST hisselerinde analist yorumu olmayabilir
-- **Küçük hisseler**: Likidite düşük, fiyat manipülasyonu riski
-- **İşlem süresi**: 3-5 saniye/hisse (önbellek ile)
-- **Uyarı**: Tüm çıktılar "finansal tavsiye değildir" içerir
-- **Sadece BIST/Amerika**: Diğer pazarlar için veriler sınırlı olabilir
-
-## Hata Yönetimi
-
-- **Geçersiz ticker**: Net hata mesajı
-- **Eksik veri**: Sadece mevcut metriklerle sinyal
-- **API hatası**: Üstel geri çekilme, 3 deneme sonra hata
+- **Yerel veri öncelikli** - hızlı ve güvenilir
+- Eksik veriler otomatik tamamlanır
+- Tüm sonuçlar "yatırım tavsiyesi değildir"
+- Veriler: `/root/Job/Bistdata/daily/`
