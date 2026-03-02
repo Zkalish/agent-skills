@@ -1,0 +1,158 @@
+//@version=6
+// ============================================================
+// PHL2 YIGITBOX - Hasan İndikatör Mantığı (Doğru)
+// ============================================================
+
+strategy(
+     "PHL2 YIGITBOX",
+     overlay     = true,
+     default_qty_type = strategy.fixed,
+     default_qty_value = 1,
+     commission_type = strategy.commission.percent,
+     commission_value = 0,
+     slippage = 1
+)
+
+// ============================================================
+// GIRDILER
+// ============================================================
+
+wprLength = input.int(3, title="Williams %R", minval=2)
+longWpr = input.float(-20, title="LONG WillR")
+shortWpr = input.float(-70, title="SHORT WillR")
+showPlots = input.bool(true, title="Göster")
+
+// ============================================================
+// FONKSIYONLAR - Hasan'dan
+// ============================================================
+
+// HighestSince - "or" ile güncelleniyor
+GetHighestSince(cond, src) =>
+    var float val = na
+    if cond or src > val
+        val := src
+    val
+
+// LowestSince - "or" ile güncelleniyor
+GetLowestSince(cond, src) =>
+    var float val = na
+    if cond or src < val
+        val := src
+    val
+
+// Session başlangıcı
+IsSessionStart(sessionTime, sessionTimeZone=syminfo.timezone) =>
+    inSess = not na(time(timeframe.period, sessionTime, sessionTimeZone))
+    inSess and not inSess[1]
+
+// ============================================================
+// GÜNLÜK VERİ (lookahead_on)
+// ============================================================
+
+res = timeframe.isweekly or timeframe.ismonthly ? "M" : timeframe.isdaily ? "W" : "D"
+
+[xHigh, xLow, xClose] = request.security(
+     syminfo.tickerid, res,
+     [high, low, close],
+     lookahead = barmerge.lookahead_on
+)
+
+// ============================================================
+// YIGIT - Gün değişimi
+// ============================================================
+
+isFutures1 = str.contains(syminfo.tickerid, "!")
+isFutures2 = str.contains(syminfo.tickerid, str.tostring(year))
+
+// H1/H2/H3/H4 için session bazlı
+sessionF = IsSessionStart("0930-1730", "GMT+3")
+sessionA = IsSessionStart("0900-1700", "GMT+3")
+sessionN = IsSessionStart("1000-1800", "GMT+3")
+
+YIGIT = isFutures1 or isFutures2 ? sessionF : sessionN
+
+// ============================================================
+// DEĞERLER
+// ============================================================
+
+// ADAM: Gün değişimindeki bir önceki barın değeri
+ADAM = ta.valuewhen(YIGIT, xClose, 1)
+
+// TX: HighestSince - gün değişiminden itibaren en yüksek
+TX = ta.valuewhen(YIGIT, GetHighestSince(YIGIT, xHigh), 1)
+
+// RX: LowestSince - gün değişiminden itibaren en düşük
+RX = ta.valuewhen(YIGIT, GetLowestSince(YIGIT, xLow), 1)
+
+// Pivot hesaplama
+PVT1 = (ADAM + RX + TX) / 3
+r1 = 2 * PVT1 - RX
+s1 = 2 * PVT1 - TX
+
+PVT2 = ADAM
+r2 = PVT2 + (TX - RX) / 2
+s2 = PVT2 - (TX - RX) / 2
+
+sma1 = ta.sma(close, 1)
+wpr = ta.wpr(wprLength)
+
+// ============================================================
+// SİNYALLER
+// ============================================================
+
+longCond = (sma1 > PVT2) and (sma1 > PVT1) and (wpr > longWpr)
+shortCond = (sma1 < PVT2) and (sma1 < PVT1) and (wpr < shortWpr)
+
+longEntry = longCond and not longCond[1]
+shortEntry = shortCond and not shortCond[1]
+
+inLong = strategy.position_size > 0
+inShort = strategy.position_size < 0
+noPos = strategy.position_size == 0
+
+// ============================================================
+// İŞLEMLER
+// ============================================================
+
+if noPos and longEntry
+    strategy.entry("Long", strategy.long)
+
+if noPos and shortEntry
+    strategy.entry("Short", strategy.short)
+
+if inLong and shortEntry
+    strategy.close("Long")
+    strategy.entry("Short", strategy.short)
+
+if inShort and longEntry
+    strategy.close("Short")
+    strategy.entry("Long", strategy.long)
+
+// ============================================================
+// GÖRSEL
+// ============================================================
+
+plot(showPlots ? PVT1 : na, "PVT1", color.blue, 2)
+plot(showPlots ? r1 : na, "R1", color.green, 1)
+plot(showPlots ? s1 : na, "S1", color.red, 1)
+plot(showPlots ? PVT2 : na, "PVT2", color.orange, 2)
+plot(showPlots ? r2 : na, "R2", color.green, 1)
+plot(showPlots ? s2 : na, "S2", color.red, 1)
+
+plotshape(noPos and longEntry, title="BUY", location=location.belowbar, color=color.green, style=shape.triangleup, size=size.tiny)
+plotshape(noPos and shortEntry, title="SELL", location=location.abovebar, color=color.red, style=shape.triangledown, size=size.tiny)
+plotshape(inLong and shortEntry, title="SELL", location=location.abovebar, color=color.red, style=shape.triangledown, size=size.tiny)
+plotshape(inShort and longEntry, title="BUY", location=location.belowbar, color=color.green, style=shape.triangleup, size=size.tiny)
+
+// Panel
+var table info = table.new(position.bottom_right, 2, 4, bgcolor=color.black)
+
+if barstate.islast
+    table.cell(info, 0, 0, "ADAM:", text_color=color.white, text_size=size.small)
+    table.cell(info, 1, 0, str.tostring(ADAM, format.mintick), text_color=color.lime, text_size=size.small)
+    table.cell(info, 0, 1, "TX/RX:", text_color=color.white, text_size=size.small)
+    table.cell(info, 1, 1, str.tostring(TX, format.mintick) + "/" + str.tostring(RX, format.mintick), text_color=color.orange, text_size=size.small)
+    table.cell(info, 0, 2, "PVT1:", text_color=color.white, text_size=size.small)
+    table.cell(info, 1, 2, str.tostring(PVT1, format.mintick), text_color=color.orange, text_size=size.small)
+    table.cell(info, 0, 3, "WillR:", text_color=color.white, text_size=size.small)
+    table.cell(info, 1, 3, str.tostring(wpr, format.mintick), text_color=color.orange, text_size=size.small)

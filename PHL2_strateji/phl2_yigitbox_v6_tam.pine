@@ -1,0 +1,261 @@
+//@version=6
+// ============================================================
+// PHL2 YIGITBOX - Tam Formül (GUI Filtreler)
+// ============================================================
+
+strategy(
+     "PHL2 YIGITBOX Tam",
+     overlay     = true,
+     default_qty_type = strategy.fixed,
+     default_qty_value = 1,
+     commission_type = strategy.commission.percent,
+     commission_value = 0,
+     slippage = 1
+)
+
+// ============================================================
+// GIRDILER - TEMEL
+// ============================================================
+
+wprLength = input.int(3, title="Williams %R", minval=2)
+longWpr = input.float(-20, title="LONG WillR")
+shortWpr = input.float(-70, title="SHORT WillR")
+
+// ============================================================
+// GIRDILER - FILTRELER (Hepsi Pasif)
+// ============================================================
+
+showPlots = input.bool(true, title="Goster")
+
+// SuperTrend
+useST = input.bool(false, title="SuperTrend?", group="Filtreler")
+stPeriod = input.int(2, title="ST Period", group="Filtreler")
+stMult = input.float(2, title="ST Multiplier", group="Filtreler")
+
+// OTT
+useOTT = input.bool(false, title="OTT?", group="Filtreler")
+ottPeriod = input.int(2, title="OTT Period", group="Filtreler")
+ottChange = input.float(2, title="OTT Change", group="Filtreler")
+
+// THHH/TLLL
+useTHHH = input.bool(false, title="THHH/TLLL?", group="Filtreler")
+
+// HHV/LLV
+useHHV = input.bool(false, title="HHV/LLV 3?", group="Filtreler")
+
+// Tipik Fiyat
+useTypical = input.bool(false, title="Tipik Fiyat?", group="Filtreler")
+
+// Vortex
+useVortex = input.bool(false, title="Vortex PVTX/NVTX?", group="Filtreler")
+
+// ============================================================
+// FONKSIYONLAR
+// ============================================================
+
+GetHighestSince(cond, src) =>
+    var float val = na
+    if cond or src > val
+        val := src
+    val
+
+GetLowestSince(cond, src) =>
+    var float val = na
+    if cond or src < val
+        val := src
+    val
+
+// ============================================================
+// SUPERTREND
+// ============================================================
+
+srcST = (high + low) / 2
+atrST = ta.atr(stPeriod)
+
+upLine = srcST + (stMult * atrST)
+downLine = srcST - (stMult * atrST)
+
+var int trendST = 1
+trendST := close > nz(upLine[1], upLine) ? 1 : close < nz(downLine[1], downLine) ? -1 : nz(trendST[1], 1)
+
+stValue = trendST == 1 ? downLine : upLine
+
+// ============================================================
+// OTT
+// ============================================================
+
+OTT(src, period, change) =>
+    avg = ta.sma(src, period)
+    k = (ta.highest(src, period) - ta.lowest(src, period)) * change / 100
+    upper = avg + k
+    lower = avg - k
+    var float val = na
+    val := nz(val[1], src)
+    if src > upper
+        val := src
+    else if src < lower
+        val := src
+    else
+        val := val
+    val
+
+ottVal = OTT(close, ottPeriod, ottChange)
+
+// ============================================================
+// VORTEX
+// ============================================================
+
+periodVX = 6
+
+tr = math.max(high - low, math.max(math.abs(high - close[1]), math.abs(low - close[1])))
+
+vmPlus = math.abs(high - low[1])
+vmMinus = math.abs(low - high[1])
+
+PVTX = ta.sma(vmPlus, periodVX) / ta.sma(tr, periodVX)
+NVTX = ta.sma(vmMinus, periodVX) / ta.sma(tr, periodVX)
+
+// ============================================================
+// GUNLUK VERI
+// ============================================================
+
+[dHigh, dLow, dClose, dTime] = request.security(
+     syminfo.tickerid, "D",
+     [high, low, close, time],
+     lookahead = barmerge.lookahead_on
+)
+
+isNewDay = ta.change(dTime) != 0
+
+// ============================================================
+// DEGERLER
+// ============================================================
+
+var float ADAM = na
+var float TX_val = na
+var float RX_val = na
+
+if isNewDay
+    ADAM := dClose[1]
+    TX_val := math.max(dHigh[1], high)
+    RX_val := math.min(dLow[1], low)
+else
+    TX_val := math.max(TX_val, high)
+    RX_val := math.min(RX_val, low)
+
+PVT1 = (ADAM + RX_val + TX_val) / 3
+PVT2 = ADAM
+
+// THHH / TLLL
+THHH = ta.valuewhen(high > high[1], high[1], 0)
+TLLL = ta.valuewhen(low > low[1], low[1], 0)
+
+typicalPrice = (high + low + close) / 3
+
+sma1 = ta.sma(close, 1)
+wpr = ta.wpr(wprLength)
+
+// ============================================================
+// FILTRE FONKSIYONLARI
+// ============================================================
+
+// SuperTrend Filtresi
+filterST(x) => not useST or (x > stValue)
+
+// OTT Filtresi
+filterOTT(x) => not useOTT or (x > ottVal)
+
+// THHH Filtresi
+filterTHHH(x) => not useTHHH or (x > THHH)
+
+// HHV Filtresi
+filterHHV(x) => not useHHV or (x > ta.highest(high, 3)[1])
+
+// Tipik Fiyat Filtresi
+filterTypical(x) => not useTypical or (x > typicalPrice)
+
+// Vortex Filtresi
+filterVortex(x) => not useVortex or (PVTX > NVTX)
+
+// ============================================================
+// Sinyaller
+// ============================================================
+
+// Temel kosullar + filtreler
+longCond =
+     (sma1 > PVT2) and (sma1 > PVT1) and (wpr > longWpr) and
+     filterST(close) and
+     filterOTT(close) and
+     filterTHHH(close) and
+     filterHHV(high) and
+     filterTypical(close) and
+     filterVortex(close)
+
+shortCond =
+     (sma1 < PVT2) and (sma1 < PVT1) and (wpr < shortWpr) and
+     filterST(close) and
+     filterOTT(close) and
+     filterTHHH(close) and
+     filterHHV(high) and
+     filterTypical(close) and
+     filterVortex(close)
+
+longEntry = longCond and not longCond[1]
+shortEntry = shortCond and not shortCond[1]
+
+inLong = strategy.position_size > 0
+inShort = strategy.position_size < 0
+noPos = strategy.position_size == 0
+
+// ============================================================
+// Islemler
+// ============================================================
+
+if noPos and longEntry
+    strategy.entry("Long", strategy.long)
+
+if noPos and shortEntry
+    strategy.entry("Short", strategy.short)
+
+if inLong and shortEntry
+    strategy.close("Long")
+    strategy.entry("Short", strategy.short)
+
+if inShort and longEntry
+    strategy.close("Short")
+    strategy.entry("Long", strategy.long)
+
+// ============================================================
+// Gorsel
+// ============================================================
+
+plot(showPlots ? PVT1 : na, "PVT1", color.blue, 2)
+plot(showPlots ? PVT2 : na, "PVT2", color.orange, 2)
+plot(showPlots and useST ? stValue : na, "SuperTrend", color.purple, 2)
+plot(showPlots and useOTT ? ottVal : na, "OTT", color.yellow, 1)
+
+plotshape(noPos and longEntry, title="BUY", location=location.belowbar, color=color.green, style=shape.triangleup, size=size.tiny)
+plotshape(noPos and shortEntry, title="SELL", location=location.abovebar, color=color.red, style=shape.triangledown, size=size.tiny)
+plotshape(inLong and shortEntry, title="SELL", location=location.abovebar, color=color.red, style=shape.triangledown, size=size.tiny)
+plotshape(inShort and longEntry, title="BUY", location=location.belowbar, color=color.green, style=shape.triangleup, size=size.tiny)
+
+// Panel
+var table info = table.new(position.bottom_right, 2, 8, bgcolor=color.black)
+
+if barstate.islast
+    table.cell(info, 0, 0, "PVT1:", text_color=color.white, text_size=size.small)
+    table.cell(info, 1, 0, str.tostring(PVT1, format.mintick), text_color=color.orange, text_size=size.small)
+    table.cell(info, 0, 1, "PVT2:", text_color=color.white, text_size=size.small)
+    table.cell(info, 1, 1, str.tostring(PVT2, format.mintick), text_color=color.orange, text_size=size.small)
+    table.cell(info, 0, 2, "WillR:", text_color=color.white, text_size=size.small)
+    table.cell(info, 1, 2, str.tostring(wpr, format.mintick), text_color=color.orange, text_size=size.small)
+    table.cell(info, 0, 3, "ST:", text_color=color.white, text_size=size.small)
+    table.cell(info, 1, 3, str.tostring(stValue, format.mintick), text_color=color.purple, text_size=size.small)
+    table.cell(info, 0, 4, "OTT:", text_color=color.white, text_size=size.small)
+    table.cell(info, 1, 4, str.tostring(ottVal, format.mintick), text_color=color.yellow, text_size=size.small)
+    table.cell(info, 0, 5, "PVTX:", text_color=color.white, text_size=size.small)
+    table.cell(info, 1, 5, str.tostring(PVTX, format.mintick), text_color=color.orange, text_size=size.small)
+    table.cell(info, 0, 6, "NVTX:", text_color=color.white, text_size=size.small)
+    table.cell(info, 1, 6, str.tostring(NVTX, format.mintick), text_color=color.orange, text_size=size.small)
+    table.cell(info, 0, 7, "THHH:", text_color=color.white, text_size=size.small)
+    table.cell(info, 1, 7, str.tostring(THHH, format.mintick), text_color=color.orange, text_size=size.small)
